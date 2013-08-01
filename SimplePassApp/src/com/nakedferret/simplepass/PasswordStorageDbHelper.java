@@ -31,6 +31,7 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 			+ Account.COL_GROUP + " TEXT, "
 			+ Account.COL_PASSWORD + " TEXT, "
 			+ Account.COL_USERNAME + " TEXT, "
+			+ Account.COL_VAULT + " INTEGER, " 
 			+ "FOREIGN KEY(" + Account.COL_VAULT + ") REFERENCES "
 			+ Vault.TABLE_NAME + "(" + Vault._ID + ")" 
 			+ ")";
