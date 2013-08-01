@@ -2,13 +2,14 @@ package com.nakedferret.simplepass;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class PasswordStorageDbHelper extends SQLiteOpenHelper {
+
+	private static final String DB_NAME = "storage_room";
 
 	//@formatter:off //Eclipse formatting
 	private static final String CREATE_VAULTS_TABLE = "CREATE TABLE "
@@ -35,9 +36,8 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 			+ ")";
 	//@formatter:on
 
-	public PasswordStorageDbHelper(Context context, String name,
-			CursorFactory factory, int version) {
-		super(context, name, factory, version);
+	public PasswordStorageDbHelper(Context c) {
+		super(c, DB_NAME, null, 1);
 	}
 
 	@Override

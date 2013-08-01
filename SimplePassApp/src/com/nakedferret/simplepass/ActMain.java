@@ -10,6 +10,7 @@ public class ActMain extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_main);
+		new PasswordStorageDbHelper(this).getWritableDatabase();
 	}
 
 }
