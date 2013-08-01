@@ -13,6 +13,7 @@ public final class PasswordStorageContract {
 		public static final String COL_GROUP = "group";
 		public static final String COL_USERNAME = "username";
 		public static final String COL_PASSWORD = "password";
+		public static final String COL_VAULT = "vault_id";
 	}
 
 	public static abstract class Vault implements BaseColumns {
