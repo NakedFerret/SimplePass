@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 public class PasswordStorageProvider extends ContentProvider {
@@ -26,45 +27,51 @@ public class PasswordStorageProvider extends ContentProvider {
 		sURIMatcher.addURI(authority, "vault/#", VAULT_ID);
 	}
 
+	private PasswordStorageDbHelper dbHelper;
+
 	public PasswordStorageProvider() {
 	}
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		// Implement this to handle requests to delete one or more rows.
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
 	public String getType(Uri uri) {
-		// TODO: Implement this to handle requests for the MIME type of the data
-		// at the given URI.
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		// TODO: Implement this to handle requests to insert a new row.
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
 	public boolean onCreate() {
-		// TODO: Implement this to initialize your content provider on startup.
-		return false;
+		dbHelper = new PasswordStorageDbHelper(getContext());
+		return true;
 	}
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
-		// TODO: Implement this to handle query requests from clients.
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		// TODO: Implement this to handle requests to update one or more rows.
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 }
