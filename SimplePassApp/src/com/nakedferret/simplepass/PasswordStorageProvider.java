@@ -8,7 +8,7 @@ import android.net.Uri;
 
 public class PasswordStorageProvider extends ContentProvider {
 
-	private static final String provider = "com.nakedferret.simplepass.provider";
+	private static final String authority = "com.nakedferret.simplepass.provider";
 
 	private static final int ACCOUNT = 1;
 	private static final int ACCOUNT_ID = 2;
@@ -20,10 +20,10 @@ public class PasswordStorageProvider extends ContentProvider {
 			UriMatcher.NO_MATCH);
 
 	static {
-		sURIMatcher.addURI(provider, "account", ACCOUNT);
-		sURIMatcher.addURI(provider, "account/#", ACCOUNT_ID);
-		sURIMatcher.addURI(provider, "vault", VAULT);
-		sURIMatcher.addURI(provider, "vault/#", VAULT_ID);
+		sURIMatcher.addURI(authority, "account", ACCOUNT);
+		sURIMatcher.addURI(authority, "account/#", ACCOUNT_ID);
+		sURIMatcher.addURI(authority, "vault", VAULT);
+		sURIMatcher.addURI(authority, "vault/#", VAULT_ID);
 	}
 
 	public PasswordStorageProvider() {
