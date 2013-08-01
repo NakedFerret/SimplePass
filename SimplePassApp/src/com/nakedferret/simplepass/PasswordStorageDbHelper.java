@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class PasswordStorageDbHelper extends SQLiteOpenHelper {
@@ -17,7 +18,21 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 			+ Vault.COL_IV + " TEXT, " 
 			+ Vault.COL_NAME + " TEXT, "
 			+ Vault.COL_ITERATIONS + " INTEGER, " 
-			+ Vault.COL_HASH + " TEXT )";
+			+ Vault.COL_HASH + " TEXT " 
+			+ ")";
+	//@formatter:on
+
+	//@formatter:off //Eclipse formatting
+	private static final String CREATE_ACCOUNTS_TABLE = "CREATE TABLE "
+			+ Account.TABLE_NAME + " ( "
+			+ Account._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ Account.COL_NAME + " TEXT, "
+			+ Account.COL_GROUP + " TEXT, "
+			+ Account.COL_PASSWORD + " TEXT, "
+			+ Account.COL_USERNAME + " TEXT, "
+			+ "FOREIGN KEY(" + Account.COL_VAULT + ") REFERENCES "
+			+ Vault.TABLE_NAME + "(" + Vault._ID + ")" 
+			+ ")";
 	//@formatter:on
 
 	public PasswordStorageDbHelper(Context context, String name,
@@ -27,8 +42,8 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
-
+		db.execSQL(CREATE_VAULTS_TABLE);
+		db.execSQL(CREATE_ACCOUNTS_TABLE);
 	}
 
 	@Override
