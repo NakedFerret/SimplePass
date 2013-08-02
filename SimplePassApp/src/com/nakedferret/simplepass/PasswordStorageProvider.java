@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+
 public class PasswordStorageProvider extends ContentProvider {
 
 	private static final String authority = "com.nakedferret.simplepass.provider";
@@ -49,6 +52,24 @@ public class PasswordStorageProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		String table = null;
+		switch (sURIMatcher.match(uri)) {
+			case ACCOUNT:
+				table = Account.TABLE_NAME;
+				break;
+			case VAULT:
+				table = Vault.TABLE_NAME;
+				break;
+			default:
+				table = null;
+		}
+		if (table == null)
+			return null;
+
+		db.insert(table, null, values);
+		// TODO: notify change
+		// I think this is how you do it
+		// getContext().getContentResolver().notifyChange(uri, null);
 		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
