@@ -6,13 +6,14 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class PasswordStorageProvider extends ContentProvider {
 
-	private static final String authority = "com.nakedferret.simplepass.provider";
+	public static final String authority = "com.nakedferret.simplepass.provider";
 
 	private static final int ACCOUNT = 1;
 	private static final int ACCOUNT_ID = 2;
@@ -65,6 +66,8 @@ public class PasswordStorageProvider extends ContentProvider {
 		}
 		if (table == null)
 			return null;
+
+		Log.d("SimplePass", "Inserted values into table: " + table);
 
 		db.insert(table, null, values);
 		// TODO: notify change
