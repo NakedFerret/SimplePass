@@ -7,10 +7,15 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.FragmentById;
+import com.nakedferret.simplepass.FragListAccounts.OnAccountSelectedListener;
 
-@EActivity
+@EActivity(R.layout.act_select_account)
 public class ActSelectAccount extends SherlockFragmentActivity implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, OnAccountSelectedListener {
+
+	@FragmentById
+	FragListAccounts accountFragment;
 
 	@AfterViews
 	void initInterface() {
@@ -34,6 +39,11 @@ public class ActSelectAccount extends SherlockFragmentActivity implements
 	@Override
 	public void onLoaderReset(android.support.v4.content.Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onAccountSelected(Cursor c) {
 
 	}
 
