@@ -6,6 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
@@ -37,15 +38,11 @@ public class PasswordStorageProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	@Override
 	public String getType(Uri uri) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
@@ -70,7 +67,6 @@ public class PasswordStorageProvider extends ContentProvider {
 		// TODO: notify change
 		// I think this is how you do it
 		// getContext().getContentResolver().notifyChange(uri, null);
-		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
@@ -84,6 +80,7 @@ public class PasswordStorageProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Log.d("SimplePass", "Query in provider");
 
 		String table = null;
 		switch (sURIMatcher.match(uri)) {
@@ -101,15 +98,13 @@ public class PasswordStorageProvider extends ContentProvider {
 			return null;
 
 		Cursor c = db.query(table, null, null, null, null, null, null);
-		db.close();
+		Log.d("SimplePass", "Number of rows: " + c.getCount());
 		return c;
 	}
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.close();
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 }
