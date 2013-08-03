@@ -4,5 +4,6 @@
     <string name="app_name">Simple Pass</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_act_select_account">Select Account</string>
 
 </resources>

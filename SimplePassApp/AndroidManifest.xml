@@ -29,6 +29,11 @@
             android:enabled="true"
             android:exported="false" >
         </provider>
+
+        <activity
+            android:name="com.nakedferret.simplepass.ActSelectAccount_"
+            android:label="@string/title_activity_act_select_account" >
+        </activity>
     </application>
 
 </manifest>
