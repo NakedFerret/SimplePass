@@ -57,7 +57,6 @@ public class FragListAccounts extends SherlockListFragment implements
 
 		@Override
 		public View newView(Context cxt, Cursor c, ViewGroup root) {
-			c.moveToFirst();
 			String text = c.getString(c.getColumnIndex(Account.COL_NAME));
 			TextView tv = new TextView(cxt);
 			tv.setText(text);
