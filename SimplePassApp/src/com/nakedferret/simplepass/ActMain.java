@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.widget.Button;
 
@@ -11,6 +12,7 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EActivity(R.layout.act_main)
@@ -50,19 +52,36 @@ public class ActMain extends SherlockActivity {
 
 	@Click(R.id.testDataButton)
 	void onCreateTestData() {
-		clearData();
-		insertTestData();
+		clearAndInsertTestData();
 	}
 
 	@Background
-	void clearData() {
+	void clearAndInsertTestData() {
 		PasswordStorageDbHelper helper = new PasswordStorageDbHelper(this);
+		SQLiteDatabase db = helper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+
 		helper.clearData();
+
+		values.put(Vault.COL_ITERATIONS, 5000);
+		values.put(Vault.COL_NAME, "Personal");
+		long vaultId = db.insert(Vault.TABLE_NAME, null, values);
+		values.clear();
+
+		values.put(Account.COL_NAME, "reddit");
+		values.put(Account.COL_VAULT, vaultId);
+		values.put(Account.COL_GROUP, "entertainment");
+		values.put(Account.COL_USERNAME, "naked_ferret");
+		values.put(Account.COL_PASSWORD, "secret");
+		db.insert(Account.TABLE_NAME, null, values);
+		values.clear();
+
+		values.put(Account.COL_NAME, "xda-developers");
+		values.put(Account.COL_VAULT, vaultId);
+		values.put(Account.COL_GROUP, "development");
+		values.put(Account.COL_USERNAME, "naked_ferret");
+		values.put(Account.COL_PASSWORD, "secret2");
+		db.insert(Account.TABLE_NAME, null, values);
+		values.clear();
 	}
-
-	@Background
-	void insertTestData() {
-
-	}
-
 }
