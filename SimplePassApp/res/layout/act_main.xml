@@ -17,4 +17,14 @@
         android:layout_alignParentTop="true"
         android:text="Insert" />
 
+    <Button
+        android:id="@+id/testDataButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/insertButton"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/insertButton"
+        android:text="Test Data" />
+
 </RelativeLayout>

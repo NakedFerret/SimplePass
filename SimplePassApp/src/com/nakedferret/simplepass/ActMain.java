@@ -19,8 +19,12 @@ public class ActMain extends SherlockActivity {
 	@ViewById
 	Button insertButton;
 
+	@ViewById
+	Button testDataButton;
+
 	@AfterViews
 	void initDatabase() {
+		// Creates the database if the app is opened for the first time
 		new PasswordStorageDbHelper(this).getWritableDatabase();
 	}
 
@@ -43,4 +47,21 @@ public class ActMain extends SherlockActivity {
 
 		r.insert(builder.build(), values);
 	}
+
+	@Click(R.id.testDataButton)
+	void onCreateTestData() {
+		clearData();
+		insertTestData();
+	}
+
+	@Background
+	void clearData() {
+
+	}
+
+	@Background
+	void insertTestData() {
+
+	}
+
 }
