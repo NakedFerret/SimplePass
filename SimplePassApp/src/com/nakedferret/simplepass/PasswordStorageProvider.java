@@ -84,8 +84,25 @@ public class PasswordStorageProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String table = null;
+		switch (sURIMatcher.match(uri)) {
+			case ACCOUNT:
+				table = Account.TABLE_NAME;
+				break;
+			case VAULT:
+				table = Vault.TABLE_NAME;
+				break;
+			default:
+				table = null;
+		}
+
+		if (table == null)
+			return null;
+
+		Cursor c = db.query(table, null, null, null, null, null, null);
 		db.close();
-		throw new UnsupportedOperationException("Not yet implemented");
+		return c;
 	}
 
 	@Override
