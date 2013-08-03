@@ -56,7 +56,8 @@ public class ActMain extends SherlockActivity {
 
 	@Background
 	void clearData() {
-
+		PasswordStorageDbHelper helper = new PasswordStorageDbHelper(this);
+		helper.clearData();
 	}
 
 	@Background

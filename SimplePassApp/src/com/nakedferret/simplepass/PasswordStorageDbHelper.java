@@ -43,8 +43,7 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(CREATE_VAULTS_TABLE);
-		db.execSQL(CREATE_ACCOUNTS_TABLE);
+		createTables(db);
 	}
 
 	@Override
@@ -53,4 +52,15 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 
 	}
 
+	public void clearData() {
+		SQLiteDatabase db = getWritableDatabase();
+		db.execSQL("drop table " + Vault.TABLE_NAME);
+		db.execSQL("drop table " + Account.TABLE_NAME);
+		createTables(db);
+	}
+
+	private void createTables(SQLiteDatabase db) {
+		db.execSQL(CREATE_VAULTS_TABLE);
+		db.execSQL(CREATE_ACCOUNTS_TABLE);
+	}
 }
