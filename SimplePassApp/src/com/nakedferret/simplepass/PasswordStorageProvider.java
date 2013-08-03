@@ -6,7 +6,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
@@ -25,10 +24,10 @@ public class PasswordStorageProvider extends ContentProvider {
 			UriMatcher.NO_MATCH);
 
 	static {
-		sURIMatcher.addURI(authority, "account", ACCOUNT);
-		sURIMatcher.addURI(authority, "account/#", ACCOUNT_ID);
-		sURIMatcher.addURI(authority, "vault", VAULT);
-		sURIMatcher.addURI(authority, "vault/#", VAULT_ID);
+		sURIMatcher.addURI(authority, Account.TABLE_NAME, ACCOUNT);
+		sURIMatcher.addURI(authority, Account.TABLE_NAME + "/#", ACCOUNT_ID);
+		sURIMatcher.addURI(authority, Vault.TABLE_NAME, VAULT);
+		sURIMatcher.addURI(authority, Vault.TABLE_NAME + "/#", VAULT_ID);
 	}
 
 	private PasswordStorageDbHelper dbHelper;
@@ -66,8 +65,6 @@ public class PasswordStorageProvider extends ContentProvider {
 		}
 		if (table == null)
 			return null;
-
-		Log.d("SimplePass", "Inserted values into table: " + table);
 
 		db.insert(table, null, values);
 		// TODO: notify change
