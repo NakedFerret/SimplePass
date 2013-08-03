@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.widget.Button;
@@ -23,6 +24,9 @@ public class ActMain extends SherlockActivity {
 
 	@ViewById
 	Button testDataButton;
+
+	@ViewById
+	Button testQuery;
 
 	@AfterViews
 	void initDatabase() {
@@ -83,5 +87,10 @@ public class ActMain extends SherlockActivity {
 		values.put(Account.COL_PASSWORD, "secret2");
 		db.insert(Account.TABLE_NAME, null, values);
 		values.clear();
+	}
+
+	@Click(R.id.testQuery)
+	void onTestQuery() {
+		startActivity(new Intent(this, ActSelectAccount_.class));
 	}
 }
