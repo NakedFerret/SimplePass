@@ -3,6 +3,9 @@ package com.nakedferret.simplepass;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
+import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.View;
@@ -15,12 +18,14 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
 @EFragment(R.layout.list)
-public class FragListAccounts extends SherlockListFragment {
+public class FragListAccounts extends SherlockListFragment implements
+		android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
 
 	private OnAccountSelectedListener mListener;
-	CursorAdapter adapter;
+	private CursorAdapter adapter;
 
 	public FragListAccounts() {
+
 	}
 
 	@AfterViews
@@ -28,6 +33,7 @@ public class FragListAccounts extends SherlockListFragment {
 		adapter = new AccountAdaper(getActivity(), null, false);
 		Log.d("SimplePass", "Account List Fragment");
 		setEmptyText("Hello from Account List");
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	void swapCursor(Cursor c) {
@@ -76,6 +82,19 @@ public class FragListAccounts extends SherlockListFragment {
 
 	public interface OnAccountSelectedListener {
 		public void onAccountSelected(Cursor c);
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int loader, Bundle args) {
+		return null;
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
 	}
 
 }
