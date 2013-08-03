@@ -3,8 +3,9 @@ package com.nakedferret.simplepass;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class FragListAccounts extends SherlockListFragment implements
 	@AfterViews
 	void initInterface() {
 		adapter = new AccountAdaper(getActivity(), null, false);
+		setListAdapter(adapter);
 		Log.d("SimplePass", "Account List Fragment");
 		setEmptyText("Hello from Account List");
 		getLoaderManager().initLoader(0, null, this);
@@ -86,15 +88,25 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int loader, Bundle args) {
-		return null;
+		Uri.Builder builder = new Uri.Builder();
+		builder.scheme("content");
+		builder.authority(PasswordStorageProvider.authority);
+		builder.appendPath(Account.TABLE_NAME);
+
+		String[] projection = { Account.COL_NAME };
+
+		return new CursorLoader(getActivity(), builder.build(), projection,
+				null, null, null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+		adapter.changeCursor(c);
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.changeCursor(null);
 	}
 
 }
