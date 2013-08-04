@@ -87,6 +87,30 @@ public class ActMain extends SherlockActivity {
 		values.put(Account.COL_PASSWORD, "secret2");
 		db.insert(Account.TABLE_NAME, null, values);
 		values.clear();
+
+		values.put(Account.COL_NAME, "twitter");
+		values.put(Account.COL_VAULT, vaultId);
+		values.put(Account.COL_GROUP, "social");
+		values.put(Account.COL_USERNAME, "naked_ferret");
+		values.put(Account.COL_PASSWORD, "secret3");
+		db.insert(Account.TABLE_NAME, null, values);
+		values.clear();
+
+		values.put(Account.COL_NAME, "bank");
+		values.put(Account.COL_VAULT, vaultId);
+		values.put(Account.COL_GROUP, "financial");
+		values.put(Account.COL_USERNAME, "naked_ferret");
+		values.put(Account.COL_PASSWORD, "secret4");
+		db.insert(Account.TABLE_NAME, null, values);
+		values.clear();
+
+		values.put(Account.COL_NAME, "amazon");
+		values.put(Account.COL_VAULT, vaultId);
+		values.put(Account.COL_GROUP, "retail");
+		values.put(Account.COL_USERNAME, "naked_ferret");
+		values.put(Account.COL_PASSWORD, "secret5");
+		db.insert(Account.TABLE_NAME, null, values);
+		values.clear();
 	}
 
 	@Click(R.id.testQuery)
