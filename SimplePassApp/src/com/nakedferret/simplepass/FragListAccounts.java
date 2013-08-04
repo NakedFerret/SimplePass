@@ -18,7 +18,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
-@EFragment(R.layout.list)
+@EFragment
 public class FragListAccounts extends SherlockListFragment implements
 		android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
 
