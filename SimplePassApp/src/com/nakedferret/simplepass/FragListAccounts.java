@@ -1,17 +1,14 @@
 package com.nakedferret.simplepass;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -25,43 +22,23 @@ public class FragListAccounts extends SherlockListFragment implements
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
 
+	private static final String[] projections = new String[] {
+			Account.COL_NAME, Account.COL_GROUP };
+	private static final int[] views = new int[] { R.id.nameText,
+			R.id.groupText };
+
 	public FragListAccounts() {
 
 	}
 
 	@AfterViews
 	void initInterface() {
-		adapter = new AccountAdaper(getActivity(), null, false);
+		adapter = new SimpleCursorAdapter(getActivity(),
+				R.layout.listitem_account, null, projections, views, 0);
 		setListAdapter(adapter);
 		Log.d("SimplePass", "Account List Fragment");
 		setEmptyText("Hello from Account List");
 		getLoaderManager().initLoader(0, null, this);
-	}
-
-	void swapCursor(Cursor c) {
-		adapter.swapCursor(c);
-	}
-
-	class AccountAdaper extends CursorAdapter {
-
-		public AccountAdaper(Context context, Cursor c, boolean autoRequery) {
-			super(context, c, autoRequery);
-		}
-
-		@Override
-		public void bindView(View v, Context cxt, Cursor c) {
-			TextView tv = (TextView) v;
-			String text = c.getString(c.getColumnIndex(Account.COL_NAME));
-			tv.setText(text);
-		}
-
-		@Override
-		public View newView(Context cxt, Cursor c, ViewGroup root) {
-			String text = c.getString(c.getColumnIndex(Account.COL_NAME));
-			TextView tv = new TextView(cxt);
-			tv.setText(text);
-			return tv;
-		}
 	}
 
 	@Override
@@ -92,9 +69,7 @@ public class FragListAccounts extends SherlockListFragment implements
 		builder.authority(PasswordStorageProvider.authority);
 		builder.appendPath(Account.TABLE_NAME);
 
-		String[] projection = { Account.COL_NAME };
-
-		return new CursorLoader(getActivity(), builder.build(), projection,
+		return new CursorLoader(getActivity(), builder.build(), projections,
 				null, null, null);
 	}
 
