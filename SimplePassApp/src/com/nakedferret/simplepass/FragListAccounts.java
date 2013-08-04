@@ -24,8 +24,8 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	private static final String[] projections = new String[] {
 			Account.COL_NAME, Account.COL_GROUP };
-	private static final int[] views = new int[] { R.id.nameText,
-			R.id.groupText };
+	private static final int[] views = new int[] { android.R.id.text1,
+			android.R.id.text2 };
 
 	public FragListAccounts() {
 
@@ -34,7 +34,8 @@ public class FragListAccounts extends SherlockListFragment implements
 	@AfterViews
 	void initInterface() {
 		adapter = new SimpleCursorAdapter(getActivity(),
-				R.layout.listitem_account, null, projections, views, 0);
+				android.R.layout.simple_list_item_2, null, projections, views,
+				0);
 		setListAdapter(adapter);
 		Log.d("SimplePass", "Account List Fragment");
 		setEmptyText("Hello from Account List");
