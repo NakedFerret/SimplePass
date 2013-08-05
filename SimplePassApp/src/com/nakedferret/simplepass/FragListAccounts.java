@@ -8,9 +8,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
@@ -31,13 +33,17 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
+		super.onCreate(savedInstanceState);
+	}
+
 	@AfterViews
 	void initInterface() {
 		adapter = new SimpleCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_2, null, projections, views,
 				0);
-		setListAdapter(adapter);
-		Log.d("SimplePass", "Account List Fragment");
 		setEmptyText("Hello from Account List");
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -75,7 +81,18 @@ public class FragListAccounts extends SherlockListFragment implements
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.add("Search")
+				.setIcon(R.drawable.ic_action_search)
+				.setActionView(R.layout.edittext_search)
+				.setShowAsAction(
+						MenuItem.SHOW_AS_ACTION_ALWAYS
+								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+	}
+
+	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+		setListAdapter(adapter);
 		adapter.changeCursor(c);
 	}
 
