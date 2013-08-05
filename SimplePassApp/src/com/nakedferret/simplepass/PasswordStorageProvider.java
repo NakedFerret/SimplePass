@@ -6,7 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
+import android.provider.BaseColumns;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
@@ -80,7 +80,6 @@ public class PasswordStorageProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		Log.d("SimplePass", "Query in provider");
 
 		String table = null;
 		switch (sURIMatcher.match(uri)) {
@@ -97,9 +96,12 @@ public class PasswordStorageProvider extends ContentProvider {
 		if (table == null)
 			return null;
 
-		Cursor c = db.query(table, null, null, null, null, null, null);
-		Log.d("SimplePass", "Number of rows: " + c.getCount());
-		return c;
+		String[] projections = new String[projection.length + 1];
+		System.arraycopy(projection, 0, projections, 0, projection.length);
+		projections[projection.length] = BaseColumns._ID;
+
+		return db.query(table, projections, selection, selectionArgs, null,
+				null, null);
 	}
 
 	@Override
