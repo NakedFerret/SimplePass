@@ -8,6 +8,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
@@ -19,7 +23,8 @@ import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements
-		android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+		android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>,
+		TextWatcher {
 
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
@@ -44,7 +49,7 @@ public class FragListAccounts extends SherlockListFragment implements
 		adapter = new SimpleCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_2, null, projections, views,
 				0);
-		setEmptyText("Hello from Account List");
+
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -82,12 +87,16 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		menu.add("Search")
-				.setIcon(R.drawable.ic_action_search)
+		MenuItem search = menu.add("Search");
+
+		search.setIcon(R.drawable.ic_action_search)
 				.setActionView(R.layout.edittext_search)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_ALWAYS
 								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+
+		EditText input = (EditText) search.getActionView();
+		input.addTextChangedListener(this);
 	}
 
 	@Override
@@ -99,6 +108,23 @@ public class FragListAccounts extends SherlockListFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		adapter.changeCursor(null);
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+		Log.d("SimplePass", "Search Input: " + s.toString());
+		adapter.getFilter().filter(s.toString());
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+
 	}
 
 }
