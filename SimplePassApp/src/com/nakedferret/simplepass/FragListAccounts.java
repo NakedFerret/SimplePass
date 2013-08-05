@@ -20,13 +20,15 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, FilterQueryProvider {
+		LoaderManager.LoaderCallbacks<Cursor>, TextWatcher,
+		FilterQueryProvider, OnMenuItemClickListener {
 
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
@@ -89,6 +91,10 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.add("Add").setIcon(R.drawable.ic_action_add)
+				.setOnMenuItemClickListener(this)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
 		MenuItem search = menu.add("Search");
 
 		search.setIcon(R.drawable.ic_action_search)
@@ -146,6 +152,12 @@ public class FragListAccounts extends SherlockListFragment implements
 			return r.query(builder.build(), projections, null, null, null);
 		else
 			return r.query(builder.build(), projections, selection, args, null);
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		Log.d("SimplePass", "Add button clicked");
+		return false;
 	}
 
 }
