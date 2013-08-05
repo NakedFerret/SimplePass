@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
@@ -23,8 +24,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements
-		android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>,
-		TextWatcher {
+		LoaderManager.LoaderCallbacks<Cursor>, TextWatcher {
 
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
@@ -49,7 +49,6 @@ public class FragListAccounts extends SherlockListFragment implements
 		adapter = new SimpleCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_2, null, projections, views,
 				0);
-
 		getLoaderManager().initLoader(0, null, this);
 	}
 
