@@ -1,6 +1,7 @@
 package com.nakedferret.simplepass;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
@@ -24,7 +26,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements
-		LoaderManager.LoaderCallbacks<Cursor>, TextWatcher {
+		LoaderManager.LoaderCallbacks<Cursor>, TextWatcher, FilterQueryProvider {
 
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
@@ -49,6 +51,7 @@ public class FragListAccounts extends SherlockListFragment implements
 		adapter = new SimpleCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_2, null, projections, views,
 				0);
+		adapter.setFilterQueryProvider(this);
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -124,6 +127,25 @@ public class FragListAccounts extends SherlockListFragment implements
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+	}
+
+	@Override
+	public Cursor runQuery(CharSequence constraint) {
+
+		Uri.Builder builder = new Uri.Builder();
+		builder.scheme("content");
+		builder.authority(PasswordStorageProvider.authority);
+		builder.appendPath(Account.TABLE_NAME);
+
+		ContentResolver r = getActivity().getContentResolver();
+
+		String selection = Account.COL_NAME + " like ?";
+		String[] args = { constraint.toString() + "%" };
+
+		if ("".equals(constraint.toString()))
+			return r.query(builder.build(), projections, null, null, null);
+		else
+			return r.query(builder.build(), projections, selection, args, null);
 	}
 
 }
