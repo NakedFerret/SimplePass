@@ -24,10 +24,8 @@ public class FragListAccounts extends SherlockListFragment implements
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
 
-	private static final String[] projections = new String[] {
-			Account.COL_NAME, Account.COL_GROUP };
-	private static final int[] views = new int[] { android.R.id.text1,
-			android.R.id.text2 };
+	private String[] projections;
+	private int[] views;
 
 	public FragListAccounts() {
 
@@ -35,8 +33,10 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setHasOptionsMenu(true);
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+		projections = new String[] { Account.COL_NAME, Account.COL_GROUP };
+		views = new int[] { android.R.id.text1, android.R.id.text2 };
 	}
 
 	@AfterViews
