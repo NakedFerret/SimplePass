@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.StrictMode;
+import android.util.Log;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -29,9 +31,28 @@ public class ActMain extends SherlockActivity {
 	Button testQuery;
 
 	@AfterViews
-	void initDatabase() {
+	void initialize() {
+		Log.d("SimplePass", "Strict mode disabled...");
+		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
+		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
+
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+				.detectAll().penaltyLog().build());
+
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
+				.penaltyLog().penaltyDeath().build());
+
+		Log.d("SimplePass", "Strict mode enabled...");
+		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
+		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
 		// Creates the database if the app is opened for the first time
-		new PasswordStorageDbHelper(this).getWritableDatabase();
+		initDB();
+	}
+
+	@Background
+	void initDB() {
+		// Upgrades or creates the database if needed
+		new PasswordStorageDbHelper(this).getWritableDatabase().close();
 	}
 
 	@Click(R.id.insertButton)
@@ -64,7 +85,6 @@ public class ActMain extends SherlockActivity {
 		PasswordStorageDbHelper helper = new PasswordStorageDbHelper(this);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		ContentValues values = new ContentValues();
-
 		helper.clearData();
 
 		values.put(Vault.COL_ITERATIONS, 5000);
@@ -111,6 +131,8 @@ public class ActMain extends SherlockActivity {
 		values.put(Account.COL_PASSWORD, "secret5");
 		db.insert(Account.TABLE_NAME, null, values);
 		values.clear();
+
+		helper.close();
 	}
 
 	@Click(R.id.testQuery)
