@@ -13,7 +13,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class PasswordStorageProvider extends ContentProvider {
 
-	public static final String authority = "com.nakedferret.simplepass.provider";
+	public static final String AUTHORITY = "com.nakedferret.simplepass.provider";
 
 	private static final int ACCOUNT = 1;
 	private static final int ACCOUNT_ID = 2;
@@ -25,10 +25,10 @@ public class PasswordStorageProvider extends ContentProvider {
 			UriMatcher.NO_MATCH);
 
 	static {
-		sURIMatcher.addURI(authority, Account.TABLE_NAME, ACCOUNT);
-		sURIMatcher.addURI(authority, Account.TABLE_NAME + "/#", ACCOUNT_ID);
-		sURIMatcher.addURI(authority, Vault.TABLE_NAME, VAULT);
-		sURIMatcher.addURI(authority, Vault.TABLE_NAME + "/#", VAULT_ID);
+		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME, ACCOUNT);
+		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME + "/#", ACCOUNT_ID);
+		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME, VAULT);
+		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME + "/#", VAULT_ID);
 	}
 
 	private PasswordStorageDbHelper dbHelper;

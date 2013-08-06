@@ -82,7 +82,7 @@ public class FragListAccounts extends SherlockListFragment implements
 	public Loader<Cursor> onCreateLoader(int loader, Bundle args) {
 		Uri.Builder builder = new Uri.Builder();
 		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.authority);
+		builder.authority(PasswordStorageProvider.AUTHORITY);
 		builder.appendPath(Account.TABLE_NAME);
 
 		return new CursorLoader(getActivity(), builder.build(), projections,
@@ -140,7 +140,7 @@ public class FragListAccounts extends SherlockListFragment implements
 
 		Uri.Builder builder = new Uri.Builder();
 		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.authority);
+		builder.authority(PasswordStorageProvider.AUTHORITY);
 		builder.appendPath(Account.TABLE_NAME);
 
 		ContentResolver r = getActivity().getContentResolver();
@@ -157,6 +157,8 @@ public class FragListAccounts extends SherlockListFragment implements
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
 		Log.d("SimplePass", "Add button clicked");
+		Utils.buildContentUri(Account.TABLE_NAME);
+		Utils.buildContentUri(Account.TABLE_NAME, 1);
 		return false;
 	}
 

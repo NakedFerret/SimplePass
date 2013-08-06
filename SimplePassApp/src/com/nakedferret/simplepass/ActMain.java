@@ -69,7 +69,7 @@ public class ActMain extends SherlockActivity {
 
 		Uri.Builder builder = new Uri.Builder();
 		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.authority);
+		builder.authority(PasswordStorageProvider.AUTHORITY);
 		builder.appendPath(Vault.TABLE_NAME);
 
 		r.insert(builder.build(), values);
