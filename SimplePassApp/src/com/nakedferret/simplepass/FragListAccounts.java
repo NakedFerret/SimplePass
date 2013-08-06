@@ -80,13 +80,11 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int loader, Bundle args) {
-		Uri.Builder builder = new Uri.Builder();
-		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.AUTHORITY);
-		builder.appendPath(Account.TABLE_NAME);
 
-		return new CursorLoader(getActivity(), builder.build(), projections,
-				null, null, null);
+		Uri uri = Utils.buildContentUri(Account.TABLE_NAME);
+
+		return new CursorLoader(getActivity(), uri, projections, null, null,
+				null);
 	}
 
 	@Override
@@ -138,20 +136,15 @@ public class FragListAccounts extends SherlockListFragment implements
 	@Override
 	public Cursor runQuery(CharSequence constraint) {
 
-		Uri.Builder builder = new Uri.Builder();
-		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.AUTHORITY);
-		builder.appendPath(Account.TABLE_NAME);
-
 		ContentResolver r = getActivity().getContentResolver();
-
+		Uri uri = Utils.buildContentUri(Account.TABLE_NAME);
 		String selection = Account.COL_NAME + " like ?";
 		String[] args = { constraint.toString() + "%" };
 
 		if ("".equals(constraint.toString()))
-			return r.query(builder.build(), projections, null, null, null);
+			return r.query(uri, projections, null, null, null);
 		else
-			return r.query(builder.build(), projections, selection, args, null);
+			return r.query(uri, projections, selection, args, null);
 	}
 
 	@Override

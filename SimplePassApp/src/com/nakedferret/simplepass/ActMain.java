@@ -67,12 +67,7 @@ public class ActMain extends SherlockActivity {
 		ContentValues values = new ContentValues();
 		values.put(Vault.COL_NAME, "testVault");
 
-		Uri.Builder builder = new Uri.Builder();
-		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.AUTHORITY);
-		builder.appendPath(Vault.TABLE_NAME);
-
-		r.insert(builder.build(), values);
+		r.insert(Utils.buildContentUri(Vault.TABLE_NAME), values);
 	}
 
 	@Click(R.id.testDataButton)
