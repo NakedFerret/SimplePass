@@ -1,7 +1,17 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar">
-        
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar"></style>
+
+    <style name="PopupTheme" parent="AppTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowContentOverlay">@null</item>
     </style>
 
 </resources>

@@ -32,7 +32,8 @@
 
         <activity
             android:name="com.nakedferret.simplepass.ActSelectAccount_"
-            android:label="@string/title_activity_act_select_account" >
+            android:label="@string/title_activity_act_select_account"
+            android:theme="@style/PopupTheme" >
         </activity>
     </application>
 
