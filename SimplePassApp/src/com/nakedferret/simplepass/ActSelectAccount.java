@@ -1,18 +1,15 @@
 package com.nakedferret.simplepass;
 
 import android.database.Cursor;
-import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.FragmentById;
+import com.googlecode.androidannotations.annotations.res.IntegerRes;
 import com.nakedferret.simplepass.FragListAccounts.OnAccountSelectedListener;
 
 @EActivity(R.layout.act_select_account)
@@ -21,6 +18,12 @@ public class ActSelectAccount extends SherlockFragmentActivity implements
 
 	@FragmentById
 	FragListAccounts accountFragment;
+
+	@IntegerRes
+	int widthPercent;
+
+	@IntegerRes
+	int heightPercent;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -40,15 +43,13 @@ public class ActSelectAccount extends SherlockFragmentActivity implements
 		// This sets the window size, while working around the
 		// IllegalStateException thrown by ActionBarView
 		Display dm = getWindowManager().getDefaultDisplay();
-		int width = (int) (dm.getWidth() * .9);
-		int height = (int) (dm.getHeight() * .9);
+		int width = (int) (dm.getWidth() * (widthPercent / 100.0));
+		int height = (int) (dm.getHeight() * (heightPercent / 100.0));
 		getWindow().setLayout(width, height);
 	}
 
 	@AfterViews
 	void initInterface() {
-		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
-		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
 	}
 
 	@Override
