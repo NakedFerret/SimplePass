@@ -100,8 +100,10 @@ public class PasswordStorageProvider extends ContentProvider {
 		System.arraycopy(projection, 0, projections, 0, projection.length);
 		projections[projection.length] = BaseColumns._ID;
 
-		return db.query(table, projections, selection, selectionArgs, null,
+		Cursor c = db.query(table, projections, selection, selectionArgs, null,
 				null, null);
+		c.setNotificationUri(getContext().getContentResolver(), uri);
+		return c;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 
@@ -149,10 +151,21 @@ public class FragListAccounts extends SherlockListFragment implements
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
-		Log.d("SimplePass", "Add button clicked");
-		Utils.buildContentUri(Account.TABLE_NAME);
-		Utils.buildContentUri(Account.TABLE_NAME, 1);
-		return false;
+		insertNewAccount();
+		return true;
 	}
 
+	@Background
+	void insertNewAccount() {
+		Log.d("SimplePass", "Add button clicked");
+		Uri uri = Utils.buildContentUri(Account.TABLE_NAME);
+		ContentValues values = new ContentValues();
+		values.put(Account.COL_NAME, "paypal");
+		values.put(Account.COL_VAULT, 1);
+		values.put(Account.COL_GROUP, "financial");
+		values.put(Account.COL_USERNAME, "naked_ferret");
+		values.put(Account.COL_PASSWORD, "secret4");
+
+		getActivity().getContentResolver().insert(uri, values);
+	}
 }
