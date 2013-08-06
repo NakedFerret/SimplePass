@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
@@ -63,11 +64,10 @@ public class PasswordStorageProvider extends ContentProvider {
 		if (table == null)
 			return null;
 
-		db.insert(table, null, values);
-		// TODO: notify change
-		// I think this is how you do it
-		// getContext().getContentResolver().notifyChange(uri, null);
-		throw new UnsupportedOperationException("Not yet implemented");
+		long id = db.insert(table, null, values);
+		Uri rowUri = Utils.buildContentUri(table, id);
+		getContext().getContentResolver().notifyChange(rowUri, null);
+		return rowUri;
 	}
 
 	@Override
