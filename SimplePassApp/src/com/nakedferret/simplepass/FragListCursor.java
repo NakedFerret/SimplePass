@@ -1,12 +1,23 @@
 package com.nakedferret.simplepass;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
-public class FragListCursor extends SherlockListFragment {
+public class FragListCursor extends SherlockListFragment implements
+		OnItemClickListener, LoaderCallbacks<Cursor> {
 	// A ListFragment that takes as arguments:
 	// * ListItemLayout
 	// * URI
@@ -27,6 +38,8 @@ public class FragListCursor extends SherlockListFragment {
 	private String[] projection;
 	private int[] views;
 	private String searchCol;
+
+	private CursorAdapter adapter;
 
 	private OnItemSelected mListener;
 
@@ -58,6 +71,10 @@ public class FragListCursor extends SherlockListFragment {
 			views = args.getIntArray(ARG_VIEWS);
 			searchCol = args.getString(ARG_SEARCH_COL);
 		}
+		adapter = new SimpleCursorAdapter(getActivity(), layout, null,
+				projection, views, 0);
+		getListView().setOnItemClickListener(this);
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
@@ -81,4 +98,28 @@ public class FragListCursor extends SherlockListFragment {
 		public void onFragmentInteraction(Uri uri);
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		if (mListener == null)
+			return;
+
+		Uri rowUri = uri.buildUpon().appendPath(Long.toString(id)).build();
+		Log.d("SimplePass", "Generic Fragment - rowUri: " + rowUri.toString());
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		return new CursorLoader(getActivity(), uri, projection, null, null,
+				null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+		adapter.changeCursor(c);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.changeCursor(null);
+	}
 }
