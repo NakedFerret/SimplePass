@@ -39,7 +39,7 @@ public class ActMain extends SherlockActivity {
 				.detectAll().penaltyLog().build());
 
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
-				.penaltyLog().penaltyDeath().build());
+				.penaltyLog().build());
 
 		Log.d("SimplePass", "Strict mode enabled...");
 		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
