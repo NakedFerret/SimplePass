@@ -26,7 +26,7 @@ public class ActGenericFragTest extends ActFloating implements OnItemSelected {
 
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		t.add(R.id.fragmentContainer, vaultsList);
+		t.replace(R.id.fragmentContainer, vaultsList);
 		t.commit();
 	}
 
