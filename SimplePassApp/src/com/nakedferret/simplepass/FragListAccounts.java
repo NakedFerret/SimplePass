@@ -14,6 +14,9 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
 
@@ -30,7 +33,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Account;
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, TextWatcher,
-		FilterQueryProvider, OnMenuItemClickListener {
+		FilterQueryProvider, OnMenuItemClickListener, OnItemClickListener {
 
 	private OnAccountSelectedListener mListener;
 	private CursorAdapter adapter;
@@ -55,6 +58,7 @@ public class FragListAccounts extends SherlockListFragment implements
 		adapter = new SimpleCursorAdapter(getActivity(),
 				android.R.layout.simple_list_item_2, null, projections, views,
 				0);
+		getListView().setOnItemClickListener(this);
 		adapter.setFilterQueryProvider(this);
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -167,5 +171,13 @@ public class FragListAccounts extends SherlockListFragment implements
 		values.put(Account.COL_PASSWORD, "secret4");
 
 		getActivity().getContentResolver().insert(uri, values);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		Cursor c = (Cursor) adapter.getItem(position);
+		Log.d("SimplePass", "It worked! Cols: ");
+		for( String s : c.getColumnNames())
+			Log.d("SimplePass", s);
 	}
 }
