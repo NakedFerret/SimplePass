@@ -37,4 +37,14 @@
         android:layout_toRightOf="@+id/testDataButton"
         android:text="Test Query" />
 
+    <Button
+        android:id="@+id/testGeneric"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/insertButton"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:text="Test Generic" />
+
 </RelativeLayout>

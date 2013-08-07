@@ -6,11 +6,12 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.nakedferret.simplepass.FragListCursor.OnItemSelected;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EActivity(R.layout.act_generic_frag_test)
-public class ActGenericFragTest extends ActFloating {
+public class ActGenericFragTest extends ActFloating implements OnItemSelected {
 
 	@Click(R.id.vaultButton)
 	void showVaultsFragment() {
@@ -25,7 +26,7 @@ public class ActGenericFragTest extends ActFloating {
 
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.listFragment, vaultsList);
+		t.add(R.id.fragmentContainer, vaultsList);
 		t.commit();
 	}
 
@@ -37,12 +38,17 @@ public class ActGenericFragTest extends ActFloating {
 		int[] views = { android.R.id.text1 };
 		String searchCol = Account.COL_NAME;
 
-		FragListCursor vaultsList = FragListCursor.newInstance(layout, uri,
+		FragListCursor accountList = FragListCursor.newInstance(layout, uri,
 				projection, views, searchCol);
 
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.listFragment, vaultsList);
+		t.replace(R.id.fragmentContainer, accountList);
 		t.commit();
+	}
+
+	@Override
+	public void onFragmentInteraction(Uri uri) {
+
 	}
 }

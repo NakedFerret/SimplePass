@@ -71,6 +71,12 @@ public class FragListCursor extends SherlockListFragment implements
 			views = args.getIntArray(ARG_VIEWS);
 			searchCol = args.getString(ARG_SEARCH_COL);
 		}
+
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		adapter = new SimpleCursorAdapter(getActivity(), layout, null,
 				projection, views, 0);
 		getListView().setOnItemClickListener(this);
@@ -84,7 +90,7 @@ public class FragListCursor extends SherlockListFragment implements
 			mListener = (OnItemSelected) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+					+ " must implement OnItemSelected");
 		}
 	}
 
@@ -115,6 +121,7 @@ public class FragListCursor extends SherlockListFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+		setListAdapter(adapter);
 		adapter.changeCursor(c);
 	}
 

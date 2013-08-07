@@ -5,15 +5,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ActGenericFragTest" >
 
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.actionbarsherlock.app.SherlockFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/accountsButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
-
     <Button
         android:id="@+id/vaultButton"
         style="?android:attr/buttonStyleSmall"
@@ -32,5 +23,13 @@
         android:layout_alignBottom="@+id/vaultButton"
         android:layout_alignParentRight="true"
         android:text="Accounts" />
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/accountsButton"
+        android:layout_centerHorizontal="true" >
+    </FrameLayout>
 
 </RelativeLayout>
