@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,11 +31,30 @@ public class FragCreateVault extends SherlockFragment implements
 	String[] secondsArray;
 
 	private ArrayAdapter<String> adapter;
-
 	private OnVaultCreatedListener mListener;
+	private int iterationsPerSecond;
+
+	private static final String ARG_ITERS = "iters";
 
 	public FragCreateVault() {
 		// Required empty public constructor
+	}
+
+	public FragCreateVault_ newInstance(int iters) {
+		FragCreateVault_ f = new FragCreateVault_();
+		Bundle args = new Bundle();
+		args.putInt(ARG_ITERS, iters);
+		f.setArguments(args);
+		return f;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Bundle args = getArguments();
+		if (args != null) {
+			iterationsPerSecond = args.getInt(ARG_ITERS);
+		}
 	}
 
 	@Override
