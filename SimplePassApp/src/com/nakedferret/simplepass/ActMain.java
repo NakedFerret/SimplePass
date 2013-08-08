@@ -134,8 +134,9 @@ public class ActMain extends SherlockActivity {
 		startActivity(new Intent(this, ActSelectAccount_.class));
 	}
 
-	@Click(R.id.testGeneric)
+	@Click(R.id.testFrags)
 	void testGenericFrag() {
-		startActivity(new Intent(this, ActGenericFragTest_.class));
+		startActivity(new Intent(this, ActFragTest_.class));
 	}
+
 }

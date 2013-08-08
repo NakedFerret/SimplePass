@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Groups" />
+        android:text="Vault" />
 
     <Button
         android:id="@+id/accountsButton"
@@ -31,5 +31,15 @@
         android:layout_below="@+id/accountsButton"
         android:layout_centerHorizontal="true" >
     </FrameLayout>
+
+    <Button
+        android:id="@+id/createVault"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/vaultButton"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/vaultButton"
+        android:text="Create" />
 
 </RelativeLayout>

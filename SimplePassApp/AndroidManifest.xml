@@ -36,7 +36,7 @@
             android:theme="@style/PopupTheme" >
         </activity>
         <activity
-            android:name="com.nakedferret.simplepass.ActGenericFragTest_"
+            android:name="com.nakedferret.simplepass.ActFragTest_"
             android:label="@string/title_activity_act_generic_frag_test"
             android:theme="@style/PopupTheme" >
         </activity>
