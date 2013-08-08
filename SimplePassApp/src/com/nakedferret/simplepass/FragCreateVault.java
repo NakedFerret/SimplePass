@@ -61,7 +61,7 @@ public class FragCreateVault extends SherlockFragment implements
 	@AfterViews
 	void initSpinner() {
 		adapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_spinner_dropdown_item, secondsArray);
+				android.R.layout.simple_spinner_item, secondsArray);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		secondsSpinner.setAdapter(adapter);
 		secondsSpinner.setOnItemSelectedListener(this);
