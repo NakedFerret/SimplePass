@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -21,6 +22,9 @@ public class FragCreateVault extends SherlockFragment implements
 
 	@ViewById
 	Spinner secondsSpinner;
+
+	@ViewById
+	EditText vaultNameInput, vaultPasswordInput;
 
 	@StringArrayRes
 	String[] secondsArray;
@@ -70,7 +74,7 @@ public class FragCreateVault extends SherlockFragment implements
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
+	public void onNothingSelected(AdapterView<?> parent) {
 
 	}
 

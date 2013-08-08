@@ -29,24 +29,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/secondsSpinner"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
         android:text="@string/secondsSpinnerInfo" />
-
-    <TextView
-        android:id="@+id/secondsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vaultNameInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp"
-        android:text="@string/secondsSpinnerTitle" />
 
     <Spinner
         android:id="@+id/secondsSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/secondsTitle"
+        android:layout_below="@+id/vaultPasswordInput"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:id="@+id/vaultPasswordInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vaultNameInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
 
 </RelativeLayout>

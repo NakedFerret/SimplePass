@@ -7,7 +7,7 @@
     <string name="title_activity_act_select_account">Select Account</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_act_generic_frag_test">Testing Generic FragList</string>
-    <string name="secondsSpinnerInfo">The longer the time, the safer the Vault</string>
+    <string name="secondsSpinnerInfo">The time required to open the Vault\nThe longer the time, the safer the Vault</string>
     <string name="vaultNameHint">Vault Name</string>
     <string name="secondsSpinnerTitle">Time required to unlock Vault</string>
 
