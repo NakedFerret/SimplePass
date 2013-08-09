@@ -11,7 +11,7 @@ public class FragDeviceSpeed extends Fragment {
 	private OnIterationsCalculatedListener mListener;
 
 	public FragDeviceSpeed() {
-		// Required empty public constructor
+
 	}
 
 	@Override

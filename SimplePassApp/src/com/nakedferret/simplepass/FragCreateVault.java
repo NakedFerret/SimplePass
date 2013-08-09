@@ -115,28 +115,36 @@ public class FragCreateVault extends SherlockFragment implements
 	@Click(R.id.createButton)
 	void onCreateVault() {
 
-		tryToEncrypt();
+		tryToEncrypt(Integer.parseInt(vaultNameInput.getText().toString()));
 	}
 
-	@Background
-	void tryToEncrypt() {
+	@Background()
+	void tryToEncrypt(int iterations) {
 		String password = "password";
 		String salt = "salt";
-
-		PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator(
-				new SHA256Digest());
-		generator.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(password
-				.toCharArray()), salt.getBytes(), 200);
-		KeyParameter keyParameter = (KeyParameter) generator
-				.generateDerivedMacParameters(256);
 
 		String clearText = "clearText";
 
 		try {
+			long startTime = System.currentTimeMillis();
+
+			PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator(
+					new SHA256Digest());
+			generator.init(PBEParametersGenerator
+					.PKCS5PasswordToUTF8Bytes(password.toCharArray()), salt
+					.getBytes(), iterations);
+			KeyParameter keyParameter = (KeyParameter) generator
+					.generateDerivedMacParameters(256);
+
 			Key key = new SecretKeySpec(keyParameter.getKey(), "AES");
 			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			c.init(Cipher.ENCRYPT_MODE, key);
 			byte[] encText = c.doFinal(clearText.getBytes("UTF-8"));
+
+			long endTime = System.currentTimeMillis();
+			long time = endTime - startTime;
+			Log.d("SimplePass", "Time to encrypt: " + time);
+
 			byte[] iv = c.getIV();
 
 			byte[] hexEncText = Hex.encode(encText);
@@ -145,11 +153,8 @@ public class FragCreateVault extends SherlockFragment implements
 			String hexEncTextString = new String(hexEncText);
 			String hexIvString = new String(hexIv);
 
-			Log.d("SimplePass", "ClearText: " + clearText);
-			Log.d("SimplePass", "Encoded: " + hexEncTextString);
-			Log.d("SimplePass", "Iv: " + hexIvString);
-
-			tryToDecrypt(password, salt, hexEncTextString, hexIvString);
+			tryToDecrypt(password, salt, hexEncTextString, hexIvString,
+					iterations);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,29 +163,36 @@ public class FragCreateVault extends SherlockFragment implements
 	}
 
 	private void tryToDecrypt(String password, String salt,
-			String hexEncTextString, String hexIvString) {
-		PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator(
-				new SHA256Digest());
-		generator.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(password
-				.toCharArray()), salt.getBytes(), 200);
-		KeyParameter keyParameter = (KeyParameter) generator
-				.generateDerivedMacParameters(256);
+			String hexEncTextString, String hexIvString, int iterations) {
 
 		try {
 			byte[] iv = Hex.decode(hexIvString.getBytes());
 			byte[] encText = Hex.decode(hexEncTextString.getBytes());
 
+			long startTime = System.currentTimeMillis();
+
+			PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator(
+					new SHA256Digest());
+			generator.init(PBEParametersGenerator
+					.PKCS5PasswordToUTF8Bytes(password.toCharArray()), salt
+					.getBytes(), iterations);
+			KeyParameter keyParameter = (KeyParameter) generator
+					.generateDerivedMacParameters(256);
+
 			Key key = new SecretKeySpec(keyParameter.getKey(), "AES");
 			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
 
+			long endTime = System.currentTimeMillis();
+			long time = endTime - startTime;
+			Log.d("SimplePass", "Time to decrypt: " + time);
+
 			byte[] decText = c.doFinal(encText);
 			String clearText = new String(decText, "UTF-8");
-
-			Log.d("SimplePass", "Decrypted Text: " + clearText);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }
