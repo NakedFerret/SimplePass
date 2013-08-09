@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="secondsArray">
+    <string-array name="secondsStringArray">
         <item>1 second</item>
         <item>2 seconds</item>
         <item>3 seconds</item>
         <item>5 seconds</item>
         <item>10 seconds</item>
     </string-array>
+
+    <integer-array name="secondsIntArray">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+    </integer-array>
 
 </resources>

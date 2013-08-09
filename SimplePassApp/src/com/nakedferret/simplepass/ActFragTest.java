@@ -1,6 +1,7 @@
 package com.nakedferret.simplepass;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -53,7 +54,8 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 	void onCreateVault() {
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, new FragCreateVault_());
+		Fragment f = FragCreateVault.newInstance(1000);
+		t.replace(R.id.fragmentContainer, f);
 		t.commit();
 	}
 
