@@ -38,7 +38,8 @@
         <activity
             android:name="com.nakedferret.simplepass.ActFragTest_"
             android:label="@string/title_activity_act_generic_frag_test"
-            android:theme="@style/PopupTheme" >
+            android:theme="@style/PopupTheme"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 

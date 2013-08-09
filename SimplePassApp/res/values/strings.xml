@@ -10,5 +10,7 @@
     <string name="secondsSpinnerInfo">The time required to open the Vault\nThe longer the time, the safer the Vault</string>
     <string name="vaultNameHint">Vault Name</string>
     <string name="secondsSpinnerTitle">Time required to unlock Vault</string>
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
 
 </resources>
