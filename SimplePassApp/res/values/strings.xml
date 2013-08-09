@@ -12,5 +12,6 @@
     <string name="secondsSpinnerTitle">Time required to unlock Vault</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
+    <string name="calculatingSpeed">For security and convenience, we are detecting the speed of your device</string>
 
 </resources>
