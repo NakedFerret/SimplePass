@@ -1,5 +1,17 @@
 package com.nakedferret.simplepass;
 
+import java.security.Key;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.spongycastle.crypto.PBEParametersGenerator;
+import org.spongycastle.crypto.digests.SHA256Digest;
+import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
+import org.spongycastle.crypto.params.KeyParameter;
+import org.spongycastle.util.encoders.Hex;
+
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +25,8 @@ import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
@@ -98,4 +112,75 @@ public class FragCreateVault extends SherlockFragment implements
 
 	}
 
+	@Click(R.id.createButton)
+	void onCreateVault() {
+
+		tryToEncrypt();
+	}
+
+	@Background
+	void tryToEncrypt() {
+		String password = "password";
+		String salt = "salt";
+
+		PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator(
+				new SHA256Digest());
+		generator.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(password
+				.toCharArray()), salt.getBytes(), 200);
+		KeyParameter keyParameter = (KeyParameter) generator
+				.generateDerivedMacParameters(256);
+
+		String clearText = "clearText";
+
+		try {
+			Key key = new SecretKeySpec(keyParameter.getKey(), "AES");
+			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			c.init(Cipher.ENCRYPT_MODE, key);
+			byte[] encText = c.doFinal(clearText.getBytes("UTF-8"));
+			byte[] iv = c.getIV();
+
+			byte[] hexEncText = Hex.encode(encText);
+			byte[] hexIv = Hex.encode(iv);
+
+			String hexEncTextString = new String(hexEncText);
+			String hexIvString = new String(hexIv);
+
+			Log.d("SimplePass", "ClearText: " + clearText);
+			Log.d("SimplePass", "Encoded: " + hexEncTextString);
+			Log.d("SimplePass", "Iv: " + hexIvString);
+
+			tryToDecrypt(password, salt, hexEncTextString, hexIvString);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void tryToDecrypt(String password, String salt,
+			String hexEncTextString, String hexIvString) {
+		PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator(
+				new SHA256Digest());
+		generator.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(password
+				.toCharArray()), salt.getBytes(), 200);
+		KeyParameter keyParameter = (KeyParameter) generator
+				.generateDerivedMacParameters(256);
+
+		try {
+			byte[] iv = Hex.decode(hexIvString.getBytes());
+			byte[] encText = Hex.decode(hexEncTextString.getBytes());
+
+			Key key = new SecretKeySpec(keyParameter.getKey(), "AES");
+			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+
+			byte[] decText = c.doFinal(encText);
+			String clearText = new String(decText, "UTF-8");
+
+			Log.d("SimplePass", "Decrypted Text: " + clearText);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
