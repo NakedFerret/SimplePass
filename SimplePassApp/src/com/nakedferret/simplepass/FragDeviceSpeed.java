@@ -54,58 +54,36 @@ public class FragDeviceSpeed extends Fragment {
 		calculateIterations();
 	}
 
-	// Tries creating a key and encrypting using a specific number of
-	// iterations,
+	// Tries creating a key using a specific number of iterations,
 	// times how long it took, adjusts the number of iterations, repeats.
 	// Stops when the time it took to decrypt is 1 second +/- .05 seconds
 	@Background
 	void calculateIterations() {
-		//
-		float margin = 2;
+		long margin = 500;
 		int iter = INITIAL_ITER_GUESS;
 
-		while (margin > .05) {
-
-			long time = encryptDataAndTimeDecryption(iter);
-
-			Log.d("SimplePass", "---\nNum of iterations: " + iter
-					+ "\nTime it took to decrypt: " + time);
-			break;
+		// Warm up CPU
+		int i = 5;
+		while (i > 0) {
+			Utils.getKey("secret_pass", iter);
+			i--;
 		}
 
-	}
+		while (margin > 50) {
+			Log.d("SimplePass", "iters: " + iter);
 
-	private long encryptDataAndTimeDecryption(int iter) {
-		try {
-			// Encrypt Random Data
-			// First, Generate a key
-			byte[] keyValue = Utils.getKey("master_password", iter);
-			Key key = new SecretKeySpec(keyValue, Utils.KEY_SPEC);
-			Cipher c;
-
-			// Initialize the cipher to encrypt...
-			c = Cipher.getInstance(Utils.ENCRYPTION_CIPHER);
-			c.init(Cipher.ENCRYPT_MODE, key);
-
-			// Next encrypt and save the initializing vector
-			byte[] encData = c.doFinal("account_password".getBytes());
-			byte[] iv = c.getIV();
-
-			// Now to time the decryption
-			// Initialize the decrypting Cipher
-			c = Cipher.getInstance(Utils.ENCRYPTION_CIPHER);
-			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
-
-			// Now encrypt and calculate the time it takes to do that
 			long start = System.currentTimeMillis();
-			c.doFinal(encData);
+			Utils.getKey("master_password", iter);
 			long end = System.currentTimeMillis();
 
-			return end - start;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
+			long time = end - start;
+			float factor = (float) 1000 / (float) time;
+			Log.d("SimplePass", "Time: " + time);
+			Log.d("SimplePass", "Factor: " + factor);
+			iter *= factor;
 
+			margin = Math.abs(1000 - time);
+		}
+
+	}
 }

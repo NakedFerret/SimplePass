@@ -8,13 +8,14 @@ import android.support.v4.app.FragmentTransaction;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.nakedferret.simplepass.FragCreateVault.OnVaultCreatedListener;
+import com.nakedferret.simplepass.FragDeviceSpeed.OnIterationsCalculatedListener;
 import com.nakedferret.simplepass.FragListCursor.OnItemSelected;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EActivity(R.layout.act_frag_test)
 public class ActFragTest extends ActFloating implements OnItemSelected,
-		OnVaultCreatedListener {
+		OnVaultCreatedListener, OnIterationsCalculatedListener {
 
 	@Click(R.id.vaultButton)
 	void showVaultsFragment() {
@@ -59,6 +60,15 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 		t.commit();
 	}
 
+	@Click(R.id.speedButton)
+	void testSpeed() {
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		Fragment f = new FragDeviceSpeed_();
+		t.replace(R.id.fragmentContainer, f);
+		t.commit();
+	}
+
 	@Override
 	public void onFragmentInteraction(Uri uri) {
 
@@ -67,5 +77,11 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 	@Override
 	public void onVaultSelected(Uri uri) {
 
+	}
+
+	@Override
+	public void onIterationsCalculated(int iters) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -33,12 +33,20 @@
     </FrameLayout>
 
     <Button
+        android:id="@+id/speedButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/createVault"
+        android:text="Speed" />
+
+    <Button
         android:id="@+id/createVault"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/vaultButton"
-        android:layout_marginLeft="10dp"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/vaultButton"
         android:text="Create" />
 
