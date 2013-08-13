@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="secondsStringArray">
-        <item>1 second</item>
-        <item>2 seconds</item>
-        <item>3 seconds</item>
-        <item>5 seconds</item>
-        <item>10 seconds</item>
+    <string-array name="securityLevelNameArray">
+        <item>Convenient</item>
+        <item>Safe</item>
+        <item>Safer</item>
+        <item>Paranoid</item>
     </string-array>
 
-    <integer-array name="secondsIntArray">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>5</item>
-        <item>10</item>
+    <integer-array name="securityLevelIterArray">
+        <item>2500</item>
+        <item>5000</item>
+        <item>7500</item>
+        <item>15000</item>
     </integer-array>
 
 </resources>

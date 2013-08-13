@@ -54,7 +54,7 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 	void onCreateVault() {
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		Fragment f = FragCreateVault.newInstance(1000);
+		Fragment f = new FragCreateVault_();
 		t.replace(R.id.fragmentContainer, f);
 		t.commit();
 	}

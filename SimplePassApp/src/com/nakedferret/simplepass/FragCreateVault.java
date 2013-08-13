@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -29,45 +28,24 @@ public class FragCreateVault extends SherlockFragment implements
 		OnItemSelectedListener {
 
 	@ViewById
-	Spinner secondsSpinner;
+	Spinner iterationSpinner;
 
 	@ViewById
 	EditText vaultNameInput, vaultPasswordInput;
 
 	@StringArrayRes
-	String[] secondsStringArray;
+	String[] securityLevelNameArray;
 
 	@IntArrayRes
-	int[] secondsIntArray;
+	int[] securityLevelIterArray;
 
 	ProgressDialog progressDialog;
 
-	private ArrayAdapter<String> adapter;
 	private OnVaultCreatedListener mListener;
-	private int iterationsPerSecond;
-	private int seconds;
-
-	private static final String ARG_ITERS = "iters";
+	private int iters;
 
 	public FragCreateVault() {
 		// Required empty public constructor
-	}
-
-	public static FragCreateVault_ newInstance(int iters) {
-		FragCreateVault_ f = new FragCreateVault_();
-		Bundle args = new Bundle();
-		args.putInt(ARG_ITERS, iters);
-		f.setArguments(args);
-		return f;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Bundle args = getArguments();
-		if (args != null) {
-			iterationsPerSecond = args.getInt(ARG_ITERS);
-		}
 	}
 
 	@Override
@@ -93,18 +71,18 @@ public class FragCreateVault extends SherlockFragment implements
 
 	@AfterViews
 	void init() {
-		adapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_spinner_item, secondsStringArray);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_item, securityLevelNameArray);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		secondsSpinner.setAdapter(adapter);
-		secondsSpinner.setOnItemSelectedListener(this);
-		seconds = secondsIntArray[0];
+		iterationSpinner.setAdapter(adapter);
+		iterationSpinner.setOnItemSelectedListener(this);
+		iters = securityLevelIterArray[0];
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View v, int position,
 			long id) {
-		seconds = secondsIntArray[position];
+		iters = securityLevelIterArray[position];
 	}
 
 	@Override
@@ -124,7 +102,7 @@ public class FragCreateVault extends SherlockFragment implements
 
 		String pass = vaultPasswordInput.getText().toString();
 		String name = vaultNameInput.getText().toString();
-		int iterations = iterationsPerSecond * seconds;
+		int iterations = iters;
 
 		ContentValues values = Utils.createVault(name, pass, iterations);
 		ContentResolver r = getActivity().getContentResolver();

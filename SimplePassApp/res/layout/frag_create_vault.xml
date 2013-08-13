@@ -24,14 +24,14 @@
         android:id="@+id/secondsInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/secondsSpinner"
+        android:layout_below="@+id/iterationSpinner"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:text="@string/secondsSpinnerInfo" />
 
     <Spinner
-        android:id="@+id/secondsSpinner"
+        android:id="@+id/iterationSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/vaultPasswordInput"
