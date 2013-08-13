@@ -20,24 +20,6 @@
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/secondsInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iterationSpinner"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="@string/secondsSpinnerInfo" />
-
-    <Spinner
-        android:id="@+id/iterationSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vaultPasswordInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
-
     <EditText
         android:id="@+id/vaultPasswordInput"
         android:layout_width="wrap_content"
@@ -71,5 +53,23 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/separator"
         android:text="@string/create" />
+
+    <TextView
+        android:id="@+id/secondsInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/vaultNameInput"
+        android:layout_below="@+id/vaultPasswordInput"
+        android:layout_marginTop="15dp"
+        android:text="Security Level: "
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/iterationSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/secondsInfo"
+        android:layout_toRightOf="@+id/secondsInfo" />
 
 </RelativeLayout>
