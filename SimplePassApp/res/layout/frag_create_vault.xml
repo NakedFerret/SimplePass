@@ -5,34 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".FragCreateVault" >
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <EditText
-        android:id="@+id/vaultNameInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="@string/vaultNameHint"
-        android:paddingTop="@dimen/activity_vertical_margin" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/vaultPasswordInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vaultNameInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
-
     <View
-        android:id="@+id/separator"
+        android:id="@+id/horizontalSeparator"
         android:layout_width="1dp"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
@@ -43,7 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/separator"
+        android:layout_toLeftOf="@+id/horizontalSeparator"
         android:text="@string/cancel" />
 
     <Button
@@ -51,25 +25,72 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/separator"
+        android:layout_toRightOf="@+id/horizontalSeparator"
         android:text="@string/create" />
 
-    <TextView
-        android:id="@+id/secondsInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/vaultNameInput"
-        android:layout_below="@+id/vaultPasswordInput"
-        android:layout_marginTop="15dp"
-        android:text="Security Level: "
-        android:textSize="16dp"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/cancelButton"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
 
-    <Spinner
-        android:id="@+id/iterationSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/secondsInfo"
-        android:layout_toRightOf="@+id/secondsInfo" />
+        <EditText
+            android:id="@+id/vaultNameInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:hint="@string/vaultNameHint"
+            android:paddingTop="@dimen/activity_vertical_margin" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/vaultPasswordInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/vaultNameInput"
+            android:layout_marginTop="10dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/securityLevelHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/vaultPasswordInput"
+            android:layout_marginTop="10dp"
+            android:text="@string/securityLevelHeader"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <View
+            android:id="@+id/verticalSeparator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/securityLevelHeader"
+            android:background="@android:color/darker_gray" />
+
+        <Spinner
+            android:id="@+id/iterationSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/verticalSeparator"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/iterationSpinnerInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/iterationSpinner"
+            android:layout_below="@+id/iterationSpinner"
+            android:text="@string/iterationSpinnerInfo" />
+    </RelativeLayout>
 
 </RelativeLayout>

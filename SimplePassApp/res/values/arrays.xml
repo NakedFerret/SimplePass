@@ -2,17 +2,17 @@
 <resources>
 
     <string-array name="securityLevelNameArray">
-        <item>Convenient</item>
-        <item>Safe</item>
-        <item>Safer</item>
-        <item>Paranoid</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+        <item>Ultra</item>
     </string-array>
 
     <integer-array name="securityLevelIterArray">
         <item>2500</item>
         <item>5000</item>
-        <item>7500</item>
-        <item>15000</item>
+        <item>10000</item>
+        <item>20000</item>
     </integer-array>
 
 </resources>
