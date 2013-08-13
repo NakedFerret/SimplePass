@@ -69,6 +69,7 @@ public class Utils {
 			values.put(Vault.COL_SALT, hexSalt);
 			values.put(Vault.COL_HASH, hexHash);
 
+			return values;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
