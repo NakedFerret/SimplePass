@@ -5,11 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 
-	private static final String DB_NAME = "storage_room";
+	private static final String DB_NAME = "vault_room";
 
 	//@formatter:off //Eclipse formatting
 	private static final String CREATE_VAULTS_TABLE = "CREATE TABLE "
@@ -28,12 +29,22 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 			+ Account.TABLE_NAME + " ( "
 			+ Account._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ Account.COL_NAME + " TEXT, "
-			+ Account.COL_GROUP + " TEXT, "
 			+ Account.COL_PASSWORD + " TEXT, "
 			+ Account.COL_USERNAME + " TEXT, "
 			+ Account.COL_VAULT + " INTEGER, " 
+			+ Account.COL_GROUP + " INTEGER, "
 			+ "FOREIGN KEY(" + Account.COL_VAULT + ") REFERENCES "
-			+ Vault.TABLE_NAME + "(" + Vault._ID + ")" 
+			+ Vault.TABLE_NAME + "(" + Vault._ID + "), "
+			+ "FOREIGN KEY(" + Account.COL_GROUP + ") REFERENCES "
+			+ Group.TABLE_NAME + "(" + Group._ID + ")"
+			+ ")";
+	//@formatter:on
+
+	//@formatter:off //Eclipse formatting
+	private static final String CREATE_GROUPS_TABLE = "CREATE TABLE " 
+			+ Group.TABLE_NAME + " ( "
+			+ Group._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ Group.COL_NAME + " TEXT"
 			+ ")";
 	//@formatter:on
 
@@ -56,11 +67,13 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL("drop table " + Vault.TABLE_NAME);
 		db.execSQL("drop table " + Account.TABLE_NAME);
+		db.execSQL("drop table " + Group.TABLE_NAME);
 		createTables(db);
 	}
 
 	private void createTables(SQLiteDatabase db) {
 		db.execSQL(CREATE_VAULTS_TABLE);
 		db.execSQL(CREATE_ACCOUNTS_TABLE);
+		db.execSQL(CREATE_GROUPS_TABLE);
 	}
 }
