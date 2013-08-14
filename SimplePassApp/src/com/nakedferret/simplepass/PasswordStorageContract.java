@@ -10,10 +10,10 @@ public final class PasswordStorageContract {
 	public static abstract class Account implements BaseColumns {
 		public static final String TABLE_NAME = "account";
 		public static final String COL_NAME = "name";
-		public static final String COL_GROUP = "group_id";
+		public static final String COL_GROUP = Group.TABLE_NAME + _ID;
 		public static final String COL_USERNAME = "username";
 		public static final String COL_PASSWORD = "password";
-		public static final String COL_VAULT = "vault_id";
+		public static final String COL_VAULT = Vault.TABLE_NAME + _ID;
 	}
 
 	public static abstract class Vault implements BaseColumns {
