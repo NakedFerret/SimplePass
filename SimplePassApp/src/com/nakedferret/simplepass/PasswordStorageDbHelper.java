@@ -31,11 +31,11 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 			+ Account.COL_NAME + " TEXT, "
 			+ Account.COL_PASSWORD + " TEXT, "
 			+ Account.COL_USERNAME + " TEXT, "
-			+ Account.COL_VAULT + " INTEGER, " 
-			+ Account.COL_GROUP + " INTEGER, "
-			+ "FOREIGN KEY(" + Account.COL_VAULT + ") REFERENCES "
+			+ Account.COL_VAULT_ID + " INTEGER, " 
+			+ Account.COL_GROUP_ID + " INTEGER, "
+			+ "FOREIGN KEY(" + Account.COL_VAULT_ID + ") REFERENCES "
 			+ Vault.TABLE_NAME + "(" + Vault._ID + "), "
-			+ "FOREIGN KEY(" + Account.COL_GROUP + ") REFERENCES "
+			+ "FOREIGN KEY(" + Account.COL_GROUP_ID + ") REFERENCES "
 			+ Group.TABLE_NAME + "(" + Group._ID + ")"
 			+ ")";
 	//@formatter:on

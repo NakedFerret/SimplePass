@@ -49,7 +49,7 @@ public class FragListAccounts extends SherlockListFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		projections = new String[] { Account.COL_NAME, Account.COL_GROUP };
+		projections = new String[] { Account.COL_NAME, Account.COL_GROUP_ID };
 		views = new int[] { android.R.id.text1, android.R.id.text2 };
 	}
 
@@ -165,8 +165,8 @@ public class FragListAccounts extends SherlockListFragment implements
 		Uri uri = Utils.buildContentUri(Account.TABLE_NAME);
 		ContentValues values = new ContentValues();
 		values.put(Account.COL_NAME, "paypal");
-		values.put(Account.COL_VAULT, 1);
-		values.put(Account.COL_GROUP, "financial");
+		values.put(Account.COL_VAULT_ID, 1);
+		values.put(Account.COL_GROUP_ID, "financial");
 		values.put(Account.COL_USERNAME, "naked_ferret");
 		values.put(Account.COL_PASSWORD, "secret4");
 

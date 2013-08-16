@@ -92,11 +92,11 @@ public class ActMain extends SherlockActivity {
 		final String pass = "super_secret";
 		final int groupID = Integer.parseInt(rowUri.getLastPathSegment());
 
-		values.put(Account.COL_GROUP, groupID);
+		values.put(Account.COL_GROUP_ID, groupID);
 		values.put(Account.COL_NAME, name);
 		values.put(Account.COL_PASSWORD, pass);
 		values.put(Account.COL_USERNAME, username);
-		values.put(Account.COL_VAULT, vaultId);
+		values.put(Account.COL_VAULT_ID, vaultId);
 
 		r.insert(Utils.buildContentUri(Account.TABLE_NAME), values);
 	}

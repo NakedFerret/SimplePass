@@ -37,7 +37,7 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 	void showAccountsFragment() {
 		int layout = R.layout.listview_account;
 		Uri uri = Utils.buildContentUri(Account.TABLE_NAME);
-		String[] projection = { Account.COL_NAME, Account.COL_GROUP };
+		String[] projection = { Account.COL_NAME, Account.COL_GROUP_ID };
 		int[] views = { android.R.id.text1, android.R.id.text2 };
 		String searchCol = Account.COL_NAME;
 
