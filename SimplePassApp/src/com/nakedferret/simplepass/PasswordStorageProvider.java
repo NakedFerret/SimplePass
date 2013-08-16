@@ -17,24 +17,16 @@ public class PasswordStorageProvider extends ContentProvider {
 	public static final String AUTHORITY = "com.nakedferret.simplepass.provider";
 
 	private static final int ACCOUNT = 1;
-	private static final int ACCOUNT_ID = 2;
-
-	private static final int VAULT = 3;
-	private static final int VAULT_ID = 4;
-
-	private static final int GROUP = 5;
-	private static final int GROUP_ID = 6;
+	private static final int VAULT = 2;
+	private static final int GROUP = 3;
 
 	private static final UriMatcher sURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
 
 	static {
 		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME, ACCOUNT);
-		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME + "/#", ACCOUNT_ID);
 		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME, VAULT);
-		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME + "/#", VAULT_ID);
 		sURIMatcher.addURI(AUTHORITY, Group.TABLE_NAME, GROUP);
-		sURIMatcher.addURI(AUTHORITY, Group.TABLE_NAME + "/#", GROUP_ID);
 	}
 
 	private PasswordStorageDbHelper dbHelper;
