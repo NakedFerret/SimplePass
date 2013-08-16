@@ -63,7 +63,7 @@ public class ActMain extends SherlockActivity {
 	@Background
 	void clearAndInsertTestData() {
 		PasswordStorageDbHelper helper = new PasswordStorageDbHelper(this);
-		helper.clearData();
+		helper.clearData(null);
 		helper.close();
 
 		ContentResolver r = getContentResolver();
