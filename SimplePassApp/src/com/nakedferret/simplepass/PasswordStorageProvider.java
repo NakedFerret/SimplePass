@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
@@ -19,6 +20,7 @@ public class PasswordStorageProvider extends ContentProvider {
 	private static final int ACCOUNT = 1;
 	private static final int VAULT = 2;
 	private static final int GROUP = 3;
+	private static final int ACCOUNT_W_GROUP = 4;
 
 	private static final UriMatcher sURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -27,6 +29,8 @@ public class PasswordStorageProvider extends ContentProvider {
 		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME, ACCOUNT);
 		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME, VAULT);
 		sURIMatcher.addURI(AUTHORITY, Group.TABLE_NAME, GROUP);
+		sURIMatcher
+				.addURI(AUTHORITY, AccountWGroup.TABLE_NAME, ACCOUNT_W_GROUP);
 	}
 
 	private PasswordStorageDbHelper dbHelper;
@@ -91,6 +95,9 @@ public class PasswordStorageProvider extends ContentProvider {
 				break;
 			case GROUP:
 				table = Group.TABLE_NAME;
+				break;
+			case ACCOUNT_W_GROUP:
+				table = AccountWGroup.TABLE_NAME;
 				break;
 			default:
 				table = null;

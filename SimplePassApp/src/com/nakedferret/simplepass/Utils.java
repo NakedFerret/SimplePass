@@ -13,10 +13,11 @@ import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.spongycastle.crypto.params.KeyParameter;
 import org.spongycastle.util.encoders.Hex;
 
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
-
 import android.content.ContentValues;
 import android.net.Uri;
+import android.util.Log;
+
+import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class Utils {
 
@@ -103,6 +104,11 @@ public class Utils {
 		byte[] hash = new byte[d.getDigestSize()];
 		d.doFinal(hash, 0);
 		return hash;
+	}
+
+	public static void log(Object o, String message) {
+		message = o.getClass().getSimpleName() + " - " + message;
+		Log.d("SimplePass", message);
 	}
 
 }

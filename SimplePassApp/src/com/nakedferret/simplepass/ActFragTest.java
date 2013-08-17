@@ -10,6 +10,7 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.nakedferret.simplepass.FragCreateVault.OnVaultCreatedListener;
 import com.nakedferret.simplepass.FragListCursor.OnItemSelected;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EActivity(R.layout.act_frag_test)
@@ -36,8 +37,9 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 	@Click(R.id.accountsButton)
 	void showAccountsFragment() {
 		int layout = R.layout.listview_account;
-		Uri uri = Utils.buildContentUri(Account.TABLE_NAME);
-		String[] projection = { Account.COL_NAME, Account.COL_GROUP_ID };
+		Uri uri = Utils.buildContentUri(AccountWGroup.TABLE_NAME);
+		String[] projection = { AccountWGroup.COL_NAME,
+				AccountWGroup.COL_GROUP_NAME };
 		int[] views = { android.R.id.text1, android.R.id.text2 };
 		String searchCol = Account.COL_NAME;
 
