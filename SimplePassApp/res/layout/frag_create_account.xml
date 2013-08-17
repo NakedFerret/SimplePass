@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragCreateVault" >
+
+    <View
+        android:id="@+id/horizontalSeparator"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/horizontalSeparator"
+        android:text="@string/cancel" />
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/horizontalSeparator"
+        android:text="@string/create" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/cancelButton"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" >
+
+        <EditText
+            android:id="@+id/accountNameInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:hint="@string/accountNameHint" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/accountUsernameInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/accountNameInput"
+            android:layout_marginTop="10dp"
+            android:hint="@string/username" />
+
+        <EditText
+            android:id="@+id/accountPasswordInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/accountUsernameInput"
+            android:layout_marginTop="10dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/groupHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/accountPasswordInput"
+            android:layout_marginTop="10dp"
+            android:text="@string/groupHeader"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <View
+            android:id="@+id/verticalSeparator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/groupHeader"
+            android:background="@android:color/darker_gray" />
+
+        <ImageButton
+            android:id="@+id/addGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/groupHeader"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_action_add" />
+
+        <Spinner
+            android:id="@+id/groupSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/verticalSeparator"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/addGroupButton" />
+    </RelativeLayout>
+
+</RelativeLayout>

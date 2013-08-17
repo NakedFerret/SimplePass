@@ -13,5 +13,8 @@
     <string name="password">Password</string>
     <string name="securityLevelHeader">"Security Level: "</string>
     <string name="iterationSpinnerInfo">The security level balances speed vs security. Low security means a quicker vault unlock</string>
+    <string name="accountNameHint">Account Name</string>
+    <string name="username">Username</string>
+    <string name="groupHeader">Group:</string>
 
 </resources>
