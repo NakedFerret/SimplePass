@@ -8,13 +8,13 @@ import android.support.v4.app.FragmentTransaction;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.nakedferret.simplepass.FragCreateVault.OnVaultCreatedListener;
-import com.nakedferret.simplepass.FragListCursor.OnItemSelected;
+import com.nakedferret.simplepass.FragListCursor.OnItemSelectedListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EActivity(R.layout.act_frag_test)
-public class ActFragTest extends ActFloating implements OnItemSelected,
+public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 		OnVaultCreatedListener {
 
 	@Click(R.id.vaultButton)
@@ -62,7 +62,7 @@ public class ActFragTest extends ActFloating implements OnItemSelected,
 	}
 
 	@Override
-	public void onFragmentInteraction(Uri uri) {
+	public void onItemSelected(Uri uri) {
 
 	}
 

@@ -41,7 +41,7 @@ public class FragListCursor extends SherlockListFragment implements
 
 	private CursorAdapter adapter;
 
-	private OnItemSelected mListener;
+	private OnItemSelectedListener mListener;
 
 	public static FragListCursor newInstance(int listItemLayout, Uri uri,
 			String[] projection, int[] views, String searchColumn) {
@@ -87,7 +87,7 @@ public class FragListCursor extends SherlockListFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnItemSelected) activity;
+			mListener = (OnItemSelectedListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnItemSelected");
@@ -100,8 +100,8 @@ public class FragListCursor extends SherlockListFragment implements
 		mListener = null;
 	}
 
-	public interface OnItemSelected {
-		public void onFragmentInteraction(Uri uri);
+	public interface OnItemSelectedListener {
+		public void onItemSelected(Uri uri);
 	}
 
 	@Override
