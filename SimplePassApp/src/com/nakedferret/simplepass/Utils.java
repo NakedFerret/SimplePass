@@ -4,6 +4,7 @@ import java.security.Key;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.spongycastle.crypto.Digest;
@@ -17,6 +18,7 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.util.Log;
 
+import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class Utils {
@@ -104,6 +106,37 @@ public class Utils {
 		byte[] hash = new byte[d.getDigestSize()];
 		d.doFinal(hash, 0);
 		return hash;
+	}
+
+	public static ContentValues createAccount(long groupId, long vaultId,
+			String name, String username, String password, byte[] keyValue,
+			byte[] iv) {
+
+		try {
+			ContentValues values = new ContentValues();
+
+			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
+			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+
+			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
+			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
+
+			String hexEncUser = new String(Hex.encode(encUser));
+			String hexEncPass = new String(Hex.encode(encPass));
+
+			values.put(Account.COL_GROUP_ID, groupId);
+			values.put(Account.COL_NAME, name);
+			values.put(Account.COL_PASSWORD, hexEncPass);
+			values.put(Account.COL_USERNAME, hexEncUser);
+			values.put(Account.COL_VAULT_ID, vaultId);
+
+			return values;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ContentValues();
 	}
 
 	public static void log(Object o, String message) {
