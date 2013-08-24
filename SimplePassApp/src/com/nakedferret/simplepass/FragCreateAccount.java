@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
+import com.nakedferret.simplepass.PasswordStorageContract.Group;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends SherlockFragment implements
@@ -22,7 +22,7 @@ public class FragCreateAccount extends SherlockFragment implements
 	private static final String ARG_ACCOUNT_ID = "account";
 
 	private static final int LAYOUT = android.R.layout.simple_spinner_item;
-	private static final String[] PROJECTION = { AccountWGroup.COL_GROUP_NAME };
+	private static final String[] PROJECTION = { Group.COL_NAME };
 	private static final int[] VIEWS = { android.R.id.text1 };
 
 	@ViewById
@@ -95,12 +95,10 @@ public class FragCreateAccount extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		Utils.log(this, "Creating Loader");
-		Uri uri = Utils.buildContentUri(AccountWGroup.TABLE_NAME);
-		String selection = AccountWGroup.COL_VAULT_ID + " = ?";
-		String[] selectionArgs = { String.valueOf(accountId) };
+		Uri uri = Utils.buildContentUri(Group.TABLE_NAME);
 
-		return new CursorLoader(getActivity(), uri, PROJECTION, selection,
-				selectionArgs, null);
+		return new CursorLoader(getActivity(), uri, PROJECTION, null, null,
+				null);
 	}
 
 	@Override

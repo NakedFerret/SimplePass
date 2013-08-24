@@ -16,5 +16,6 @@
     <string name="accountNameHint">Account Name</string>
     <string name="username">Username</string>
     <string name="groupHeader">Group:</string>
+    <string name="defaultGroup">Default</string>
 
 </resources>

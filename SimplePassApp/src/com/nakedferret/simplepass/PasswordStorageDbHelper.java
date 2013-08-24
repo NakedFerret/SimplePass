@@ -1,5 +1,6 @@
 package com.nakedferret.simplepass;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -69,8 +70,11 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 			;
 	//@formatter:on //Eclipse formatting
 
+	private Context c;
+
 	public PasswordStorageDbHelper(Context c) {
 		super(c, DB_NAME, null, 2);
+		this.c = c;
 	}
 
 	@Override
@@ -99,5 +103,9 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_ACCOUNTS_TABLE);
 		db.execSQL(CREATE_GROUPS_TABLE);
 		db.execSQL(CREATE_ACCOUNTS_W_GROUPS);
+		// Add the default group to groups table
+		ContentValues values = new ContentValues();
+		values.put(Group.COL_NAME, c.getString(R.string.defaultGroup));
+		db.insert(Group.TABLE_NAME, null, values);
 	}
 }
