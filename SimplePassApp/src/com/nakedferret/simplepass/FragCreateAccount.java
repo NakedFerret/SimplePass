@@ -1,6 +1,9 @@
 package com.nakedferret.simplepass;
 
+import org.spongycastle.util.encoders.Hex;
+
 import android.app.Activity;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,9 +14,12 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends SherlockFragment implements
@@ -112,4 +118,30 @@ public class FragCreateAccount extends SherlockFragment implements
 		adapter.changeCursor(null);
 	}
 
+	@Click(R.id.createButton)
+	void onCreateButton() {
+		testAccount();
+	}
+
+	@Background
+	void testAccount() {
+		String masterPass = "master_password";
+
+		ContentValues vault = Utils.createVault("Personal", masterPass, 5000);
+
+		String hexSalt = vault.getAsString(Vault.COL_SALT);
+		String hexIv = vault.getAsString(Vault.COL_IV);
+
+		byte[] salt = Hex.decode(hexSalt);
+		byte[] key = Utils.getKey(masterPass, salt,
+				vault.getAsInteger(Vault.COL_ITERATIONS));
+		byte[] iv = Hex.decode(hexIv);
+		String password = "account_pass";
+		String name = "test account";
+		String username = "test user";
+
+		ContentValues account = Utils.createAccount(1, 1, name, username,
+				password, key, iv);
+		Utils.log(this, "Created Account");
+	}
 }
