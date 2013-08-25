@@ -139,6 +139,32 @@ public class Utils {
 		return new ContentValues();
 	}
 
+	public static ContentValues decryptAccount(ContentValues account,
+			byte[] keyValue, byte[] iv) {
+		try {
+
+			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
+			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+
+			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+			byte[] encUser = Hex.decode(account
+					.getAsString(Account.COL_USERNAME));
+			byte[] encPass = Hex.decode(account
+					.getAsString(Account.COL_PASSWORD));
+
+			byte[] decUser = c.doFinal(encUser);
+			byte[] decPass = c.doFinal(encPass);
+
+			account.put(Account.COL_USERNAME, new String(decUser));
+			account.put(Account.COL_PASSWORD, new String(decPass));
+
+			return account;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return account;
+	}
+
 	public static void log(Object o, String message) {
 		message = o.getClass().getSimpleName() + " - " + message;
 		Log.d("SimplePass", message);

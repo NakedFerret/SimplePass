@@ -86,8 +86,8 @@
 
         <ImageButton
             android:id="@+id/addGroupButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/groupHeader"
             android:layout_marginTop="10dp"
@@ -97,9 +97,8 @@
             android:id="@+id/groupSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/addGroupButton"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/verticalSeparator"
-            android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/addGroupButton" />
     </RelativeLayout>
 

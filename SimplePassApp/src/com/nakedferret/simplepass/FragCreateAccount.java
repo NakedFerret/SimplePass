@@ -18,6 +18,7 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
@@ -143,5 +144,13 @@ public class FragCreateAccount extends SherlockFragment implements
 		ContentValues account = Utils.createAccount(1, 1, name, username,
 				password, key, iv);
 		Utils.log(this, "Created Account");
+
+		Utils.log(this, "Decrypting account...");
+		account = Utils.decryptAccount(account, key, iv);
+		Utils.log(
+				this,
+				"Account username: "
+						+ account.getAsString(Account.COL_USERNAME));
+
 	}
 }
