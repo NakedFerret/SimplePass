@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -21,7 +21,11 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.R.id;
+import com.nakedferret.simplepass.R.layout;
 
 @EFragment(R.layout.frag_create_vault)
 public class FragCreateVault extends SherlockFragment implements

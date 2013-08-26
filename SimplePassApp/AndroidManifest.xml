@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.nakedferret.simplepass.ActMain_"
+            android:name="com.nakedferret.simplepass.ui.ActMain_"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,12 +31,12 @@
         </provider>
 
         <activity
-            android:name="com.nakedferret.simplepass.ActSelectAccount_"
+            android:name="com.nakedferret.simplepass.ui.ActSelectAccount_"
             android:label="@string/title_activity_act_select_account"
             android:theme="@style/PopupTheme" >
         </activity>
         <activity
-            android:name="com.nakedferret.simplepass.ActFragTest_"
+            android:name="com.nakedferret.simplepass.ui.ActFragTest_"
             android:label="@string/title_activity_act_generic_frag_test"
             android:theme="@style/PopupTheme"
             android:windowSoftInputMode="adjustPan" >

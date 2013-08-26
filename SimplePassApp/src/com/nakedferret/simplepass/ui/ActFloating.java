@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.nakedferret.simplepass.R;
 
 public class ActFloating extends SherlockFragmentActivity {
 

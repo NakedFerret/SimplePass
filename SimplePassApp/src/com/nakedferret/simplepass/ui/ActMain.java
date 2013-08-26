@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -17,6 +17,9 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageDbHelper;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 
 @EActivity(R.layout.act_main)
 public class ActMain extends SherlockActivity {

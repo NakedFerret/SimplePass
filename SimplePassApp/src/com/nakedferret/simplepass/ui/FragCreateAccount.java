@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import org.spongycastle.util.encoders.Hex;
 
@@ -21,6 +21,8 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends SherlockFragment implements

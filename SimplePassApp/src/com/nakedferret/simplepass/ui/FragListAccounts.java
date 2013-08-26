@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -28,7 +28,11 @@ import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.R.drawable;
+import com.nakedferret.simplepass.R.layout;
 
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements

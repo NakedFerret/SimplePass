@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -7,12 +7,14 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.nakedferret.simplepass.FragCreateAccount.OnAccountCreatedListener;
-import com.nakedferret.simplepass.FragCreateVault.OnVaultCreatedListener;
-import com.nakedferret.simplepass.FragListCursor.OnItemSelectedListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.ui.FragCreateAccount.OnAccountCreatedListener;
+import com.nakedferret.simplepass.ui.FragCreateVault.OnVaultCreatedListener;
+import com.nakedferret.simplepass.ui.FragListCursor.OnItemSelectedListener;
 
 @EActivity(R.layout.act_frag_test)
 public class ActFragTest extends ActFloating implements OnItemSelectedListener,
