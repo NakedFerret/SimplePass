@@ -41,6 +41,12 @@
             android:theme="@style/PopupTheme"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+
+        <service
+            android:name="com.nakedferret.simplepass.ServicePassword_"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
