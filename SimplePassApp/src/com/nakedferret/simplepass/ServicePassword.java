@@ -10,8 +10,12 @@ import com.googlecode.androidannotations.annotations.EService;
 @EService
 public class ServicePassword extends Service {
 
-	public static final String ACTION = "password";
-	public static final IntentFilter FILTER = new IntentFilter(ACTION);
+	public static final String VAULT_UNLOCKED = "vault_unlocked";
+	public static final String VAULT_LOCKED = "vault_locked";
+
+	public static final String EXTRA_VAULT_URI = "vault_uri";
+	public static final String EXTRA_VAULT_KEY = "vault_key";
+	public static final String EXTRA_VAULT_IV = "vault_iv";
 
 	public ServicePassword() {
 	}

@@ -28,11 +28,9 @@ import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
-import com.nakedferret.simplepass.PasswordStorageContract.Account;
-import com.nakedferret.simplepass.R.drawable;
-import com.nakedferret.simplepass.R.layout;
 
 @EFragment
 public class FragListAccounts extends SherlockListFragment implements
@@ -181,7 +179,7 @@ public class FragListAccounts extends SherlockListFragment implements
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		Cursor c = (Cursor) adapter.getItem(position);
 		Log.d("SimplePass", "It worked! Cols: ");
-		for( String s : c.getColumnNames())
+		for (String s : c.getColumnNames())
 			Log.d("SimplePass", s);
 	}
 }
