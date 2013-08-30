@@ -4,6 +4,7 @@ import org.spongycastle.util.encoders.Hex;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.ServicePassword;
+import com.nakedferret.simplepass.ServicePassword_;
 import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_account)
@@ -123,7 +126,10 @@ public class FragCreateAccount extends SherlockFragment implements
 
 	@Click(R.id.createButton)
 	void onCreateButton() {
-		testAccount();
+		// testAccount();
+		Intent i = new Intent(getActivity(), ServicePassword_.class);
+		i.setAction(ServicePassword.VAULT_LOCKED);
+		getActivity().startService(i);
 	}
 
 	@Background

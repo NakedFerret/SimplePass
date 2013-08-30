@@ -1,19 +1,13 @@
 package com.nakedferret.simplepass;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.IBinder;
 
 import com.googlecode.androidannotations.annotations.EService;
 
 @EService
-public class ServicePassword extends IntentService {
-
-	public ServicePassword(String name) {
-		super(name);
-	}
+public class ServicePassword extends Service {
 
 	public static final String VAULT_UNLOCKED = "vault_unlocked";
 	public static final String VAULT_LOCKED = "vault_locked";
@@ -23,8 +17,14 @@ public class ServicePassword extends IntentService {
 	public static final String EXTRA_VAULT_IV = "vault_iv";
 
 	@Override
-	protected void onHandleIntent(Intent intent) {
-
+	public int onStartCommand(Intent i, int flags, int startId) {
+		Utils.log(this, "intent action : " + i.getAction());
+		return super.onStartCommand(i, flags, startId);
 	}
 
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
