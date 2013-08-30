@@ -110,7 +110,8 @@ public class FragListCursor extends SherlockListFragment implements
 			return;
 
 		Uri rowUri = uri.buildUpon().appendPath(Long.toString(id)).build();
-		Log.d("SimplePass", "Generic Fragment - rowUri: " + rowUri.toString());
+		if (mListener != null)
+			mListener.onItemSelected(rowUri);
 	}
 
 	@Override

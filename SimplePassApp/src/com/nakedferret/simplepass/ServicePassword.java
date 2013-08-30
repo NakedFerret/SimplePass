@@ -1,13 +1,16 @@
 package com.nakedferret.simplepass;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
 
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EService;
 import com.googlecode.androidannotations.annotations.UiThread;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EService
 public class ServicePassword extends Service {
@@ -48,12 +51,14 @@ public class ServicePassword extends Service {
 	}
 
 	@UiThread
-	void dispatchIntent(String action) {
+	void dispatchIntent(Intent i) {
 
 	}
 
 	@Background
 	void unlockVault(Uri uri, String pass) {
+		Utils.log(this, "Going to attempt to unlock vault: " + uri.toString());
+		ContentValues vault = getVault(uri);
 		// TODO: implement unlock vault
 		// generate the key, check the hash,
 		// and send an intent that the vault was unlocked if successful and
@@ -66,4 +71,18 @@ public class ServicePassword extends Service {
 		// null the key and iv, and send an intent that the vault was locked
 	}
 
+	private ContentValues getVault(Uri uri) {
+		ContentValues vault = new ContentValues();
+
+		Cursor c = getContentResolver().query(uri, null, null, null, null);
+		c.moveToFirst();
+
+		vault.put(Vault.COL_HASH, c.getString(c.getColumnIndex(Vault.COL_HASH)));
+		vault.put(Vault.COL_ITERATIONS,
+				c.getLong(c.getColumnIndex(Vault.COL_ITERATIONS)));
+		vault.put(Vault.COL_IV, c.getString(c.getColumnIndex(Vault.COL_IV)));
+		vault.put(Vault.COL_NAME, c.getString(c.getColumnIndex(Vault.COL_NAME)));
+		vault.put(Vault.COL_SALT, c.getString(c.getColumnIndex(Vault.COL_SALT)));
+		return vault;
+	}
 }
