@@ -149,8 +149,8 @@ public class Utils {
 			byte[] decUser = c.doFinal(encUser);
 			byte[] decPass = c.doFinal(encPass);
 
-			account.put(Account.COL_USERNAME, new String(decUser));
-			account.put(Account.COL_PASSWORD, new String(decPass));
+			account.put(Account.DEC_USERNAME, new String(decUser));
+			account.put(Account.DEC_USERNAME, new String(decPass));
 
 			return account;
 		} catch (Exception e) {

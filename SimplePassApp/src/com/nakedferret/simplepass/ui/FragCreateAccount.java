@@ -158,7 +158,7 @@ public class FragCreateAccount extends SherlockFragment implements
 		Utils.log(
 				this,
 				"Account username: "
-						+ account.getAsString(Account.COL_USERNAME));
+						+ account.getAsString(Account.DEC_USERNAME));
 
 	}
 }

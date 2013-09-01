@@ -14,6 +14,11 @@ public final class PasswordStorageContract {
 		public static final String COL_USERNAME = TABLE_NAME + "_username";
 		public static final String COL_PASSWORD = TABLE_NAME + "_password";
 		public static final String COL_VAULT_ID = Vault.TABLE_NAME + _ID;
+
+		// Only used to store and retrieve decrypted username and pass from a
+		// ContentValues object
+		public static final String DEC_USERNAME = "dec_username";
+		public static final String DEC_PASSWORD = "dec_password";
 	}
 
 	public static abstract class Vault implements BaseColumns {
