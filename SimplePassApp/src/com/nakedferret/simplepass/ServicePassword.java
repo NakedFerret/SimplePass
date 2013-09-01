@@ -70,6 +70,7 @@ public class ServicePassword extends Service {
 
 		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 		ContentValues vault = Utils.getVault(cursor);
+		cursor.close();
 
 		Utils.log(this, "Got the vault: " + vault.getAsString(Vault.COL_NAME));
 		byte[] iv = vault.getAsByteArray(Vault.COL_IV);
