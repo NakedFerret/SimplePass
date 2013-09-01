@@ -18,11 +18,11 @@ public class PasswordStorageDbHelper extends SQLiteOpenHelper {
 	private static final String CREATE_VAULTS_TABLE = "CREATE TABLE "
 			+ Vault.TABLE_NAME + " ( " 
 			+ Vault._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-			+ Vault.COL_SALT + " TEXT, " 
-			+ Vault.COL_IV + " TEXT, " 
+			+ Vault.COL_SALT + " BLOB, " 
+			+ Vault.COL_IV + " BLOB, " 
 			+ Vault.COL_NAME + " TEXT, "
 			+ Vault.COL_ITERATIONS + " INTEGER, " 
-			+ Vault.COL_HASH + " TEXT " 
+			+ Vault.COL_HASH + " BLOB " 
 			+ ")";
 	//@formatter:on
 

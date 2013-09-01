@@ -2,7 +2,6 @@ package com.nakedferret.simplepass;
 
 import java.security.Key;
 import java.security.SecureRandom;
-import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
