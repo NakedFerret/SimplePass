@@ -63,15 +63,11 @@ public class Utils {
 			byte[] iv = c.getIV();
 			byte[] hash = getHash(encPass, salt);
 
-			String hexIv = new String(Hex.encode(iv));
-			String hexSalt = new String(Hex.encode(salt));
-			String hexHash = new String(Hex.encode(hash));
-
 			values.put(Vault.COL_NAME, name);
 			values.put(Vault.COL_ITERATIONS, iterations);
-			values.put(Vault.COL_IV, hexIv);
-			values.put(Vault.COL_SALT, hexSalt);
-			values.put(Vault.COL_HASH, hexHash);
+			values.put(Vault.COL_IV, iv);
+			values.put(Vault.COL_SALT, salt);
+			values.put(Vault.COL_HASH, hash);
 
 			return values;
 		} catch (Exception e) {
@@ -123,13 +119,10 @@ public class Utils {
 			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
 			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
 
-			String hexEncUser = new String(Hex.encode(encUser));
-			String hexEncPass = new String(Hex.encode(encPass));
-
 			values.put(Account.COL_GROUP_ID, groupId);
 			values.put(Account.COL_NAME, name);
-			values.put(Account.COL_PASSWORD, hexEncPass);
-			values.put(Account.COL_USERNAME, hexEncUser);
+			values.put(Account.COL_PASSWORD, encPass);
+			values.put(Account.COL_USERNAME, encUser);
 			values.put(Account.COL_VAULT_ID, vaultId);
 
 			return values;
