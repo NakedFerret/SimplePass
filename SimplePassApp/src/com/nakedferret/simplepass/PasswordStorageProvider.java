@@ -18,7 +18,9 @@ public class PasswordStorageProvider extends ContentProvider {
 	public static final String AUTHORITY = "com.nakedferret.simplepass.provider";
 
 	private static final int ACCOUNT = 1;
+	private static final int ACCOUNT_ID = 10;
 	private static final int VAULT = 2;
+	private static final int VAULT_ID = 20;
 	private static final int GROUP = 3;
 	private static final int ACCOUNT_W_GROUP = 4;
 
@@ -27,7 +29,9 @@ public class PasswordStorageProvider extends ContentProvider {
 
 	static {
 		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME, ACCOUNT);
+		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME + "/#", ACCOUNT_ID);
 		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME, VAULT);
+		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME + "/#", VAULT_ID);
 		sURIMatcher.addURI(AUTHORITY, Group.TABLE_NAME, GROUP);
 		sURIMatcher
 				.addURI(AUTHORITY, AccountWGroup.TABLE_NAME, ACCOUNT_W_GROUP);
@@ -52,6 +56,7 @@ public class PasswordStorageProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		String table = null;
+
 		switch (sURIMatcher.match(uri)) {
 			case ACCOUNT:
 				table = Account.TABLE_NAME;
@@ -86,10 +91,14 @@ public class PasswordStorageProvider extends ContentProvider {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		String table = null;
+		long id = 0;
+
 		switch (sURIMatcher.match(uri)) {
 			case ACCOUNT:
 				table = Account.TABLE_NAME;
 				break;
+			case VAULT_ID:
+				id = Long.parseLong(uri.getLastPathSegment());
 			case VAULT:
 				table = Vault.TABLE_NAME;
 				break;
@@ -103,14 +112,26 @@ public class PasswordStorageProvider extends ContentProvider {
 				table = null;
 		}
 
+		Utils.log(this, "table: " + table + "\nuri: " + uri.toString());
+
 		if (table == null)
 			return null;
 
-		String[] projections = new String[projection.length + 1];
-		System.arraycopy(projection, 0, projections, 0, projection.length);
-		projections[projection.length] = BaseColumns._ID;
+		// Add the _ID to the list of columns as a courtesy :D
+		if (projection != null) {
+			String[] projectionWithID = new String[projection.length + 1];
+			System.arraycopy(projection, 0, projectionWithID, 0,
+					projection.length);
+			projectionWithID[projection.length] = BaseColumns._ID;
+			projection = projectionWithID;
+		}
 
-		Cursor c = db.query(table, projections, selection, selectionArgs, null,
+		if (id != 0) {
+			selection = Vault._ID + " = ?";
+			selectionArgs = new String[] { Long.toString(id) };
+		}
+
+		Cursor c = db.query(table, projection, selection, selectionArgs, null,
 				null, null);
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
