@@ -28,23 +28,13 @@
         android:text="Test Data" />
 
     <Button
-        android:id="@+id/testQuery"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/testDataButton"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/testDataButton"
-        android:text="Test Query" />
-
-    <Button
         android:id="@+id/testFrags"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/insertButton"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/testDataButton"
         android:text="Test Generic" />
 
 </RelativeLayout>

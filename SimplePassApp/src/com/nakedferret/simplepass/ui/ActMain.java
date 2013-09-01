@@ -104,11 +104,6 @@ public class ActMain extends SherlockActivity {
 		r.insert(Utils.buildContentUri(Account.TABLE_NAME), values);
 	}
 
-	@Click(R.id.testQuery)
-	void onTestQuery() {
-		startActivity(new Intent(this, ActSelectAccount_.class));
-	}
-
 	@Click(R.id.testFrags)
 	void testGenericFrag() {
 		startActivity(new Intent(this, ActFragTest_.class));
