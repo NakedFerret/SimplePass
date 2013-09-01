@@ -1,7 +1,5 @@
 package com.nakedferret.simplepass.ui;
 
-import org.spongycastle.util.encoders.Hex;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -79,7 +77,7 @@ public class FragCreateAccount extends SherlockFragment implements
 
 	public void onButtonPressed(Uri uri) {
 		if (mListener != null) {
-			mListener.onFragmentInteraction(uri);
+			mListener.onAccountCreated(uri);
 		}
 	}
 
@@ -101,7 +99,7 @@ public class FragCreateAccount extends SherlockFragment implements
 	}
 
 	public interface OnAccountCreatedListener {
-		public void onFragmentInteraction(Uri uri);
+		public void onAccountCreated(Uri uri);
 	}
 
 	@Override

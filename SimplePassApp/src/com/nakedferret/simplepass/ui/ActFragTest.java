@@ -89,12 +89,12 @@ public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 	}
 
 	@Override
-	public void onVaultSelected(Uri uri) {
+	public void onVaultCreated(Uri uri) {
 
 	}
 
 	@Override
-	public void onFragmentInteraction(Uri uri) {
+	public void onAccountCreated(Uri uri) {
 
 	}
 
