@@ -138,13 +138,11 @@ public class FragCreateAccount extends SherlockFragment implements
 
 		ContentValues vault = Utils.createVault("Personal", masterPass, 5000);
 
-		String hexSalt = vault.getAsString(Vault.COL_SALT);
-		String hexIv = vault.getAsString(Vault.COL_IV);
-
-		byte[] salt = Hex.decode(hexSalt);
+		byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
+		byte[] iv = vault.getAsByteArray(Vault.COL_IV);
 		byte[] key = Utils.getKey(masterPass, salt,
 				vault.getAsInteger(Vault.COL_ITERATIONS));
-		byte[] iv = Hex.decode(hexIv);
+
 		String password = "account_pass";
 		String name = "test account";
 		String username = "test user";
