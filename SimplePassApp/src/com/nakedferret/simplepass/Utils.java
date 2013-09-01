@@ -15,6 +15,7 @@ import org.spongycastle.crypto.params.KeyParameter;
 import org.spongycastle.util.encoders.Hex;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -162,6 +163,21 @@ public class Utils {
 	public static void log(Object o, String message) {
 		message = o.getClass().getSimpleName() + " - " + message;
 		Log.d("SimplePass", message);
+	}
+
+	public static ContentValues getVault(Cursor c) {
+		c.moveToFirst();
+
+		ContentValues vault = new ContentValues();
+
+		vault.put(Vault.COL_HASH, c.getBlob(c.getColumnIndex(Vault.COL_HASH)));
+		vault.put(Vault.COL_ITERATIONS,
+				c.getLong(c.getColumnIndex(Vault.COL_ITERATIONS)));
+		vault.put(Vault.COL_IV, c.getBlob(c.getColumnIndex(Vault.COL_IV)));
+		vault.put(Vault.COL_NAME, c.getString(c.getColumnIndex(Vault.COL_NAME)));
+		vault.put(Vault.COL_SALT, c.getBlob(c.getColumnIndex(Vault.COL_SALT)));
+		c.close();
+		return vault;
 	}
 
 }

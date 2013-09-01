@@ -68,7 +68,9 @@ public class ServicePassword extends Service {
 		Utils.log(this, "Going to attempt to unlock vault: " + uri.toString());
 		Utils.log(this, "with the password: " + pass);
 
-		ContentValues vault = getVault(uri);
+		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+		ContentValues vault = Utils.getVault(cursor);
+
 		Utils.log(this, "Got the vault: " + vault.getAsString(Vault.COL_NAME));
 		byte[] iv = vault.getAsByteArray(Vault.COL_IV);
 		byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
@@ -103,22 +105,4 @@ public class ServicePassword extends Service {
 		// null the key and iv, and send an intent that the vault was locked
 	}
 
-	private ContentValues getVault(Uri uri) {
-		ContentValues vault = new ContentValues();
-
-		Utils.log(this, uri.toString());
-
-		Cursor c = getContentResolver().query(uri, null, null, null, null);
-		// TODO: implement getting the exact vault in query
-		c.moveToFirst();
-
-		vault.put(Vault.COL_HASH, c.getBlob(c.getColumnIndex(Vault.COL_HASH)));
-		vault.put(Vault.COL_ITERATIONS,
-				c.getLong(c.getColumnIndex(Vault.COL_ITERATIONS)));
-		vault.put(Vault.COL_IV, c.getBlob(c.getColumnIndex(Vault.COL_IV)));
-		vault.put(Vault.COL_NAME, c.getString(c.getColumnIndex(Vault.COL_NAME)));
-		vault.put(Vault.COL_SALT, c.getBlob(c.getColumnIndex(Vault.COL_SALT)));
-		c.close();
-		return vault;
-	}
 }
