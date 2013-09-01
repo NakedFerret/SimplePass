@@ -30,9 +30,6 @@ public class ActMain extends SherlockActivity {
 	@ViewById
 	Button testDataButton;
 
-	@ViewById
-	Button testQuery;
-
 	@AfterViews
 	void initialize() {
 		Log.d("SimplePass", "Strict mode disabled...");

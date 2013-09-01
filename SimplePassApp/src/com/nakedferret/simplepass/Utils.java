@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 public class Utils {
@@ -71,6 +72,51 @@ public class Utils {
 			values.put(Vault.COL_HASH, hash);
 
 			return values;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ContentValues();
+	}
+	
+	public static ContentValues createGroup(String name){
+		ContentValues group = new ContentValues();
+		group.put(Group.COL_NAME, name);
+		return group;
+	}
+	
+	public static ContentValues getGroup(Cursor c){
+		ContentValues group = new ContentValues();
+		group.put(Group._ID, c.getLong(c.getColumnIndex(Group._ID)));
+		group.put(Group.COL_NAME, c.getString(c.getColumnIndex(Group.COL_NAME)));
+		return group;
+	}
+
+	public static ContentValues createAccount(ContentValues vault, String name,
+			String username, String password, Long groupId, String vaultPass) {
+
+		try {
+			ContentValues account = new ContentValues();
+
+			byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
+			int iterations = vault.getAsInteger(Vault.COL_ITERATIONS);
+			byte[] iv = vault.getAsByteArray(Vault.COL_ITERATIONS);
+			byte[] keyValue = getKey(password, salt, iterations);
+
+			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
+			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+
+			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
+			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
+
+			account.put(Account.COL_NAME, name);
+			account.put(Account.COL_GROUP_ID, groupId);
+			account.put(Account.COL_VAULT_ID, vault.getAsLong(Vault._ID));
+			account.put(Account.COL_USERNAME, encUser);
+			account.put(Account.COL_PASSWORD, encPass);
+
+			return account;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -170,6 +216,7 @@ public class Utils {
 
 		ContentValues vault = new ContentValues();
 
+		vault.put(Vault._ID, c.getLong(c.getColumnIndex(Vault._ID)));
 		vault.put(Vault.COL_HASH, c.getBlob(c.getColumnIndex(Vault.COL_HASH)));
 		vault.put(Vault.COL_ITERATIONS,
 				c.getLong(c.getColumnIndex(Vault.COL_ITERATIONS)));
