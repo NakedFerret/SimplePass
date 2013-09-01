@@ -7,8 +7,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.spongycastle.util.encoders.Hex;
-
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -72,10 +70,10 @@ public class ServicePassword extends Service {
 
 		ContentValues vault = getVault(uri);
 		Utils.log(this, "Got the vault: " + vault.getAsString(Vault.COL_NAME));
-		byte[] iv = Hex.decode(vault.getAsString(Vault.COL_IV));
-		byte[] salt = Hex.decode(vault.getAsString(Vault.COL_SALT));
+		byte[] iv = vault.getAsByteArray(Vault.COL_IV);
+		byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
 
-		byte[] storedHash = Hex.decode(vault.getAsString(Vault.COL_HASH));
+		byte[] storedHash = vault.getAsByteArray(Vault.COL_HASH);
 		int iterations = vault.getAsInteger(Vault.COL_ITERATIONS);
 		byte[] keyValue = Utils.getKey(pass, salt, iterations);
 
@@ -114,12 +112,12 @@ public class ServicePassword extends Service {
 		// TODO: implement getting the exact vault in query
 		c.moveToFirst();
 
-		vault.put(Vault.COL_HASH, c.getString(c.getColumnIndex(Vault.COL_HASH)));
+		vault.put(Vault.COL_HASH, c.getBlob(c.getColumnIndex(Vault.COL_HASH)));
 		vault.put(Vault.COL_ITERATIONS,
 				c.getLong(c.getColumnIndex(Vault.COL_ITERATIONS)));
-		vault.put(Vault.COL_IV, c.getString(c.getColumnIndex(Vault.COL_IV)));
+		vault.put(Vault.COL_IV, c.getBlob(c.getColumnIndex(Vault.COL_IV)));
 		vault.put(Vault.COL_NAME, c.getString(c.getColumnIndex(Vault.COL_NAME)));
-		vault.put(Vault.COL_SALT, c.getString(c.getColumnIndex(Vault.COL_SALT)));
+		vault.put(Vault.COL_SALT, c.getBlob(c.getColumnIndex(Vault.COL_SALT)));
 		c.close();
 		return vault;
 	}
