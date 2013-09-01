@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import java.security.Key;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -61,10 +62,11 @@ public class Utils {
 			c.init(Cipher.ENCRYPT_MODE, key);
 			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
 			byte[] iv = c.getIV();
+			byte[] hash = getHash(encPass, salt);
 
 			String hexIv = new String(Hex.encode(iv));
 			String hexSalt = new String(Hex.encode(salt));
-			String hexHash = new String(getHash(encPass, salt));
+			String hexHash = new String(Hex.encode(hash));
 
 			values.put(Vault.COL_NAME, name);
 			values.put(Vault.COL_ITERATIONS, iterations);
@@ -96,7 +98,7 @@ public class Utils {
 		return key.getKey();
 	}
 
-	private static byte[] getHash(byte[] encPass, byte[] salt) {
+	public static byte[] getHash(byte[] encPass, byte[] salt) {
 		Digest d = DIGEST;
 		d.reset();
 
