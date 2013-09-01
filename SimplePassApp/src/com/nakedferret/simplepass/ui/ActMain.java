@@ -71,34 +71,33 @@ public class ActMain extends SherlockActivity {
 		ContentValues vault = Utils.createVault("Personal", "secret", 2500);
 		Uri rowUri = r.insert(Utils.buildContentUri(Vault.TABLE_NAME), vault);
 		int vaultId = Integer.parseInt(rowUri.getLastPathSegment());
+		vault.put(Vault._ID, vaultId);
 
-		insertAccount("Reddit", "Entertainment", vaultId);
-		insertAccount("Xda-Developers", "Development", vaultId);
-		insertAccount("Twitter", "Social", vaultId);
-		insertAccount("Bank", "Financial", vaultId);
-		insertAccount("Amazon", "Retail", vaultId);
+		insertAccount("Reddit", "Entertainment", vault);
+		insertAccount("Xda-Developers", "Development", vault);
+		insertAccount("Twitter", "Social", vault);
+		insertAccount("Bank", "Financial", vault);
+		insertAccount("Amazon", "Retail", vault);
 	}
 
-	private void insertAccount(String name, String group, int vaultId) {
+	private void insertAccount(String name, String groupName,
+			ContentValues vault) {
 		ContentResolver r = getContentResolver();
-		ContentValues values = new ContentValues();
 
-		values.put(Group.COL_NAME, group);
-		Uri rowUri = r.insert(Utils.buildContentUri(Group.TABLE_NAME), values);
+		Uri groupUri = Utils.buildContentUri(Group.TABLE_NAME);
+		Uri accountUri = Utils.buildContentUri(Account.TABLE_NAME);
 
-		values.clear();
+		ContentValues group = Utils.createGroup(groupName);
+		Uri rowUri = r.insert(groupUri, group);
+		group.put(Group._ID, rowUri.getLastPathSegment());
 
 		final String username = "naked_ferret";
 		final String pass = "super_secret";
-		final int groupID = Integer.parseInt(rowUri.getLastPathSegment());
+		final Long groupId = group.getAsLong(Group._ID);
 
-		values.put(Account.COL_GROUP_ID, groupID);
-		values.put(Account.COL_NAME, name);
-		values.put(Account.COL_PASSWORD, pass);
-		values.put(Account.COL_USERNAME, username);
-		values.put(Account.COL_VAULT_ID, vaultId);
-
-		r.insert(Utils.buildContentUri(Account.TABLE_NAME), values);
+		ContentValues account = Utils.createAccount(vault, groupName, username,
+				pass, groupId, "secret");
+		r.insert(accountUri, account);
 	}
 
 	@Click(R.id.testFrags)

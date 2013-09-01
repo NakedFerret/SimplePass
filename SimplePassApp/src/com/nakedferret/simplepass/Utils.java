@@ -78,14 +78,14 @@ public class Utils {
 
 		return new ContentValues();
 	}
-	
-	public static ContentValues createGroup(String name){
+
+	public static ContentValues createGroup(String name) {
 		ContentValues group = new ContentValues();
 		group.put(Group.COL_NAME, name);
 		return group;
 	}
-	
-	public static ContentValues getGroup(Cursor c){
+
+	public static ContentValues getGroup(Cursor c) {
 		ContentValues group = new ContentValues();
 		group.put(Group._ID, c.getLong(c.getColumnIndex(Group._ID)));
 		group.put(Group.COL_NAME, c.getString(c.getColumnIndex(Group.COL_NAME)));
@@ -100,7 +100,7 @@ public class Utils {
 
 			byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
 			int iterations = vault.getAsInteger(Vault.COL_ITERATIONS);
-			byte[] iv = vault.getAsByteArray(Vault.COL_ITERATIONS);
+			byte[] iv = vault.getAsByteArray(Vault.COL_IV);
 			byte[] keyValue = getKey(password, salt, iterations);
 
 			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
