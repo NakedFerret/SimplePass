@@ -8,14 +8,10 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.SystemService;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServicePassword;
 import com.nakedferret.simplepass.ServicePassword_;
@@ -24,12 +20,12 @@ import com.nakedferret.simplepass.ui.BroadcastVaultReceiver.OnVaultInteractionLi
 import com.nakedferret.simplepass.ui.FragCreateAccount.OnAccountCreatedListener;
 import com.nakedferret.simplepass.ui.FragCreateVault.OnVaultCreatedListener;
 import com.nakedferret.simplepass.ui.FragListAccount.OnAccountSelectedListener;
-import com.nakedferret.simplepass.ui.FragListCursor.OnItemSelectedListener;
+import com.nakedferret.simplepass.ui.FragListVault.OnVaultSelectedListener;
 
 @EActivity(R.layout.act_frag_test)
-public class ActFragTest extends ActFloating implements OnItemSelectedListener,
-		OnVaultCreatedListener, OnAccountCreatedListener,
-		OnVaultInteractionListerner, OnAccountSelectedListener {
+public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
+		OnAccountCreatedListener, OnVaultInteractionListerner,
+		OnAccountSelectedListener, OnVaultSelectedListener {
 
 	private BroadcastVaultReceiver receiver;
 
@@ -37,28 +33,11 @@ public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 
 	@AfterViews
 	void initializeInterface() {
-		int layout = android.R.layout.simple_list_item_1;
-		Uri uri = Utils.buildContentUri(Vault.TABLE_NAME);
-		String[] projection = { Vault.COL_NAME };
-		int[] views = { android.R.id.text1 };
-		String searchCol = Vault.COL_NAME;
-
-		FragListCursor vaultsList = FragListCursor.newInstance(layout, uri,
-				projection, views, searchCol);
-
+		Fragment f = new FragListVault();
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, vaultsList);
+		t.replace(R.id.fragmentContainer, f);
 		t.commit();
-	}
-
-	@Override
-	public void onItemSelected(Uri uri) {
-		// Vault was selected
-		if (Vault.TABLE_NAME.equals(uri.getPathSegments().get(0))) {
-			getPasswordAndAlertService(uri);
-		}
-
 	}
 
 	@Override
@@ -69,6 +48,17 @@ public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 	@Override
 	public void onAccountCreated(Uri uri) {
 
+	}
+
+	@Override
+	public void onAccountSelected(Uri uri) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onVaultSelected(Uri uri) {
+		getPasswordAndAlertService(uri);
 	}
 
 	// Quick method to get the password of a vault from an alertdialog
@@ -112,6 +102,7 @@ public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 
 	@Override
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
+		Utils.log(this, "vault unlocked!");
 		dialog.dismiss();
 		Fragment accountListFragment = FragListAccount.newInstance(vault);
 
@@ -123,6 +114,7 @@ public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 
 	@Override
 	public void onVaultLocked(Uri vault) {
+		Utils.log(this, "vault locked!");
 		dialog.dismiss();
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle("Wrong Password");
@@ -130,9 +122,4 @@ public class ActFragTest extends ActFloating implements OnItemSelectedListener,
 		alert.show();
 	}
 
-	@Override
-	public void onAccountSelected(Uri uri) {
-		// TODO Auto-generated method stub
-
-	}
 }
