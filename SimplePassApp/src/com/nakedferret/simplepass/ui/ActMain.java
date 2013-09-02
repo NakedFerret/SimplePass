@@ -95,7 +95,7 @@ public class ActMain extends SherlockActivity {
 		final String pass = "super_secret";
 		final Long groupId = group.getAsLong(Group._ID);
 
-		ContentValues account = Utils.createAccount(vault, groupName, username,
+		ContentValues account = Utils.createAccount(vault, name, username,
 				pass, groupId, "secret");
 		r.insert(accountUri, account);
 	}
