@@ -14,11 +14,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
-import com.nakedferret.simplepass.R.layout;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 
 public class FragListAccount extends SherlockListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor> {
@@ -31,7 +30,7 @@ public class FragListAccount extends SherlockListFragment implements
 	private final String[] PROJECTION = { AccountWGroup.COL_NAME,
 			AccountWGroup.COL_GROUP_NAME };
 	private final int[] VIEWS = { android.R.id.text1, android.R.id.text2 };
-	private final Uri URI = Utils.buildContentUri(Account.TABLE_NAME);
+	private final Uri URI = Utils.buildContentUri(AccountWGroup.TABLE_NAME);
 	private final String SELECTION = Account.COL_VAULT_ID + " = ?";
 
 	private String[] selectionArgs;
@@ -66,8 +65,13 @@ public class FragListAccount extends SherlockListFragment implements
 			mListener = (OnAccountSelectedListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+					+ " must implement OnAccountSelectedListener");
 		}
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);

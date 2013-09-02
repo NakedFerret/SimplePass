@@ -2,6 +2,8 @@ package com.nakedferret.simplepass;
 
 import java.security.Key;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EService;
@@ -34,6 +37,22 @@ public class ServicePassword extends Service {
 
 	public static final String EXTRA_VAULT_PASSWORD = "vault_pass";
 
+	private Map<Uri, UnlockedVault> unlockedVaults = new HashMap<Uri, UnlockedVault>();
+
+	private class UnlockedVault {
+		Uri vault;
+		byte[] key;
+		byte[] iv;
+
+		public UnlockedVault(Uri vault, byte[] key, byte[] iv) {
+			super();
+			this.vault = vault;
+			this.key = key;
+			this.iv = iv;
+		}
+
+	}
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -41,7 +60,9 @@ public class ServicePassword extends Service {
 
 	@Override
 	public int onStartCommand(Intent i, int flags, int startId) {
-		handleIntent(i);
+		// Sometimes android sends an empty intent to restart the service
+		if (i != null)
+			handleIntent(i);
 		return START_STICKY;
 	}
 
@@ -51,7 +72,7 @@ public class ServicePassword extends Service {
 
 		if (UNLOCK_VAULT.equals(i.getAction())) {
 			String pass = i.getStringExtra(EXTRA_VAULT_PASSWORD);
-			unlockVault(uri, pass);
+			tryUnlockVault(uri, pass);
 		} else if (LOCK_VAULT.equals(i.getAction())) {
 			lockVault(uri);
 		}
@@ -60,11 +81,38 @@ public class ServicePassword extends Service {
 	// Use this method to join back to the UI thread
 	@UiThread
 	void dispatchIntent(Intent i) {
-
+		LocalBroadcastManager m = LocalBroadcastManager.getInstance(this);
+		m.sendBroadcast(i);
+		Utils.log(this, "sent the intent");
 	}
 
 	@Background
-	void unlockVault(Uri uri, String pass) {
+	void tryUnlockVault(Uri uri, String pass) {
+		Intent i;
+		if (attemptUnlock(uri, pass)) {
+			byte[] iv = unlockedVaults.get(uri).iv;
+			byte[] key = unlockedVaults.get(uri).key;
+
+			i = new Intent(VAULT_UNLOCKED);
+			i.putExtra(EXTRA_VAULT_URI, uri.toString());
+			i.putExtra(EXTRA_VAULT_IV, iv);
+			i.putExtra(EXTRA_VAULT_KEY, key);
+			Utils.log(this, "created the unlock intent");
+		} else {
+			i = new Intent(VAULT_LOCKED);
+			i.putExtra(EXTRA_VAULT_URI, uri.toString());
+			Utils.log(this, "created the lock intent");
+		}
+
+		dispatchIntent(i);
+		// TODO: implement unlock vault
+		// generate the key, check the hash,
+		// and send an intent that the vault was unlocked if successful and
+		// locked if failed
+
+	}
+
+	private boolean attemptUnlock(Uri uri, String pass) {
 		Utils.log(this, "Going to attempt to unlock vault: " + uri.toString());
 		Utils.log(this, "with the password: " + pass);
 
@@ -88,17 +136,27 @@ public class ServicePassword extends Service {
 			byte[] encPass = c.doFinal(pass.getBytes("UTF-8"));
 			byte[] hash = Utils.getHash(encPass, salt);
 
-			Utils.log(this,
-					"hash are the same: " + Arrays.equals(hash, storedHash));
+			if (Arrays.equals(hash, storedHash)) {
+				Utils.log(this, "unlock successful");
+				storeUnlockedVault(uri, keyValue, iv);
+				return true;
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// TODO: implement unlock vault
-		// generate the key, check the hash,
-		// and send an intent that the vault was unlocked if successful and
-		// locked if failed
+		Utils.log(this, "unlock unsuccessful");
+		// We couldn't unlock
+		return false;
+	}
 
+	private void storeUnlockedVault(Uri uri, byte[] keyValue, byte[] iv) {
+		UnlockedVault v = new UnlockedVault(uri, keyValue, iv);
+		if (!unlockedVaults.containsKey(uri))
+			unlockedVaults.put(uri, v);
+
+		Utils.log(this, "stored the locked vault");
 	}
 
 	private void lockVault(Uri uri) {
