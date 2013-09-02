@@ -17,5 +17,11 @@
     <string name="username">Username</string>
     <string name="groupHeader">Group:</string>
     <string name="defaultGroup">Default</string>
+    <string name="selectVaultTitle">Choose a Vault</string>
+    <string name="unlock">Unlock</string>
+    <string name="enterVaultPasswordTitle">Enter Vault Password</string>
+    <string name="enterPassword">Enter Password</string>
+    <string name="chooseAccount">Choose an Account</string>
+   
 
 </resources>
