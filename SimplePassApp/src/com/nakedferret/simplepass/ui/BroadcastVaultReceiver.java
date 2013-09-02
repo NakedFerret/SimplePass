@@ -1,4 +1,6 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
+
+import com.nakedferret.simplepass.ServicePassword;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

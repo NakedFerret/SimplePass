@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -14,8 +14,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
+import com.nakedferret.simplepass.R.layout;
 
 public class FragListAccount extends SherlockListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor> {
