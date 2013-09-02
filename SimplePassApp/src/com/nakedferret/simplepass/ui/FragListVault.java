@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
 public class FragListVault extends SherlockListFragment implements
@@ -56,6 +57,12 @@ public class FragListVault extends SherlockListFragment implements
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
 		getLoaderManager().initLoader(0, null, this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity().setTitle(R.string.selectVaultTitle);
 	}
 
 	@Override

@@ -79,6 +79,12 @@ public class FragListAccount extends SherlockListFragment implements
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity().setTitle(R.string.chooseAccount);
+	}
+
+	@Override
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
