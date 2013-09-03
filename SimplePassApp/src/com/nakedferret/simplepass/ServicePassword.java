@@ -83,7 +83,6 @@ public class ServicePassword extends Service {
 	void dispatchIntent(Intent i) {
 		LocalBroadcastManager m = LocalBroadcastManager.getInstance(this);
 		m.sendBroadcast(i);
-		Utils.log(this, "sent the intent");
 	}
 
 	@Background
@@ -97,11 +96,9 @@ public class ServicePassword extends Service {
 			i.putExtra(EXTRA_VAULT_URI, uri.toString());
 			i.putExtra(EXTRA_VAULT_IV, iv);
 			i.putExtra(EXTRA_VAULT_KEY, key);
-			Utils.log(this, "created the unlock intent");
 		} else {
 			i = new Intent(VAULT_LOCKED);
 			i.putExtra(EXTRA_VAULT_URI, uri.toString());
-			Utils.log(this, "created the lock intent");
 		}
 
 		dispatchIntent(i);
@@ -119,6 +116,11 @@ public class ServicePassword extends Service {
 	// Attempts to unlock vault. Returns true if vault unlocks, otherwise
 	// returns false
 	private boolean unlockVault(Uri uri, String pass) {
+		// When we check to see if a vault is unlocked we pass a null password
+		// TODO: create a CHECK_VAULT action
+		if (pass == null)
+			return false;
+
 		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 		ContentValues vault = Utils.getVault(cursor);
 		cursor.close();
@@ -158,8 +160,6 @@ public class ServicePassword extends Service {
 		UnlockedVault v = new UnlockedVault(uri, keyValue, iv);
 		if (!unlockedVaults.containsKey(uri))
 			unlockedVaults.put(uri, v);
-
-		Utils.log(this, "stored the locked vault");
 	}
 
 	private void lockVault(Uri uri) {

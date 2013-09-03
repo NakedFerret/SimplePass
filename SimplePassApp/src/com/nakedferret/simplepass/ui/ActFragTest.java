@@ -1,8 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
-import android.app.ProgressDialog;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -21,8 +19,7 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 		OnVaultSelectedListener, OnVaultInteractionListerner {
 
 	private BroadcastVaultReceiver receiver;
-
-	private ProgressDialog dialog;
+	private FragPassInput fragPasswordInput;
 
 	@AfterViews
 	void initializeInterface() {
@@ -30,6 +27,8 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 		FragmentTransaction t = m.beginTransaction();
 		t.replace(R.id.fragmentContainer, new FragListVault());
 		t.commit();
+
+		receiver = new BroadcastVaultReceiver(this, this);
 	}
 
 	@Override
@@ -60,9 +59,9 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 	}
 
 	@Override
-	// The user pressed the back button
 	public void onVaultLocked(Uri vault) {
-
+		if (fragPasswordInput != null)
+			fragPasswordInput.onVaultLocked(vault);
 	}
 
 	@Override
@@ -73,15 +72,6 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 	@Override
 	public void onAccountSelected(Uri uri) {
 
-	}
-
-	private void replaceFragment(Fragment f, boolean addToStack) {
-		FragmentManager m = getSupportFragmentManager();
-		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, f);
-		if (addToStack)
-			t.addToBackStack(null);
-		t.commit();
 	}
 
 }

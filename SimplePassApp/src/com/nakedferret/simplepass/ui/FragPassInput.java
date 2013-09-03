@@ -18,6 +18,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServicePassword;
 import com.nakedferret.simplepass.ServicePassword_;
+import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.ui.BroadcastVaultReceiver.OnVaultInteractionListerner;
 
 @EFragment(R.layout.frag_pass_input)
@@ -41,8 +42,6 @@ public class FragPassInput extends DialogFragment implements
 	private OnVaultInteractionListerner mListener;
 	private Uri vaultUri;
 
-	private BroadcastVaultReceiver receiver;
-
 	public static FragPassInput newInstance(Uri uri) {
 		FragPassInput fragment = new FragPassInput_();
 		Bundle args = new Bundle();
@@ -53,12 +52,6 @@ public class FragPassInput extends DialogFragment implements
 
 	public FragPassInput() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		vaultUri = Uri.parse(getArguments().getString(ARG_VAULT_URI));
 	}
 
 	@Override
@@ -73,6 +66,12 @@ public class FragPassInput extends DialogFragment implements
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		vaultUri = Uri.parse(getArguments().getString(ARG_VAULT_URI));
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
 		getActivity().setTitle(R.string.enterVaultPasswordTitle);
@@ -82,6 +81,7 @@ public class FragPassInput extends DialogFragment implements
 	void initUI() {
 		infoText.setVisibility(View.INVISIBLE);
 		progressIndicator.setVisibility(View.INVISIBLE);
+		requestUnlockVault(null);
 	}
 
 	@Override
@@ -98,17 +98,16 @@ public class FragPassInput extends DialogFragment implements
 
 	@Click(R.id.unlockButton)
 	void unlock() {
+		requestUnlockVault(passwordInput.getText().toString());
+		showProgress();
+	}
+
+	private void requestUnlockVault(String password) {
 		Intent i = new Intent(getActivity(), ServicePassword_.class);
 		i.setAction(ServicePassword.UNLOCK_VAULT);
-		i.putExtra(ServicePassword.EXTRA_VAULT_PASSWORD, passwordInput
-				.getText().toString());
+		i.putExtra(ServicePassword.EXTRA_VAULT_PASSWORD, password);
 		i.putExtra(ServicePassword.EXTRA_VAULT_URI, vaultUri.toString());
-
 		getActivity().startService(i);
-		// Listen for the service
-		receiver = new BroadcastVaultReceiver(getActivity(), this);
-
-		showProgress();
 	}
 
 	private void showProgress() {
@@ -120,15 +119,13 @@ public class FragPassInput extends DialogFragment implements
 		progressIndicator.setVisibility(View.VISIBLE);
 	}
 
-	@Override
+	// TODO: broadcast receiver cannot access listener for some reason
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-		if (mListener != null)
-			mListener.onVaultUnlocked(vault, key, iv);
+
 	}
 
-	@Override
 	public void onVaultLocked(Uri vault) {
-		// TODO: re enable the interface
+
 	}
 
 }
