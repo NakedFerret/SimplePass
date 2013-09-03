@@ -72,7 +72,7 @@ public class ServicePassword extends Service {
 
 		if (UNLOCK_VAULT.equals(i.getAction())) {
 			String pass = i.getStringExtra(EXTRA_VAULT_PASSWORD);
-			tryUnlockVault(uri, pass);
+			handleUnlockVault(uri, pass);
 		} else if (LOCK_VAULT.equals(i.getAction())) {
 			lockVault(uri);
 		}
@@ -87,9 +87,9 @@ public class ServicePassword extends Service {
 	}
 
 	@Background
-	void tryUnlockVault(Uri uri, String pass) {
-		Intent i;
-		if (attemptUnlock(uri, pass)) {
+	void handleUnlockVault(Uri uri, String pass) {
+		Intent i; // intent to broadcast VAULT_UNLOCKED or VAULT_LOCKED
+		if (vaultAlreadyUnlocked(uri) || unlockVault(uri, pass)) {
 			byte[] iv = unlockedVaults.get(uri).iv;
 			byte[] key = unlockedVaults.get(uri).key;
 
@@ -112,10 +112,13 @@ public class ServicePassword extends Service {
 
 	}
 
-	private boolean attemptUnlock(Uri uri, String pass) {
-		Utils.log(this, "Going to attempt to unlock vault: " + uri.toString());
-		Utils.log(this, "with the password: " + pass);
+	private boolean vaultAlreadyUnlocked(Uri uri) {
+		return unlockedVaults.containsKey(uri);
+	}
 
+	// Attempts to unlock vault. Returns true if vault unlocks, otherwise
+	// returns false
+	private boolean unlockVault(Uri uri, String pass) {
 		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 		ContentValues vault = Utils.getVault(cursor);
 		cursor.close();

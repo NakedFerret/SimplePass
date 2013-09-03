@@ -31,7 +31,6 @@ public class FragPassInput extends DialogFragment implements
 
 	@ViewById
 	Button cancelButton, unlockButton;
-	
 
 	@ViewById
 	TextView infoText;
