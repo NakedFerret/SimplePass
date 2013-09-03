@@ -26,7 +26,10 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 
 	@AfterViews
 	void initializeInterface() {
-		replaceFragment(new FragListVault(), false);
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, new FragListVault());
+		t.commit();
 	}
 
 	@Override
@@ -36,14 +39,24 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 
 	@Override
 	public void onVaultSelected(Uri uri) {
-		replaceFragment(FragPassInput.newInstance(uri), true);
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, FragPassInput.newInstance(uri));
+		t.addToBackStack(null);
+		t.commit();
 	}
 
 	@Override
 	// The user entered the correct password
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-		// TODO: remove the FragTextInput from the backstack
-		replaceFragment(FragListAccount.newInstance(vault), true);
+		FragmentManager m = getSupportFragmentManager();
+
+		m.popBackStack(); // Remove the password input fragment
+
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, FragListAccount.newInstance(vault));
+		t.addToBackStack(null);
+		t.commit();
 	}
 
 	@Override
