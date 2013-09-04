@@ -1,5 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.ServicePassword;
+import com.nakedferret.simplepass.ServicePassword_;
 import com.nakedferret.simplepass.ui.BroadcastVaultReceiver.OnVaultInteractionListerner;
 import com.nakedferret.simplepass.ui.FragCreateAccount.OnAccountCreatedListener;
 import com.nakedferret.simplepass.ui.FragCreateVault.OnVaultCreatedListener;
@@ -20,6 +23,7 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 
 	private BroadcastVaultReceiver receiver;
 	private FragPassInput fragPasswordInput;
+	private boolean vaultChecked;
 
 	@AfterViews
 	void initializeInterface() {
@@ -38,11 +42,13 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 
 	@Override
 	public void onVaultSelected(Uri uri) {
-		FragmentManager m = getSupportFragmentManager();
-		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, FragPassInput.newInstance(uri));
-		t.addToBackStack(null);
-		t.commit();
+		vaultChecked = false;
+
+		Intent i = new Intent(this, ServicePassword_.class);
+		i.setAction(ServicePassword.UNLOCK_VAULT);
+		i.putExtra(ServicePassword.EXTRA_VAULT_URI, uri.toString());
+		startService(i);
+
 	}
 
 	@Override
@@ -53,6 +59,7 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 		m.popBackStack(); // Remove the password input fragment
 
 		FragmentTransaction t = m.beginTransaction();
+
 		t.replace(R.id.fragmentContainer, FragListAccount.newInstance(vault));
 		t.addToBackStack(null);
 		t.commit();
@@ -60,13 +67,22 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 
 	@Override
 	public void onVaultLocked(Uri vault) {
+		if (!vaultChecked) {
+			FragmentManager m = getSupportFragmentManager();
+			FragmentTransaction t = m.beginTransaction();
+
+			t.replace(R.id.fragmentContainer, FragPassInput.newInstance(vault));
+			t.addToBackStack(null);
+			t.commit();
+			vaultChecked = true;
+		}
+
 		if (fragPasswordInput != null)
 			fragPasswordInput.onVaultLocked(vault);
 	}
 
 	@Override
 	public void onAccountCreated(Uri uri) {
-
 	}
 
 	@Override

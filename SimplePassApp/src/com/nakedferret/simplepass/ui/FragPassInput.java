@@ -81,7 +81,6 @@ public class FragPassInput extends DialogFragment implements
 	void initUI() {
 		infoText.setVisibility(View.INVISIBLE);
 		progressIndicator.setVisibility(View.INVISIBLE);
-		requestUnlockVault(null);
 	}
 
 	@Override
@@ -128,4 +127,15 @@ public class FragPassInput extends DialogFragment implements
 
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle arg0) {
+		super.onSaveInstanceState(arg0);
+		Utils.log(this, "saved instance state");
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Utils.log(this, " destroyed");
+	}
 }
