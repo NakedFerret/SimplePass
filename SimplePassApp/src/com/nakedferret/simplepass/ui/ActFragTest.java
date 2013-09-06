@@ -2,6 +2,7 @@ package com.nakedferret.simplepass.ui;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -10,6 +11,7 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServicePassword;
 import com.nakedferret.simplepass.ServicePassword_;
+import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.ui.BroadcastVaultReceiver.OnVaultInteractionListerner;
 import com.nakedferret.simplepass.ui.FragCreateAccount.OnAccountCreatedListener;
 import com.nakedferret.simplepass.ui.FragCreateVault.OnVaultCreatedListener;
@@ -25,6 +27,12 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 	private FragPassInput fragPasswordInput;
 	private boolean vaultChecked;
 
+	@Override
+	protected void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		Utils.log(this, "created");
+	}
+
 	@AfterViews
 	void initializeInterface() {
 		FragmentManager m = getSupportFragmentManager();
@@ -33,6 +41,7 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 		t.commit();
 
 		receiver = new BroadcastVaultReceiver(this, this);
+		vaultChecked = false;
 	}
 
 	@Override
@@ -42,8 +51,6 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 
 	@Override
 	public void onVaultSelected(Uri uri) {
-		vaultChecked = false;
-
 		Intent i = new Intent(this, ServicePassword_.class);
 		i.setAction(ServicePassword.UNLOCK_VAULT);
 		i.putExtra(ServicePassword.EXTRA_VAULT_URI, uri.toString());
@@ -56,13 +63,15 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
 		FragmentManager m = getSupportFragmentManager();
 
-		m.popBackStack(); // Remove the password input fragment
+		if (!vaultChecked)
+			m.popBackStack(); // Remove the password input fragment
 
 		FragmentTransaction t = m.beginTransaction();
 
 		t.replace(R.id.fragmentContainer, FragListAccount.newInstance(vault));
 		t.addToBackStack(null);
 		t.commit();
+		vaultChecked = true;
 	}
 
 	@Override
@@ -74,11 +83,12 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 			t.replace(R.id.fragmentContainer, FragPassInput.newInstance(vault));
 			t.addToBackStack(null);
 			t.commit();
-			vaultChecked = true;
 		}
 
 		if (fragPasswordInput != null)
 			fragPasswordInput.onVaultLocked(vault);
+
+		vaultChecked = true;
 	}
 
 	@Override
@@ -88,6 +98,18 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 	@Override
 	public void onAccountSelected(Uri uri) {
 
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle arg0) {
+		super.onSaveInstanceState(arg0);
+		Utils.log(this, "saved instance state");
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Utils.log(this, " destroyed");
 	}
 
 }

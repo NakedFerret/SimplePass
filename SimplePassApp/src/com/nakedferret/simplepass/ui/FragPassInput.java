@@ -127,15 +127,4 @@ public class FragPassInput extends DialogFragment implements
 
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle arg0) {
-		super.onSaveInstanceState(arg0);
-		Utils.log(this, "saved instance state");
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		Utils.log(this, " destroyed");
-	}
 }
