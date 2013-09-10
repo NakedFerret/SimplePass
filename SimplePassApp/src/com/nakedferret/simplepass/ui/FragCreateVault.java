@@ -21,6 +21,7 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
+import com.nakedferret.simplepass.IVaultInteractionListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -43,7 +44,7 @@ public class FragCreateVault extends SherlockFragment implements
 
 	ProgressDialog progressDialog;
 
-	private OnVaultCreatedListener mListener;
+	private IVaultInteractionListener mListener;
 	private int iters;
 
 	public FragCreateVault() {
@@ -54,10 +55,10 @@ public class FragCreateVault extends SherlockFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnVaultCreatedListener) activity;
+			mListener = (IVaultInteractionListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+					+ " must implement IVaultInteractionListener");
 		}
 	}
 
@@ -108,12 +109,15 @@ public class FragCreateVault extends SherlockFragment implements
 
 		ContentValues values = Utils.createVault(name, pass, iterations);
 		ContentResolver r = getActivity().getContentResolver();
-		r.insert(Utils.buildContentUri(Vault.TABLE_NAME), values);
-		onVaultSaved();
+		Uri vaultUri = r
+				.insert(Utils.buildContentUri(Vault.TABLE_NAME), values);
+		onVaultSaved(vaultUri);
 	}
 
 	@UiThread
-	void onVaultSaved() {
+	void onVaultSaved(Uri vaultUri) {
 		progressDialog.dismiss();
+		if (mListener != null)
+			mListener.onVaultCreated(vaultUri);
 	}
 }

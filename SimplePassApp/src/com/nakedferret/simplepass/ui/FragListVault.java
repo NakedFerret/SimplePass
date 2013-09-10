@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.IVaultInteractionListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
@@ -25,7 +26,7 @@ public class FragListVault extends SherlockListFragment implements
 	private final String[] PROJECTION = { Vault.COL_NAME };
 	private final int[] VIEWS = { android.R.id.text1 };
 
-	private OnVaultSelectedListener mListener;
+	private IVaultInteractionListener mListener;
 	private SimpleCursorAdapter adapter;
 
 	public FragListVault() {
@@ -43,10 +44,10 @@ public class FragListVault extends SherlockListFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnVaultSelectedListener) activity;
+			mListener = (IVaultInteractionListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnVaultSelectedListener");
+					+ " must implement IVaultInteractionListener");
 		}
 	}
 

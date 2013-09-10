@@ -2,7 +2,7 @@ package com.nakedferret.simplepass;
 
 import android.net.Uri;
 
-interface IVaultInteractionListener {
+public interface IVaultInteractionListener {
 	// User selects a vault in the UI
 	void onVaultSelected(Uri vault);
 
@@ -13,7 +13,7 @@ interface IVaultInteractionListener {
 	void onVaultCreated(Uri vault);
 
 	// Alert a vault was unlocked
-	void onVaultUnlocked(Uri vault);
+	void onVaultUnlocked(Uri vault, byte[] key, byte[] iv);
 
 	// Alert a vault was locked
 	void onVaultLocked(Uri vault);

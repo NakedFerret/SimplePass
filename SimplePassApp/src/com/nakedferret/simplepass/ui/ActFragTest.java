@@ -8,20 +8,16 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.nakedferret.simplepass.IAccountInteractionListener;
+import com.nakedferret.simplepass.IVaultInteractionListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServicePassword;
 import com.nakedferret.simplepass.ServicePassword_;
 import com.nakedferret.simplepass.Utils;
-import com.nakedferret.simplepass.ui.BroadcastVaultReceiver.OnVaultInteractionListerner;
-import com.nakedferret.simplepass.ui.FragCreateAccount.OnAccountCreatedListener;
-import com.nakedferret.simplepass.ui.FragCreateVault.OnVaultCreatedListener;
-import com.nakedferret.simplepass.ui.FragListAccount.OnAccountSelectedListener;
-import com.nakedferret.simplepass.ui.FragListVault.OnVaultSelectedListener;
 
 @EActivity(R.layout.act_frag_test)
-public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
-		OnAccountCreatedListener, OnAccountSelectedListener,
-		OnVaultSelectedListener, OnVaultInteractionListerner {
+public class ActFragTest extends ActFloating implements
+		IAccountInteractionListener, IVaultInteractionListener {
 
 	private BroadcastVaultReceiver receiver;
 	private FragPassInput fragPasswordInput;
@@ -110,6 +106,30 @@ public class ActFragTest extends ActFloating implements OnVaultCreatedListener,
 	public void onDestroy() {
 		super.onDestroy();
 		Utils.log(this, " destroyed");
+	}
+
+	@Override
+	public void requestCreateVault() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onVaultIncorrectPassword(Uri vault) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onTryVaultResult(Uri vault, boolean open) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void requestCreateAccount(Uri vault) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

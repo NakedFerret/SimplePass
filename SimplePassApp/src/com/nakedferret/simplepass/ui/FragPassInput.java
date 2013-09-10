@@ -15,15 +15,14 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.IVaultInteractionListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServicePassword;
 import com.nakedferret.simplepass.ServicePassword_;
-import com.nakedferret.simplepass.Utils;
-import com.nakedferret.simplepass.ui.BroadcastVaultReceiver.OnVaultInteractionListerner;
 
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment implements
-		OnVaultInteractionListerner {
+		IVaultInteractionListener {
 
 	private static final String ARG_VAULT_URI = "vault_uri";
 
@@ -39,7 +38,7 @@ public class FragPassInput extends DialogFragment implements
 	@ViewById
 	ProgressBar progressIndicator;
 
-	private OnVaultInteractionListerner mListener;
+	private IVaultInteractionListener mListener;
 	private Uri vaultUri;
 
 	public static FragPassInput newInstance(Uri uri) {
@@ -58,7 +57,7 @@ public class FragPassInput extends DialogFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnVaultInteractionListerner) activity;
+			mListener = (IVaultInteractionListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnVaultInteractionListerner");
@@ -117,13 +116,39 @@ public class FragPassInput extends DialogFragment implements
 		infoText.setVisibility(View.VISIBLE);
 		progressIndicator.setVisibility(View.VISIBLE);
 	}
+	
+	@Override
+	public void onVaultIncorrectPassword(Uri vault) {
+		// TODO implement
 
-	// TODO: broadcast receiver cannot access listener for some reason
+	}
+
+	// The rest of these methods are not needed
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
 
 	}
 
 	public void onVaultLocked(Uri vault) {
+
+	}
+
+	@Override
+	public void onVaultSelected(Uri vault) {
+
+	}
+
+	@Override
+	public void requestCreateVault() {
+
+	}
+
+	@Override
+	public void onVaultCreated(Uri vault) {
+
+	}
+
+	@Override
+	public void onTryVaultResult(Uri vault, boolean open) {
 
 	}
 

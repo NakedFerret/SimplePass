@@ -1,7 +1,5 @@
 package com.nakedferret.simplepass.ui;
 
-import com.nakedferret.simplepass.ServicePassword;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,19 +7,15 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.nakedferret.simplepass.IVaultInteractionListener;
+import com.nakedferret.simplepass.ServicePassword;
+
 public class BroadcastVaultReceiver extends BroadcastReceiver {
 
-	public interface OnVaultInteractionListerner {
-		void onVaultUnlocked(Uri vault, byte[] key, byte[] iv);
-
-		void onVaultLocked(Uri vault);
-	}
-
-	private OnVaultInteractionListerner listener;
+	private IVaultInteractionListener listener;
 	private Context c;
 
-	public BroadcastVaultReceiver(Context c,
-			OnVaultInteractionListerner listener) {
+	public BroadcastVaultReceiver(Context c, IVaultInteractionListener listener) {
 		register(c);
 		this.listener = listener;
 	}
