@@ -14,18 +14,21 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
+@EFragment
 public class FragListAccount extends SherlockListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor> {
-	private static final String ARG_VAULT_URI = "vault_uri";
 
-	private Uri vaultUri;
-	private CursorAdapter adapter;
+	@FragmentArg
+	String vaultUriString;
 
 	private final int LAYOUT = R.layout.listview_account;
 	private final String[] PROJECTION = { AccountWGroup.COL_NAME,
@@ -35,28 +38,12 @@ public class FragListAccount extends SherlockListFragment implements
 	private final String SELECTION = Account.COL_VAULT_ID + " = ?";
 
 	private String[] selectionArgs;
-
+	private Uri vaultUri;
+	private CursorAdapter adapter;
 	private IFragListener mListener;
-
-	public static FragListAccount newInstance(Uri vaultUri) {
-		FragListAccount fragment = new FragListAccount();
-		Bundle args = new Bundle();
-		args.putString(ARG_VAULT_URI, vaultUri.toString());
-		fragment.setArguments(args);
-		return fragment;
-	}
 
 	public FragListAccount() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			vaultUri = Uri.parse(getArguments().getString(ARG_VAULT_URI));
-			selectionArgs = new String[] { vaultUri.getLastPathSegment() };
-		}
 	}
 
 	@Override
@@ -77,6 +64,12 @@ public class FragListAccount extends SherlockListFragment implements
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
 		getLoaderManager().initLoader(0, null, this);
+	}
+
+	@AfterViews
+	void init() {
+		vaultUri = Uri.parse(vaultUriString);
+		selectionArgs = new String[] { vaultUri.getLastPathSegment() };
 	}
 
 	@Override

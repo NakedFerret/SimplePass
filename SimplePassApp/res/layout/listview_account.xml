@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:text="Account" />
+        android:text="Account"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@android:id/text2"

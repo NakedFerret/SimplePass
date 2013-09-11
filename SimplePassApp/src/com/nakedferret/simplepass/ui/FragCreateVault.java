@@ -42,9 +42,6 @@ public class FragCreateVault extends SherlockFragment implements
 	@IntArrayRes
 	int[] securityLevelIterArray;
 
-	@App
-	ApplicationSimplePass app;
-
 	ProgressDialog progressDialog;
 
 	private int iters;

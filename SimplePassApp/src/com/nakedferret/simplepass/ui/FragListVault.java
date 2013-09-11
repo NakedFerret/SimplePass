@@ -13,11 +13,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
+@EFragment
 public class FragListVault extends SherlockListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor> {
 

@@ -2,7 +2,6 @@ package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +13,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.ApplicationSimplePass;
 import com.nakedferret.simplepass.IFragListener;
@@ -22,8 +22,6 @@ import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment {
-
-	private static final String ARG_VAULT_URI = "vault_uri";
 
 	@ViewById
 	EditText passwordInput;
@@ -40,16 +38,11 @@ public class FragPassInput extends DialogFragment {
 	@App
 	ApplicationSimplePass app;
 
+	@FragmentArg
+	String vaultUriString;
+
 	private IFragListener mListener;
 	private Uri vaultUri;
-
-	public static FragPassInput newInstance(Uri uri) {
-		FragPassInput fragment = new FragPassInput_();
-		Bundle args = new Bundle();
-		args.putString(ARG_VAULT_URI, uri.toString());
-		fragment.setArguments(args);
-		return fragment;
-	}
 
 	public FragPassInput() {
 		// Required empty public constructor
@@ -66,10 +59,9 @@ public class FragPassInput extends DialogFragment {
 		}
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		vaultUri = Uri.parse(getArguments().getString(ARG_VAULT_URI));
+	@AfterViews
+	void init() {
+		vaultUri = Uri.parse(vaultUriString);
 	}
 
 	@Override

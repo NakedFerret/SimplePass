@@ -13,9 +13,11 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
@@ -36,9 +38,12 @@ public class FragCreateAccount extends SherlockFragment implements
 	@ViewById
 	Spinner groupSpinner;
 
-	private OnAccountCreatedListener mListener;
+	@FragmentArg
+	String vaultUriString;
 
+	private OnAccountCreatedListener mListener;
 	private SimpleCursorAdapter adapter;
+	private Uri vaultUri;
 
 	public FragCreateAccount() {
 		// Required empty public constructor
@@ -55,12 +60,6 @@ public class FragCreateAccount extends SherlockFragment implements
 		getLoaderManager().initLoader(0, null, this);
 	}
 
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.onAccountCreated(uri);
-		}
-	}
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -70,6 +69,11 @@ public class FragCreateAccount extends SherlockFragment implements
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
 		}
+	}
+
+	@AfterViews
+	void init() {
+		vaultUri = Uri.parse(vaultUriString);
 	}
 
 	@Override

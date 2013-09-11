@@ -1,6 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -65,8 +66,8 @@ public class ActFragTest extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	public void requestCreateAccount() {
-		showFragCreateAccount();
+	public void requestCreateAccount(Uri vaultUri) {
+		showFragCreateAccount(vaultUri);
 	}
 
 	@Override
@@ -88,34 +89,7 @@ public class ActFragTest extends ActFloating implements IUIListener,
 	private void showFragListVault() {
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, new FragListVault());
-		t.commit();
-	}
-
-	private void showFragListAccount(Uri vault) {
-		FragmentManager m = getSupportFragmentManager();
-		m.popBackStack(); // Remove the password input fragment
-		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, FragListAccount.newInstance(vault));
-		t.addToBackStack(null);
-		t.commit();
-	}
-
-	private void showFragPassInput(Uri vaultUri) {
-		fragPasswordInput = FragPassInput.newInstance(vaultUri);
-
-		FragmentManager m = getSupportFragmentManager();
-		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, fragPasswordInput);
-		t.addToBackStack(null);
-		t.commit();
-	}
-
-	private void showFragCreateAccount() {
-		FragmentManager m = getSupportFragmentManager();
-		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, new FragCreateAccount_());
-		t.addToBackStack(null);
+		t.replace(R.id.fragmentContainer, new FragListVault_());
 		t.commit();
 	}
 
@@ -126,6 +100,47 @@ public class ActFragTest extends ActFloating implements IUIListener,
 		t.addToBackStack(null);
 		t.commit();
 
+	}
+
+	private void showFragPassInput(Uri vaultUri) {
+		fragPasswordInput = FragPassInput_.builder()
+				.vaultUriString(vaultUri.toString()).build();
+
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, fragPasswordInput);
+		t.addToBackStack(null);
+		t.commit();
+	}
+
+	private void showFragListAccount(Uri vault) {
+
+		Fragment f = FragListAccount_.builder()
+				.vaultUriString(vault.toString()).build();
+
+		FragmentManager m = getSupportFragmentManager();
+		m.popBackStack(); // Remove the password input fragment
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
+		t.commit();
+	}
+
+	private void showFragCreateAccount(Uri vaultUri) {
+		Fragment f = FragCreateAccount_.builder()
+				.vaultUriString(vaultUri.toString()).build();
+
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
+		t.commit();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		app.detachUIListener();
 	}
 
 }

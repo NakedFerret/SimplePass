@@ -12,5 +12,5 @@ public interface IFragListener {
 
 	void requestCreateVault();
 
-	void requestCreateAccount();
+	void requestCreateAccount(Uri vaultUri);
 }
