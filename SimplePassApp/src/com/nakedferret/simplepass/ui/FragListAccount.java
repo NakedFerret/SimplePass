@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.nakedferret.simplepass.IVaultInteractionListener;
+import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.R;
@@ -36,7 +36,7 @@ public class FragListAccount extends SherlockListFragment implements
 
 	private String[] selectionArgs;
 
-	private IVaultInteractionListener mListener;
+	private IFragListener mListener;
 
 	public static FragListAccount newInstance(Uri vaultUri) {
 		FragListAccount fragment = new FragListAccount();
@@ -63,10 +63,10 @@ public class FragListAccount extends SherlockListFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IVaultInteractionListener) activity;
+			mListener = (IFragListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement IVaultInteractionListener");
+					+ " must implement IFragListener");
 		}
 	}
 

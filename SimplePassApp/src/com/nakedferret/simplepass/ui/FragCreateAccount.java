@@ -29,8 +29,6 @@ import com.nakedferret.simplepass.Utils;
 public class FragCreateAccount extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
 
-	private static final String ARG_ACCOUNT_ID = "account";
-
 	private static final int LAYOUT = android.R.layout.simple_spinner_item;
 	private static final String[] PROJECTION = { Group.COL_NAME };
 	private static final int[] VIEWS = { android.R.id.text1 };
@@ -39,29 +37,11 @@ public class FragCreateAccount extends SherlockFragment implements
 	Spinner groupSpinner;
 
 	private OnAccountCreatedListener mListener;
-	private long accountId;
 
 	private SimpleCursorAdapter adapter;
 
-	public static FragCreateAccount newInstance(long accountId) {
-		FragCreateAccount fragment = new FragCreateAccount_();
-		Bundle args = new Bundle();
-		args.putLong(ARG_ACCOUNT_ID, accountId);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
 	public FragCreateAccount() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			accountId = getArguments().getLong(ARG_ACCOUNT_ID);
-		}
-		Utils.log(this, "accountId = " + accountId);
 	}
 
 	@Override
@@ -124,10 +104,7 @@ public class FragCreateAccount extends SherlockFragment implements
 
 	@Click(R.id.createButton)
 	void onCreateButton() {
-		// testAccount();
-		Intent i = new Intent(getActivity(), ServicePassword_.class);
-		i.setAction(ServicePassword.VAULT_LOCKED);
-		getActivity().startService(i);
+		testAccount();
 	}
 
 	@Background

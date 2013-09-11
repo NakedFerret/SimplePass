@@ -14,30 +14,22 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 
-import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EService;
-import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 
 @EService
-public class ServicePassword extends Service {
-
-	public static final String VAULT_UNLOCKED = "vault_unlocked";
-	public static final String VAULT_LOCKED = "vault_locked";
-
-	public static final String EXTRA_VAULT_URI = "vault_uri";
-	public static final String EXTRA_VAULT_KEY = "vault_key";
-	public static final String EXTRA_VAULT_IV = "vault_iv";
-
-	public static final String UNLOCK_VAULT = "unlock_vault";
-	public static final String LOCK_VAULT = "lock_vault";
-
-	public static final String EXTRA_VAULT_PASSWORD = "vault_pass";
+public class ServicePassword extends Service implements IWorkerListener {
 
 	private Map<Uri, UnlockedVault> unlockedVaults = new HashMap<Uri, UnlockedVault>();
+
+	public class LocalBinder extends Binder {
+		ServicePassword getService() {
+			return ServicePassword.this;
+		}
+	}
 
 	private class UnlockedVault {
 		Uri vault;
@@ -54,72 +46,17 @@ public class ServicePassword extends Service {
 	}
 
 	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
-
-	@Override
 	public int onStartCommand(Intent i, int flags, int startId) {
-		// Sometimes android sends an empty intent to restart the service
-		if (i != null)
-			handleIntent(i);
 		return START_STICKY;
 	}
 
-	void handleIntent(Intent i) {
-		String uriString = i.getStringExtra(EXTRA_VAULT_URI);
-		Uri uri = Uri.parse(uriString);
-
-		if (UNLOCK_VAULT.equals(i.getAction())) {
-			String pass = i.getStringExtra(EXTRA_VAULT_PASSWORD);
-			handleUnlockVault(uri, pass);
-		} else if (LOCK_VAULT.equals(i.getAction())) {
-			lockVault(uri);
-		}
+	@Override
+	public IBinder onBind(Intent intent) {
+		return new LocalBinder();
 	}
 
-	// Use this method to join back to the UI thread
-	@UiThread
-	void dispatchIntent(Intent i) {
-		LocalBroadcastManager m = LocalBroadcastManager.getInstance(this);
-		m.sendBroadcast(i);
-	}
-
-	@Background
-	void handleUnlockVault(Uri uri, String pass) {
-		Intent i; // intent to broadcast VAULT_UNLOCKED or VAULT_LOCKED
-		if (vaultAlreadyUnlocked(uri) || unlockVault(uri, pass)) {
-			byte[] iv = unlockedVaults.get(uri).iv;
-			byte[] key = unlockedVaults.get(uri).key;
-
-			i = new Intent(VAULT_UNLOCKED);
-			i.putExtra(EXTRA_VAULT_URI, uri.toString());
-			i.putExtra(EXTRA_VAULT_IV, iv);
-			i.putExtra(EXTRA_VAULT_KEY, key);
-		} else {
-			i = new Intent(VAULT_LOCKED);
-			i.putExtra(EXTRA_VAULT_URI, uri.toString());
-		}
-
-		dispatchIntent(i);
-		// TODO: implement unlock vault
-		// generate the key, check the hash,
-		// and send an intent that the vault was unlocked if successful and
-		// locked if failed
-
-	}
-
-	private boolean vaultAlreadyUnlocked(Uri uri) {
-		return unlockedVaults.containsKey(uri);
-	}
-
-	// Attempts to unlock vault. Returns true if vault unlocks, otherwise
-	// returns false
-	private boolean unlockVault(Uri uri, String pass) {
-		// When we check to see if a vault is unlocked we pass a null password
-		// TODO: create a CHECK_VAULT action
-		if (pass == null)
-			return false;
+	@Override
+	public boolean unlockVault(Uri uri, String pass) {
 
 		Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 		ContentValues vault = Utils.getVault(cursor);
@@ -152,7 +89,6 @@ public class ServicePassword extends Service {
 		}
 
 		Utils.log(this, "unlock unsuccessful");
-		// We couldn't unlock
 		return false;
 	}
 
@@ -162,9 +98,31 @@ public class ServicePassword extends Service {
 			unlockedVaults.put(uri, v);
 	}
 
-	private void lockVault(Uri uri) {
-		// TODO: implement lock vault
-		// null the key and iv, and send an intent that the vault was locked
+	@Override
+	public Uri createVault(String name, String password, int iterations) {
+		return null;
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public Uri createAccount(Uri vault, Uri group, String name,
+			String username, String password) {
+		return null;
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void lockVault(Uri vault) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isVaultUnlocked(Uri vault) {
+		return false;
+		// TODO Auto-generated method stub
+
 	}
 
 }

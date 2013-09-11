@@ -1,134 +1,130 @@
 package com.nakedferret.simplepass.ui;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.nakedferret.simplepass.IAccountInteractionListener;
-import com.nakedferret.simplepass.IVaultInteractionListener;
+import com.nakedferret.simplepass.ApplicationSimplePass;
+import com.nakedferret.simplepass.IFragListener;
+import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.ServicePassword;
-import com.nakedferret.simplepass.ServicePassword_;
 import com.nakedferret.simplepass.Utils;
 
 @EActivity(R.layout.act_frag_test)
-public class ActFragTest extends ActFloating implements
-		IAccountInteractionListener, IVaultInteractionListener {
+public class ActFragTest extends ActFloating implements IUIListener,
+		IFragListener {
 
-	private BroadcastVaultReceiver receiver;
+	@App
+	ApplicationSimplePass app;
+
 	private FragPassInput fragPasswordInput;
-	private boolean vaultChecked;
-
-	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
-		Utils.log(this, "created");
-	}
 
 	@AfterViews
 	void initializeInterface() {
-		FragmentManager m = getSupportFragmentManager();
-		FragmentTransaction t = m.beginTransaction();
-		t.replace(R.id.fragmentContainer, new FragListVault());
-		t.commit();
-
-		receiver = new BroadcastVaultReceiver(this, this);
-		vaultChecked = false;
+		app.attachUIListener(this);
+		showFragListVault();
 	}
 
 	@Override
-	public void onVaultCreated(Uri uri) {
+	public void onVaultSelected(Uri vaultUri) {
+		if (app.isVaultUnlocked(vaultUri))
+			showFragListAccount(vaultUri);
+		else
+			showFragPassInput(vaultUri);
+	}
+
+	@Override
+	public void requestCreateVault() {
+		showFragCreateVault();
 
 	}
 
 	@Override
-	public void onVaultSelected(Uri uri) {
-		Intent i = new Intent(this, ServicePassword_.class);
-		i.setAction(ServicePassword.UNLOCK_VAULT);
-		i.putExtra(ServicePassword.EXTRA_VAULT_URI, uri.toString());
-		startService(i);
-
+	public void onVaultCreated(Uri vaultUri) {
+		showFragListAccount(vaultUri);
 	}
 
 	@Override
 	// The user entered the correct password
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-		FragmentManager m = getSupportFragmentManager();
+		showFragListAccount(vault);
+	}
 
-		if (!vaultChecked)
-			m.popBackStack(); // Remove the password input fragment
+	@Override
+	public void onVaultUnlockedFailed(Uri vault) {
+		fragPasswordInput.onPasswordIncorrect();
 
-		FragmentTransaction t = m.beginTransaction();
-
-		t.replace(R.id.fragmentContainer, FragListAccount.newInstance(vault));
-		t.addToBackStack(null);
-		t.commit();
-		vaultChecked = true;
 	}
 
 	@Override
 	public void onVaultLocked(Uri vault) {
-		if (!vaultChecked) {
-			FragmentManager m = getSupportFragmentManager();
-			FragmentTransaction t = m.beginTransaction();
-
-			t.replace(R.id.fragmentContainer, FragPassInput.newInstance(vault));
-			t.addToBackStack(null);
-			t.commit();
-		}
-
-		if (fragPasswordInput != null)
-			fragPasswordInput.onVaultLocked(vault);
-
-		vaultChecked = true;
+		// Can't think of when this will be called...
 	}
 
 	@Override
-	public void onAccountCreated(Uri uri) {
+	public void requestCreateAccount() {
+		showFragCreateAccount();
+	}
+
+	@Override
+	public void onAccountCreated(Uri vaultUri) {
+		showFragListAccount(vaultUri);
 	}
 
 	@Override
 	public void onAccountSelected(Uri uri) {
-
+		Utils.log(this, "account selected: " + uri.toString());
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle arg0) {
-		super.onSaveInstanceState(arg0);
-		Utils.log(this, "saved instance state");
+	public void onCancel() {
+		FragmentManager m = getSupportFragmentManager();
+		m.popBackStack();
 	}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		Utils.log(this, " destroyed");
+	private void showFragListVault() {
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, new FragListVault());
+		t.commit();
 	}
 
-	@Override
-	public void requestCreateVault() {
-		// TODO Auto-generated method stub
-
+	private void showFragListAccount(Uri vault) {
+		FragmentManager m = getSupportFragmentManager();
+		m.popBackStack(); // Remove the password input fragment
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, FragListAccount.newInstance(vault));
+		t.addToBackStack(null);
+		t.commit();
 	}
 
-	@Override
-	public void onVaultIncorrectPassword(Uri vault) {
-		// TODO Auto-generated method stub
+	private void showFragPassInput(Uri vaultUri) {
+		fragPasswordInput = FragPassInput.newInstance(vaultUri);
 
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, fragPasswordInput);
+		t.addToBackStack(null);
+		t.commit();
 	}
 
-	@Override
-	public void onTryVaultResult(Uri vault, boolean open) {
-		// TODO Auto-generated method stub
-
+	private void showFragCreateAccount() {
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, new FragCreateAccount_());
+		t.addToBackStack(null);
+		t.commit();
 	}
 
-	@Override
-	public void requestCreateAccount(Uri vault) {
-		// TODO Auto-generated method stub
+	private void showFragCreateVault() {
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, new FragCreateVault_());
+		t.addToBackStack(null);
+		t.commit();
 
 	}
 

@@ -1,6 +1,5 @@
 package com.nakedferret.simplepass.ui;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -14,6 +13,7 @@ import android.widget.Spinner;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -21,7 +21,7 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import com.nakedferret.simplepass.IVaultInteractionListener;
+import com.nakedferret.simplepass.ApplicationSimplePass;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -42,9 +42,11 @@ public class FragCreateVault extends SherlockFragment implements
 	@IntArrayRes
 	int[] securityLevelIterArray;
 
+	@App
+	ApplicationSimplePass app;
+
 	ProgressDialog progressDialog;
 
-	private IVaultInteractionListener mListener;
 	private int iters;
 
 	public FragCreateVault() {
@@ -52,20 +54,8 @@ public class FragCreateVault extends SherlockFragment implements
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		try {
-			mListener = (IVaultInteractionListener) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement IVaultInteractionListener");
-		}
-	}
-
-	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
 	}
 
 	public interface OnVaultCreatedListener {
@@ -117,7 +107,5 @@ public class FragCreateVault extends SherlockFragment implements
 	@UiThread
 	void onVaultSaved(Uri vaultUri) {
 		progressDialog.dismiss();
-		if (mListener != null)
-			mListener.onVaultCreated(vaultUri);
 	}
 }

@@ -1,7 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,17 +11,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.IVaultInteractionListener;
+import com.nakedferret.simplepass.ApplicationSimplePass;
+import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.ServicePassword;
-import com.nakedferret.simplepass.ServicePassword_;
+import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_pass_input)
-public class FragPassInput extends DialogFragment implements
-		IVaultInteractionListener {
+public class FragPassInput extends DialogFragment {
 
 	private static final String ARG_VAULT_URI = "vault_uri";
 
@@ -38,7 +37,10 @@ public class FragPassInput extends DialogFragment implements
 	@ViewById
 	ProgressBar progressIndicator;
 
-	private IVaultInteractionListener mListener;
+	@App
+	ApplicationSimplePass app;
+
+	private IFragListener mListener;
 	private Uri vaultUri;
 
 	public static FragPassInput newInstance(Uri uri) {
@@ -57,7 +59,7 @@ public class FragPassInput extends DialogFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IVaultInteractionListener) activity;
+			mListener = (IFragListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnVaultInteractionListerner");
@@ -91,21 +93,14 @@ public class FragPassInput extends DialogFragment implements
 	@Click(R.id.cancelButton)
 	void cancel() {
 		if (mListener != null)
-			mListener.onVaultLocked(vaultUri);
+			mListener.onCancel();
 	}
 
 	@Click(R.id.unlockButton)
 	void unlock() {
-		requestUnlockVault(passwordInput.getText().toString());
+		String password = passwordInput.getText().toString();
+		app.unlockVault(vaultUri, password);
 		showProgress();
-	}
-
-	private void requestUnlockVault(String password) {
-		Intent i = new Intent(getActivity(), ServicePassword_.class);
-		i.setAction(ServicePassword.UNLOCK_VAULT);
-		i.putExtra(ServicePassword.EXTRA_VAULT_PASSWORD, password);
-		i.putExtra(ServicePassword.EXTRA_VAULT_URI, vaultUri.toString());
-		getActivity().startService(i);
 	}
 
 	private void showProgress() {
@@ -116,40 +111,10 @@ public class FragPassInput extends DialogFragment implements
 		infoText.setVisibility(View.VISIBLE);
 		progressIndicator.setVisibility(View.VISIBLE);
 	}
-	
-	@Override
-	public void onVaultIncorrectPassword(Uri vault) {
-		// TODO implement
 
-	}
-
-	// The rest of these methods are not needed
-	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-
-	}
-
-	public void onVaultLocked(Uri vault) {
-
-	}
-
-	@Override
-	public void onVaultSelected(Uri vault) {
-
-	}
-
-	@Override
-	public void requestCreateVault() {
-
-	}
-
-	@Override
-	public void onVaultCreated(Uri vault) {
-
-	}
-
-	@Override
-	public void onTryVaultResult(Uri vault, boolean open) {
-
+	public void onPasswordIncorrect() {
+		// TODO: implement onPasswordIncorrect
+		Utils.log(this, "password incorrect!");
 	}
 
 }
