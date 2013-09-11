@@ -22,37 +22,48 @@
 
     <ProgressBar
         android:id="@+id/progressIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/infoText"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/passwordInput"
+        android:layout_below="@+id/cancelButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cancelButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:id="@+id/horizontalSeparator"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_below="@+id/progressIndicator"
+        android:layout_centerHorizontal="true" >
+    </View>
 
     <Button
         android:id="@id/cancelButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/progressIndicator"
-        android:layout_toLeftOf="@+id/progressIndicator"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/passwordInput"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/horizontalSeparator"
         android:text="@string/cancel" />
 
     <Button
         android:id="@+id/unlockButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/progressIndicator"
+        android:layout_alignBottom="@+id/cancelButton"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/progressIndicator"
+        android:layout_toRightOf="@+id/horizontalSeparator"
         android:text="@string/unlock" />
-
-    <TextView
-        android:id="@+id/infoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordInput"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

@@ -57,7 +57,6 @@ public class ActFragTest extends ActFloating implements IUIListener,
 	@Override
 	public void onVaultUnlockedFailed(Uri vault) {
 		fragPasswordInput.onPasswordIncorrect();
-
 	}
 
 	@Override
