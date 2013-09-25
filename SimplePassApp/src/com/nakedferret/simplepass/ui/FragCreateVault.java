@@ -1,8 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.net.Uri;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,21 +12,20 @@ import android.widget.Spinner;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import com.nakedferret.simplepass.ApplicationSimplePass;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_vault)
 public class FragCreateVault extends SherlockFragment implements
 		OnItemSelectedListener {
+
+	@App
+	ApplicationSimplePass app;
 
 	@ViewById
 	Spinner iterationSpinner;
@@ -84,25 +81,13 @@ public class FragCreateVault extends SherlockFragment implements
 	void onCreateVault() {
 		progressDialog = ProgressDialog.show(getActivity(), "Securing Vault",
 				null, true, true);
-		createAndSaveVault();
-	}
-
-	@Background
-	void createAndSaveVault() {
 
 		String pass = vaultPasswordInput.getText().toString();
 		String name = vaultNameInput.getText().toString();
 		int iterations = iters;
 
-		ContentValues values = Utils.createVault(name, pass, iterations);
-		ContentResolver r = getActivity().getContentResolver();
-		Uri vaultUri = r
-				.insert(Utils.buildContentUri(Vault.TABLE_NAME), values);
-		onVaultSaved(vaultUri);
+		app.createVault(name, pass, iterations);
+
 	}
 
-	@UiThread
-	void onVaultSaved(Uri vaultUri) {
-		progressDialog.dismiss();
-	}
 }

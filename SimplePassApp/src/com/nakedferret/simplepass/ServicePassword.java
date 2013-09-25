@@ -10,6 +10,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -100,8 +101,12 @@ public class ServicePassword extends Service implements IWorkerListener {
 
 	@Override
 	public Uri createVault(String name, String password, int iterations) {
-		return null;
-		// TODO Auto-generated method stub
+		ContentValues values = Utils.createVault(name, password, iterations);
+		ContentResolver r = getContentResolver();
+		Uri vaultUri = r
+				.insert(Utils.buildContentUri(Vault.TABLE_NAME), values);
+
+		return vaultUri;
 	}
 
 	@Override
