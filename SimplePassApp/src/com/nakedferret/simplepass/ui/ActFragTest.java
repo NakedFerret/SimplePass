@@ -40,7 +40,6 @@ public class ActFragTest extends ActFloating implements IUIListener,
 	@Override
 	public void requestCreateVault() {
 		showFragCreateVault();
-
 	}
 
 	@Override

@@ -13,6 +13,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
@@ -21,7 +25,7 @@ import com.nakedferret.simplepass.Utils;
 
 @EFragment
 public class FragListVault extends SherlockListFragment implements
-		OnItemClickListener, LoaderCallbacks<Cursor> {
+		OnItemClickListener, LoaderCallbacks<Cursor>, OnMenuItemClickListener {
 
 	private final int LAYOUT = android.R.layout.simple_list_item_1;
 	private final Uri URI = Utils.buildContentUri(Vault.TABLE_NAME);
@@ -43,6 +47,15 @@ public class FragListVault extends SherlockListFragment implements
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.add("Create Vault")
+				.setShowAsActionFlags(
+						MenuItem.SHOW_AS_ACTION_ALWAYS
+								| MenuItem.SHOW_AS_ACTION_WITH_TEXT)
+				.setOnMenuItemClickListener(this);
+	}
+
+	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
@@ -60,6 +73,8 @@ public class FragListVault extends SherlockListFragment implements
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
 		getLoaderManager().initLoader(0, null, this);
+
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -72,10 +87,6 @@ public class FragListVault extends SherlockListFragment implements
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
-	}
-
-	public interface OnVaultSelectedListener {
-		public void onVaultSelected(Uri uri);
 	}
 
 	@Override
@@ -100,6 +111,12 @@ public class FragListVault extends SherlockListFragment implements
 		if (mListener != null)
 			mListener.onVaultSelected(Utils.buildContentUri(Vault.TABLE_NAME,
 					id));
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		mListener.requestCreateVault();
+		return true;
 	}
 
 }
