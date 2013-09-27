@@ -68,7 +68,7 @@ public class FragCreateAccount extends SherlockFragment implements
 			mListener = (IFragListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnFragmentInteractionListener");
+					+ " must implement IFragListener");
 		}
 	}
 
