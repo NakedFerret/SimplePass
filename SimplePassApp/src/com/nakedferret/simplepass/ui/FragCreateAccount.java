@@ -22,6 +22,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.PasswordStorageContract.Account;
 import com.nakedferret.simplepass.PasswordStorageContract.Group;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServicePassword;
 import com.nakedferret.simplepass.ServicePassword_;
@@ -41,7 +42,7 @@ public class FragCreateAccount extends SherlockFragment implements
 	@FragmentArg
 	String vaultUriString;
 
-	private OnAccountCreatedListener mListener;
+	private IFragListener mListener;
 	private SimpleCursorAdapter adapter;
 	private Uri vaultUri;
 
@@ -64,7 +65,7 @@ public class FragCreateAccount extends SherlockFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (OnAccountCreatedListener) activity;
+			mListener = (IFragListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
