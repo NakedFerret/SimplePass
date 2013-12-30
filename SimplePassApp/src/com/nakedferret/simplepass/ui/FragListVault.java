@@ -59,30 +59,21 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onStart() {
+		super.onStart();
+		URI = ContentProvider.createUri(Vault.class, null);
+
 		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
-		// getLoaderManager().initLoader(0, null, this);
 
-		URI = ContentProvider.createUri(Vault.class, null);
-		setHasOptionsMenu(true);
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		getActivity().setTitle(R.string.selectVaultTitle);
-		tryManualQuery();
-	}
-
-	@Background
-	void tryManualQuery() {
-		Cursor c = getActivity().getContentResolver().query(URI, null, null,
-				null, null);
-		setListAdapter(adapter);
-		adapter.changeCursor(c);
 	}
 
 	@Override
@@ -93,8 +84,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), URI, PROJECTION, null, null,
-				null);
+		return new CursorLoader(getActivity(), URI, null, null, null, null);
 	}
 
 	@Override
