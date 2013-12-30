@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.activeandroid.content.ContentProvider;
 import com.googlecode.androidannotations.annotations.EService;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 
@@ -101,12 +102,9 @@ public class ServicePassword extends Service implements IWorkerListener {
 
 	@Override
 	public Uri createVault(String name, String password, int iterations) {
-		ContentValues values = Utils.createVault(name, password, iterations);
-		ContentResolver r = getContentResolver();
-		Uri vaultUri = r
-				.insert(Utils.buildContentUri(Vault_.TABLE_NAME), values);
-
-		return vaultUri;
+		Vault v = Vault.createVault(name, password, iterations);
+		v.save();
+		return ContentProvider.createUri(Vault.class, v.getId());
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Group_;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.Vault;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends Fragment implements
@@ -113,23 +114,19 @@ public class FragCreateAccount extends Fragment implements
 	void testAccount() {
 		String masterPass = "master_password";
 
-		ContentValues vault = Utils.createVault("Personal", masterPass, 5000);
-
-		byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
-		byte[] iv = vault.getAsByteArray(Vault_.COL_IV);
-		byte[] key = Utils.getKey(masterPass, salt,
-				vault.getAsInteger(Vault_.COL_ITERATIONS));
+		Vault v = Vault.createVault("Personal", masterPass, 5000);
+		byte[] key = Utils.getKey(masterPass, v.salt, v.iterations);
 
 		String password = "account_pass";
 		String name = "test account";
 		String username = "test user";
 
 		ContentValues account = Utils.createAccount(1, 1, name, username,
-				password, key, iv);
+				password, key, v.iv);
 		Utils.log(this, "Created Account");
 
 		Utils.log(this, "Decrypting account...");
-		account = Utils.decryptAccount(account, key, iv);
+		account = Utils.decryptAccount(account, key, v.iv);
 		Utils.log(
 				this,
 				"Account username: "
