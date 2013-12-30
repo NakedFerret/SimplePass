@@ -1,10 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Button;
@@ -20,12 +16,7 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.Category;
-import com.nakedferret.simplepass.PasswordStorageContract.Account_;
-import com.nakedferret.simplepass.PasswordStorageContract.Group_;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
-import com.nakedferret.simplepass.PasswordStorageDbHelper;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.Vault;
 
 @EActivity(R.layout.act_main)
@@ -52,44 +43,6 @@ public class ActMain extends SherlockActivity {
 		Log.d("SimplePass", "Strict mode enabled...");
 		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
 		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
-		// Creates the database if the app is opened for the first time
-		initDB();
-		testActiveAndroid();
-	}
-
-	@Background
-	void testActiveAndroid() {
-		Vault workVault = new Vault();
-		workVault.name = "Work";
-		workVault.iterations = 1000;
-		workVault.save();
-
-		Vault personalVault = new Vault();
-		personalVault.name = "Personal";
-		personalVault.iterations = 500;
-		personalVault.save();
-
-		Category socialCategory = new Category();
-		socialCategory.name = "Social";
-		socialCategory.save();
-
-		Account a1 = new Account();
-		a1.name = "Facebook";
-		a1.vault = workVault;
-		a1.category = socialCategory;
-		a1.save();
-
-		Account a2 = new Account();
-		a2.name = "Facebook";
-		a2.vault = personalVault;
-		a2.category = socialCategory;
-		a2.save();
-	}
-
-	@Background
-	void initDB() {
-		// Upgrades or creates the database if needed
-		new PasswordStorageDbHelper(this).getWritableDatabase().close();
 	}
 
 	@Click(R.id.testDataButton)
