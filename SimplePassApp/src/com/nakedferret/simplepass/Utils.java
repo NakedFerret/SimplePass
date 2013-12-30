@@ -1,9 +1,12 @@
 package com.nakedferret.simplepass;
 
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -46,37 +49,10 @@ public class Utils {
 		return buildContentUri(table, 0);
 	}
 
-	public static ContentValues createVault(String name, String pass,
-			int iterations) {
-
-		try {
-			ContentValues values = new ContentValues();
-
-			String password = pass;
-			byte[] salt = new byte[SALT_SIZE];
-			new SecureRandom().nextBytes(salt);
-			byte[] keyValue = getKey(password, salt, iterations);
-
-			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
-
-			c.init(Cipher.ENCRYPT_MODE, key);
-			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
-			byte[] iv = c.getIV();
-			byte[] hash = getHash(encPass, salt);
-
-			values.put(Vault_.COL_NAME, name);
-			values.put(Vault_.COL_ITERATIONS, iterations);
-			values.put(Vault_.COL_IV, iv);
-			values.put(Vault_.COL_SALT, salt);
-			values.put(Vault_.COL_HASH, hash);
-
-			return values;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return new ContentValues();
+	public static byte[] getSalt() {
+		byte[] salt = new byte[SALT_SIZE];
+		new SecureRandom().nextBytes(salt);
+		return salt;
 	}
 
 	public static ContentValues createGroup(String name) {
@@ -88,7 +64,8 @@ public class Utils {
 	public static ContentValues getGroup(Cursor c) {
 		ContentValues group = new ContentValues();
 		group.put(Group_._ID, c.getLong(c.getColumnIndex(Group_._ID)));
-		group.put(Group_.COL_NAME, c.getString(c.getColumnIndex(Group_.COL_NAME)));
+		group.put(Group_.COL_NAME,
+				c.getString(c.getColumnIndex(Group_.COL_NAME)));
 		return group;
 	}
 
@@ -221,10 +198,32 @@ public class Utils {
 		vault.put(Vault_.COL_ITERATIONS,
 				c.getLong(c.getColumnIndex(Vault_.COL_ITERATIONS)));
 		vault.put(Vault_.COL_IV, c.getBlob(c.getColumnIndex(Vault_.COL_IV)));
-		vault.put(Vault_.COL_NAME, c.getString(c.getColumnIndex(Vault_.COL_NAME)));
+		vault.put(Vault_.COL_NAME,
+				c.getString(c.getColumnIndex(Vault_.COL_NAME)));
 		vault.put(Vault_.COL_SALT, c.getBlob(c.getColumnIndex(Vault_.COL_SALT)));
 		c.close();
 		return vault;
+	}
+
+	public static Cipher getEncryptionCipher(byte[] keyValue) {
+		Key key = new SecretKeySpec(keyValue, KEY_SPEC);
+		try {
+			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			c.init(Cipher.ENCRYPT_MODE, key);
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static byte[] encrypt(Cipher c, String password) {
+		try {
+			return c.doFinal(password.getBytes("UTF-8"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
