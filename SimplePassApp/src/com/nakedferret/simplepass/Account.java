@@ -21,4 +21,18 @@ public class Account extends Model {
 
 	@Column
 	public Vault vault;
+
+	public Account() {
+
+	}
+
+	public Account(String name, Category category, byte[] username,
+			byte[] password, Vault vault) {
+		this.name = name;
+		this.category = category;
+		this.username = username;
+		this.password = password;
+		this.vault = vault;
+	}
+
 }

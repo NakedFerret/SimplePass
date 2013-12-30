@@ -6,7 +6,15 @@ import com.activeandroid.annotation.Table;
 
 @Table
 public class Category extends Model {
-	
+
 	@Column
 	public String name;
+
+	public Category() {
+
+	}
+
+	public Category(String name) {
+		this.name = name;
+	}
 }
