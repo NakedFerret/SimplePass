@@ -27,11 +27,7 @@ import com.nakedferret.simplepass.Vault;
 public class FragListVault extends ListFragment implements OnItemClickListener,
 		LoaderCallbacks<Cursor> {
 
-	private final int LAYOUT = android.R.layout.simple_list_item_1;
-	private Uri URI = null;
-	private final String[] PROJECTION = { "name" };
-	private final int[] VIEWS = { android.R.id.text1 };
-
+	private static Uri URI = null;
 	private IFragListener mListener;
 	private SimpleCursorAdapter adapter;
 
@@ -61,11 +57,19 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		super.onStart();
 		URI = ContentProvider.createUri(Vault.class, null);
 
-		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
-				PROJECTION, VIEWS, 0);
+		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
 
 		getLoaderManager().initLoader(0, null, this);
+	}
+
+	private SimpleCursorAdapter getAdapter() {
+		final int LAYOUT = android.R.layout.simple_list_item_1;
+		final String[] PROJECTION = { "name" };
+		final int[] VIEWS = { android.R.id.text1 };
+
+		return new SimpleCursorAdapter(getActivity(), LAYOUT, null, PROJECTION,
+				VIEWS, 0);
 	}
 
 	@Override
