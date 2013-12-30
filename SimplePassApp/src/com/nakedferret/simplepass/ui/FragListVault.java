@@ -1,22 +1,19 @@
 package com.nakedferret.simplepass.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ListFragment;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SimpleCursorAdapter;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.activeandroid.content.ContentProvider;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -26,9 +23,10 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.Vault;
 
+@SuppressLint("NewApi")
 @EFragment
-public class FragListVault extends SherlockListFragment implements
-		OnItemClickListener, LoaderCallbacks<Cursor>, OnMenuItemClickListener {
+public class FragListVault extends ListFragment implements OnItemClickListener,
+		LoaderCallbacks<Cursor> {
 
 	private final int LAYOUT = android.R.layout.simple_list_item_1;
 	private Uri URI = null;
@@ -50,15 +48,6 @@ public class FragListVault extends SherlockListFragment implements
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		menu.add("Create Vault")
-				.setShowAsActionFlags(
-						MenuItem.SHOW_AS_ACTION_ALWAYS
-								| MenuItem.SHOW_AS_ACTION_WITH_TEXT)
-				.setOnMenuItemClickListener(this);
-	}
-
-	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
@@ -75,7 +64,7 @@ public class FragListVault extends SherlockListFragment implements
 		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
-//		getLoaderManager().initLoader(0, null, this);
+		// getLoaderManager().initLoader(0, null, this);
 
 		URI = ContentProvider.createUri(Vault.class, null);
 		setHasOptionsMenu(true);
@@ -88,10 +77,10 @@ public class FragListVault extends SherlockListFragment implements
 		tryManualQuery();
 	}
 
-	
 	@Background
 	void tryManualQuery() {
-		Cursor c = getActivity().getContentResolver().query(URI, null, null, null, null);
+		Cursor c = getActivity().getContentResolver().query(URI, null, null,
+				null, null);
 		setListAdapter(adapter);
 		adapter.changeCursor(c);
 	}
@@ -124,12 +113,6 @@ public class FragListVault extends SherlockListFragment implements
 		if (mListener != null)
 			mListener.onVaultSelected(Utils.buildContentUri(Vault_.TABLE_NAME,
 					id));
-	}
-
-	@Override
-	public boolean onMenuItemClick(MenuItem item) {
-		mListener.requestCreateVault();
-		return true;
 	}
 
 }

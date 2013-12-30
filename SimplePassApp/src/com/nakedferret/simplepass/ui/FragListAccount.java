@@ -1,35 +1,35 @@
 package com.nakedferret.simplepass.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ListFragment;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CursorAdapter;
+import android.widget.SimpleCursorAdapter;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
+import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
 @EFragment
-public class FragListAccount extends SherlockListFragment implements
-		OnItemClickListener, LoaderCallbacks<Cursor>, OnMenuItemClickListener {
+public class FragListAccount extends ListFragment implements
+		OnItemClickListener, LoaderCallbacks<Cursor> {
 
 	@FragmentArg
 	String vaultUriString;
@@ -68,17 +68,8 @@ public class FragListAccount extends SherlockListFragment implements
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
 		getLoaderManager().initLoader(0, null, this);
-		
-		setHasOptionsMenu(true);
-	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		menu.add("Create Account")
-				.setShowAsActionFlags(
-						MenuItem.SHOW_AS_ACTION_ALWAYS
-								| MenuItem.SHOW_AS_ACTION_WITH_TEXT)
-				.setOnMenuItemClickListener(this);
+		setHasOptionsMenu(true);
 	}
 
 	@AfterViews
@@ -125,12 +116,6 @@ public class FragListAccount extends SherlockListFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		adapter.changeCursor(null);
-	}
-
-	@Override
-	public boolean onMenuItemClick(MenuItem item) {
-		mListener.requestCreateAccount(vaultUri);
-		return true;
 	}
 
 }

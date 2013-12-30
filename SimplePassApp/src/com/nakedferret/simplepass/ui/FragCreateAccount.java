@@ -1,17 +1,17 @@
 package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
@@ -26,7 +26,7 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_account)
-public class FragCreateAccount extends SherlockFragment implements
+public class FragCreateAccount extends Fragment implements
 		LoaderCallbacks<Cursor> {
 
 	private static final int LAYOUT = android.R.layout.simple_spinner_item;

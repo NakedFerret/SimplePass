@@ -1,11 +1,11 @@
 package com.nakedferret.simplepass.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Button;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
 import com.activeandroid.TableInfo;
@@ -20,7 +20,7 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Vault;
 
 @EActivity(R.layout.act_main)
-public class ActMain extends SherlockActivity {
+public class ActMain extends Activity {
 
 	@ViewById
 	Button insertButton;

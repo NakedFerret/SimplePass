@@ -1,5 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Click;
@@ -21,7 +21,7 @@ import com.nakedferret.simplepass.ApplicationSimplePass;
 import com.nakedferret.simplepass.R;
 
 @EFragment(R.layout.frag_create_vault)
-public class FragCreateVault extends SherlockFragment implements
+public class FragCreateVault extends Fragment implements
 		OnItemSelectedListener {
 
 	@App
