@@ -47,6 +47,19 @@ public class ActMain extends SherlockActivity {
 		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
 		// Creates the database if the app is opened for the first time
 		initDB();
+		testActiveAndroid();
+	}
+
+	@Background
+	void testActiveAndroid() {
+		com.nakedferret.simplepass.Vault v = new com.nakedferret.simplepass.Vault();
+		v.name = "Work";
+		v.iterations = 1000;
+		v.save();
+		Utils.log(this, "new Vault id = " + v.getId());
+		com.nakedferret.simplepass.Vault v2 = com.nakedferret.simplepass.Vault
+				.load(com.nakedferret.simplepass.Vault.class, v.getId());
+		Utils.log(this, "Vault 2: " + v2.name + " - " + v2.iterations);
 	}
 
 	@Background
