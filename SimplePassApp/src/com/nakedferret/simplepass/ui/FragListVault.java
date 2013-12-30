@@ -15,7 +15,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleCursorAdapter;
 
 import com.activeandroid.content.ContentProvider;
-import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
@@ -23,7 +22,6 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.Vault;
 
-@SuppressLint("NewApi")
 @EFragment
 public class FragListVault extends ListFragment implements OnItemClickListener,
 		LoaderCallbacks<Cursor> {
