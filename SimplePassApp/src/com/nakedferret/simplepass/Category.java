@@ -8,5 +8,5 @@ import com.activeandroid.annotation.Table;
 public class Category extends Model {
 	
 	@Column
-	String name;
+	public String name;
 }

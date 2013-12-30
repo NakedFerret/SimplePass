@@ -8,17 +8,17 @@ import com.activeandroid.annotation.Table;
 public class Vault extends Model {
 	
 	@Column
-	String name;
+	public String name;
 	
 	@Column
-	byte[] salt;
+	public byte[] salt;
 	
 	@Column
-	byte[] iv;
+	public byte[] iv;
 	
 	@Column
-	int iterations;
+	public int iterations;
 	
 	@Column
-	byte[] hash;
+	public byte[] hash;
 }

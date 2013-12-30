@@ -8,17 +8,17 @@ import com.activeandroid.annotation.Table;
 public class Account extends Model {
 
 	@Column
-	String name;
-	
+	public String name;
+
 	@Column
-	Category category;
-	
+	public Category category;
+
 	@Column
-	byte[] username;
-	
+	public byte[] username;
+
 	@Column
-	byte[] password;
-	
+	public byte[] password;
+
 	@Column
-	Vault vault;
+	public Vault vault;
 }
