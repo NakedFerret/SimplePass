@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleCursorAdapter;
 
 import com.activeandroid.content.ContentProvider;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
@@ -105,6 +106,11 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		if (mListener != null)
 			mListener.onVaultSelected(Utils.buildContentUri(Vault_.TABLE_NAME,
 					id));
+	}
+	
+	@Click(R.id.createVaultButton)
+	void onCreateVaultClicked() {
+		mListener.requestCreateVault();
 	}
 
 }
