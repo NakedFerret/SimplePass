@@ -17,19 +17,22 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+import com.activeandroid.content.ContentProvider;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.Vault;
 
 @EFragment
 public class FragListVault extends SherlockListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor>, OnMenuItemClickListener {
 
 	private final int LAYOUT = android.R.layout.simple_list_item_1;
-	private final Uri URI = Utils.buildContentUri(Vault_.TABLE_NAME);
-	private final String[] PROJECTION = { Vault_.COL_NAME };
+	private Uri URI = null;
+	private final String[] PROJECTION = { "name" };
 	private final int[] VIEWS = { android.R.id.text1 };
 
 	private IFragListener mListener;
@@ -72,8 +75,9 @@ public class FragListVault extends SherlockListFragment implements
 		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
 				PROJECTION, VIEWS, 0);
 		getListView().setOnItemClickListener(this);
-		getLoaderManager().initLoader(0, null, this);
+//		getLoaderManager().initLoader(0, null, this);
 
+		URI = ContentProvider.createUri(Vault.class, null);
 		setHasOptionsMenu(true);
 	}
 
@@ -81,6 +85,15 @@ public class FragListVault extends SherlockListFragment implements
 	public void onResume() {
 		super.onResume();
 		getActivity().setTitle(R.string.selectVaultTitle);
+		tryManualQuery();
+	}
+
+	
+	@Background
+	void tryManualQuery() {
+		Cursor c = getActivity().getContentResolver().query(URI, null, null, null, null);
+		setListAdapter(adapter);
+		adapter.changeCursor(c);
 	}
 
 	@Override
