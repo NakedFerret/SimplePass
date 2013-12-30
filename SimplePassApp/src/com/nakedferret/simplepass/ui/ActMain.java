@@ -20,6 +20,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.PasswordStorageDbHelper;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.Vault;
 
 @EActivity(R.layout.act_main)
 public class ActMain extends SherlockActivity {
@@ -52,13 +53,12 @@ public class ActMain extends SherlockActivity {
 
 	@Background
 	void testActiveAndroid() {
-		com.nakedferret.simplepass.Vault v = new com.nakedferret.simplepass.Vault();
+		Vault v = new Vault();
 		v.name = "Work";
 		v.iterations = 1000;
 		v.save();
 		Utils.log(this, "new Vault id = " + v.getId());
-		com.nakedferret.simplepass.Vault v2 = com.nakedferret.simplepass.Vault
-				.load(com.nakedferret.simplepass.Vault.class, v.getId());
+		Vault v2 = Vault.load(Vault.class, v.getId());
 		Utils.log(this, "Vault 2: " + v2.name + " - " + v2.iterations);
 	}
 
