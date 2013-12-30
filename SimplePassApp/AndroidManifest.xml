@@ -32,8 +32,8 @@
         </activity>
 
         <provider
-            android:name="com.nakedferret.simplepass.PasswordStorageProvider"
-            android:authorities="com.nakedferret.simplepass.provider"
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.nakedferret.simplepass"
             android:enabled="true"
             android:exported="false" >
         </provider>
