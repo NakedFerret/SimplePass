@@ -14,6 +14,8 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.Account;
+import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.PasswordStorageContract.Group_;
 import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
@@ -53,13 +55,31 @@ public class ActMain extends SherlockActivity {
 
 	@Background
 	void testActiveAndroid() {
-		Vault v = new Vault();
-		v.name = "Work";
-		v.iterations = 1000;
-		v.save();
-		Utils.log(this, "new Vault id = " + v.getId());
-		Vault v2 = Vault.load(Vault.class, v.getId());
-		Utils.log(this, "Vault 2: " + v2.name + " - " + v2.iterations);
+		Vault workVault = new Vault();
+		workVault.name = "Work";
+		workVault.iterations = 1000;
+		workVault.save();
+
+		Vault personalVault = new Vault();
+		personalVault.name = "Personal";
+		personalVault.iterations = 500;
+		personalVault.save();
+
+		Category socialCategory = new Category();
+		socialCategory.name = "Social";
+		socialCategory.save();
+
+		Account a1 = new Account();
+		a1.name = "Facebook";
+		a1.vault = workVault;
+		a1.category = socialCategory;
+		a1.save();
+
+		Account a2 = new Account();
+		a2.name = "Facebook";
+		a2.vault = personalVault;
+		a2.category = socialCategory;
+		a2.save();
 	}
 
 	@Background
