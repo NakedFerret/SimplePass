@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
 
+import com.activeandroid.ActiveAndroid;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EApplication;
 import com.googlecode.androidannotations.annotations.UiThread;
@@ -28,6 +29,7 @@ public class ApplicationSimplePass extends Application implements
 		Intent serviceIntent = ServicePassword_.intent(this).get();
 		startService(serviceIntent);
 		bindService(serviceIntent, this, 0);
+		ActiveAndroid.initialize(this);
 	}
 
 	@Override
