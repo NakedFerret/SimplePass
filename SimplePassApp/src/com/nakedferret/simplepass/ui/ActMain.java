@@ -1,6 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +10,9 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
+import com.activeandroid.TableInfo;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
@@ -95,16 +99,13 @@ public class ActMain extends SherlockActivity {
 
 	@Background
 	void clearAndInsertTestData() {
-		PasswordStorageDbHelper helper = new PasswordStorageDbHelper(this);
-		helper.clearData(null);
-		helper.close();
+		// Clear all the info in the tables
+		for (TableInfo table : Cache.getTableInfos()) {
+			ActiveAndroid.execSQL("delete from " + table.getTableName());
+		}
 
-		ContentResolver r = getContentResolver();
-
-		ContentValues vault = Utils.createVault("Personal", "secret", 2500);
-		Uri rowUri = r.insert(Utils.buildContentUri(Vault_.TABLE_NAME), vault);
-		int vaultId = Integer.parseInt(rowUri.getLastPathSegment());
-		vault.put(Vault_._ID, vaultId);
+		Vault vault = new Vault("Personal", null, null, 2500, null);
+		vault.save();
 
 		insertAccount("Reddit", "Entertainment", vault);
 		insertAccount("Xda-Developers", "Development", vault);
@@ -113,24 +114,12 @@ public class ActMain extends SherlockActivity {
 		insertAccount("Amazon", "Retail", vault);
 	}
 
-	private void insertAccount(String name, String groupName,
-			ContentValues vault) {
-		ContentResolver r = getContentResolver();
+	private void insertAccount(String name, String categoryName, Vault vault) {
+		Category c = new Category(categoryName);
+		c.save();
 
-		Uri groupUri = Utils.buildContentUri(Group_.TABLE_NAME);
-		Uri accountUri = Utils.buildContentUri(Account_.TABLE_NAME);
-
-		ContentValues group = Utils.createGroup(groupName);
-		Uri rowUri = r.insert(groupUri, group);
-		group.put(Group_._ID, rowUri.getLastPathSegment());
-
-		final String username = "naked_ferret";
-		final String pass = "super_secret";
-		final Long groupId = group.getAsLong(Group_._ID);
-
-		ContentValues account = Utils.createAccount(vault, name, username,
-				pass, groupId, "secret");
-		r.insert(accountUri, account);
+		Account a = new Account(name, c, null, null, vault);
+		a.save();
 	}
 
 	@Click(R.id.testFrags)
