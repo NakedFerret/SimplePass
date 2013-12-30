@@ -19,9 +19,9 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.PasswordStorageContract.Account;
-import com.nakedferret.simplepass.PasswordStorageContract.Group;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Account_;
+import com.nakedferret.simplepass.PasswordStorageContract.Group_;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
@@ -30,7 +30,7 @@ public class FragCreateAccount extends SherlockFragment implements
 		LoaderCallbacks<Cursor> {
 
 	private static final int LAYOUT = android.R.layout.simple_spinner_item;
-	private static final String[] PROJECTION = { Group.COL_NAME };
+	private static final String[] PROJECTION = { Group_.COL_NAME };
 	private static final int[] VIEWS = { android.R.id.text1 };
 
 	@ViewById
@@ -87,7 +87,7 @@ public class FragCreateAccount extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		Utils.log(this, "Creating Loader");
-		Uri uri = Utils.buildContentUri(Group.TABLE_NAME);
+		Uri uri = Utils.buildContentUri(Group_.TABLE_NAME);
 
 		return new CursorLoader(getActivity(), uri, PROJECTION, null, null,
 				null);
@@ -115,10 +115,10 @@ public class FragCreateAccount extends SherlockFragment implements
 
 		ContentValues vault = Utils.createVault("Personal", masterPass, 5000);
 
-		byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
-		byte[] iv = vault.getAsByteArray(Vault.COL_IV);
+		byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
+		byte[] iv = vault.getAsByteArray(Vault_.COL_IV);
 		byte[] key = Utils.getKey(masterPass, salt,
-				vault.getAsInteger(Vault.COL_ITERATIONS));
+				vault.getAsInteger(Vault_.COL_ITERATIONS));
 
 		String password = "account_pass";
 		String name = "test account";
@@ -133,7 +133,7 @@ public class FragCreateAccount extends SherlockFragment implements
 		Utils.log(
 				this,
 				"Account username: "
-						+ account.getAsString(Account.DEC_USERNAME));
+						+ account.getAsString(Account_.DEC_USERNAME));
 
 	}
 }

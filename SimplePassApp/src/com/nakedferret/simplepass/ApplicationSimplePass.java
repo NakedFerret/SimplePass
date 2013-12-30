@@ -13,7 +13,7 @@ import com.activeandroid.ActiveAndroid;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EApplication;
 import com.googlecode.androidannotations.annotations.UiThread;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.ServicePassword.LocalBinder;
 
 @EApplication
@@ -84,10 +84,10 @@ public class ApplicationSimplePass extends Application implements
 
 		Cursor c = getContentResolver().query(vaultUri, null, null, null, null);
 		ContentValues vault = Utils.getVault(c);
-		byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
-		int iter = vault.getAsInteger(Vault.COL_ITERATIONS);
+		byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
+		int iter = vault.getAsInteger(Vault_.COL_ITERATIONS);
 		byte[] key = Utils.getKey(password, salt, iter);
-		byte[] iv = vault.getAsByteArray(Vault.COL_SALT);
+		byte[] iv = vault.getAsByteArray(Vault_.COL_SALT);
 
 		onVaultUnlocked(vaultUri, key, iv);
 	}

@@ -14,9 +14,9 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.PasswordStorageContract.Account;
-import com.nakedferret.simplepass.PasswordStorageContract.Group;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Account_;
+import com.nakedferret.simplepass.PasswordStorageContract.Group_;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.PasswordStorageDbHelper;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -82,9 +82,9 @@ public class ActMain extends SherlockActivity {
 		ContentResolver r = getContentResolver();
 
 		ContentValues vault = Utils.createVault("Personal", "secret", 2500);
-		Uri rowUri = r.insert(Utils.buildContentUri(Vault.TABLE_NAME), vault);
+		Uri rowUri = r.insert(Utils.buildContentUri(Vault_.TABLE_NAME), vault);
 		int vaultId = Integer.parseInt(rowUri.getLastPathSegment());
-		vault.put(Vault._ID, vaultId);
+		vault.put(Vault_._ID, vaultId);
 
 		insertAccount("Reddit", "Entertainment", vault);
 		insertAccount("Xda-Developers", "Development", vault);
@@ -97,16 +97,16 @@ public class ActMain extends SherlockActivity {
 			ContentValues vault) {
 		ContentResolver r = getContentResolver();
 
-		Uri groupUri = Utils.buildContentUri(Group.TABLE_NAME);
-		Uri accountUri = Utils.buildContentUri(Account.TABLE_NAME);
+		Uri groupUri = Utils.buildContentUri(Group_.TABLE_NAME);
+		Uri accountUri = Utils.buildContentUri(Account_.TABLE_NAME);
 
 		ContentValues group = Utils.createGroup(groupName);
 		Uri rowUri = r.insert(groupUri, group);
-		group.put(Group._ID, rowUri.getLastPathSegment());
+		group.put(Group_._ID, rowUri.getLastPathSegment());
 
 		final String username = "naked_ferret";
 		final String pass = "super_secret";
-		final Long groupId = group.getAsLong(Group._ID);
+		final Long groupId = group.getAsLong(Group_._ID);
 
 		ContentValues account = Utils.createAccount(vault, name, username,
 				pass, groupId, "secret");

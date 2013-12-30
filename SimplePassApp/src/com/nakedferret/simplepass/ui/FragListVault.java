@@ -19,7 +19,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
@@ -28,8 +28,8 @@ public class FragListVault extends SherlockListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor>, OnMenuItemClickListener {
 
 	private final int LAYOUT = android.R.layout.simple_list_item_1;
-	private final Uri URI = Utils.buildContentUri(Vault.TABLE_NAME);
-	private final String[] PROJECTION = { Vault.COL_NAME };
+	private final Uri URI = Utils.buildContentUri(Vault_.TABLE_NAME);
+	private final String[] PROJECTION = { Vault_.COL_NAME };
 	private final int[] VIEWS = { android.R.id.text1 };
 
 	private IFragListener mListener;
@@ -109,7 +109,7 @@ public class FragListVault extends SherlockListFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
 		if (mListener != null)
-			mListener.onVaultSelected(Utils.buildContentUri(Vault.TABLE_NAME,
+			mListener.onVaultSelected(Utils.buildContentUri(Vault_.TABLE_NAME,
 					id));
 	}
 

@@ -22,7 +22,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -39,7 +39,7 @@ public class FragListAccount extends SherlockListFragment implements
 			AccountWGroup.COL_GROUP_NAME };
 	private final int[] VIEWS = { android.R.id.text1, android.R.id.text2 };
 	private final Uri URI = Utils.buildContentUri(AccountWGroup.TABLE_NAME);
-	private final String SELECTION = Account.COL_VAULT_ID + " = ?";
+	private final String SELECTION = Account_.COL_VAULT_ID + " = ?";
 
 	private String[] selectionArgs;
 	private Uri vaultUri;

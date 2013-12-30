@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.nakedferret.simplepass.PasswordStorageContract.Account;
+import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
-import com.nakedferret.simplepass.PasswordStorageContract.Group;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Group_;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 
 public class PasswordStorageProvider extends ContentProvider {
 
@@ -28,11 +28,11 @@ public class PasswordStorageProvider extends ContentProvider {
 			UriMatcher.NO_MATCH);
 
 	static {
-		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME, ACCOUNT);
-		sURIMatcher.addURI(AUTHORITY, Account.TABLE_NAME + "/#", ACCOUNT_ID);
-		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME, VAULT);
-		sURIMatcher.addURI(AUTHORITY, Vault.TABLE_NAME + "/#", VAULT_ID);
-		sURIMatcher.addURI(AUTHORITY, Group.TABLE_NAME, GROUP);
+		sURIMatcher.addURI(AUTHORITY, Account_.TABLE_NAME, ACCOUNT);
+		sURIMatcher.addURI(AUTHORITY, Account_.TABLE_NAME + "/#", ACCOUNT_ID);
+		sURIMatcher.addURI(AUTHORITY, Vault_.TABLE_NAME, VAULT);
+		sURIMatcher.addURI(AUTHORITY, Vault_.TABLE_NAME + "/#", VAULT_ID);
+		sURIMatcher.addURI(AUTHORITY, Group_.TABLE_NAME, GROUP);
 		sURIMatcher
 				.addURI(AUTHORITY, AccountWGroup.TABLE_NAME, ACCOUNT_W_GROUP);
 	}
@@ -59,13 +59,13 @@ public class PasswordStorageProvider extends ContentProvider {
 
 		switch (sURIMatcher.match(uri)) {
 			case ACCOUNT:
-				table = Account.TABLE_NAME;
+				table = Account_.TABLE_NAME;
 				break;
 			case VAULT:
-				table = Vault.TABLE_NAME;
+				table = Vault_.TABLE_NAME;
 				break;
 			case GROUP:
-				table = Group.TABLE_NAME;
+				table = Group_.TABLE_NAME;
 				break;
 			default:
 				table = null;
@@ -95,15 +95,15 @@ public class PasswordStorageProvider extends ContentProvider {
 
 		switch (sURIMatcher.match(uri)) {
 			case ACCOUNT:
-				table = Account.TABLE_NAME;
+				table = Account_.TABLE_NAME;
 				break;
 			case VAULT_ID:
 				id = Long.parseLong(uri.getLastPathSegment());
 			case VAULT:
-				table = Vault.TABLE_NAME;
+				table = Vault_.TABLE_NAME;
 				break;
 			case GROUP:
-				table = Group.TABLE_NAME;
+				table = Group_.TABLE_NAME;
 				break;
 			case ACCOUNT_W_GROUP:
 				table = AccountWGroup.TABLE_NAME;
@@ -127,7 +127,7 @@ public class PasswordStorageProvider extends ContentProvider {
 		}
 
 		if (id != 0) {
-			selection = Vault._ID + " = ?";
+			selection = Vault_._ID + " = ?";
 			selectionArgs = new String[] { Long.toString(id) };
 		}
 

@@ -19,7 +19,7 @@ import android.os.Binder;
 import android.os.IBinder;
 
 import com.googlecode.androidannotations.annotations.EService;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 
 @EService
 public class ServicePassword extends Service implements IWorkerListener {
@@ -63,12 +63,12 @@ public class ServicePassword extends Service implements IWorkerListener {
 		ContentValues vault = Utils.getVault(cursor);
 		cursor.close();
 
-		Utils.log(this, "Got the vault: " + vault.getAsString(Vault.COL_NAME));
-		byte[] iv = vault.getAsByteArray(Vault.COL_IV);
-		byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
+		Utils.log(this, "Got the vault: " + vault.getAsString(Vault_.COL_NAME));
+		byte[] iv = vault.getAsByteArray(Vault_.COL_IV);
+		byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
 
-		byte[] storedHash = vault.getAsByteArray(Vault.COL_HASH);
-		int iterations = vault.getAsInteger(Vault.COL_ITERATIONS);
+		byte[] storedHash = vault.getAsByteArray(Vault_.COL_HASH);
+		int iterations = vault.getAsInteger(Vault_.COL_ITERATIONS);
 		byte[] keyValue = Utils.getKey(pass, salt, iterations);
 
 		try {
@@ -104,7 +104,7 @@ public class ServicePassword extends Service implements IWorkerListener {
 		ContentValues values = Utils.createVault(name, password, iterations);
 		ContentResolver r = getContentResolver();
 		Uri vaultUri = r
-				.insert(Utils.buildContentUri(Vault.TABLE_NAME), values);
+				.insert(Utils.buildContentUri(Vault_.TABLE_NAME), values);
 
 		return vaultUri;
 	}

@@ -19,9 +19,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.nakedferret.simplepass.PasswordStorageContract.Account;
-import com.nakedferret.simplepass.PasswordStorageContract.Group;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault;
+import com.nakedferret.simplepass.PasswordStorageContract.Account_;
+import com.nakedferret.simplepass.PasswordStorageContract.Group_;
+import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 
 public class Utils {
 
@@ -65,11 +65,11 @@ public class Utils {
 			byte[] iv = c.getIV();
 			byte[] hash = getHash(encPass, salt);
 
-			values.put(Vault.COL_NAME, name);
-			values.put(Vault.COL_ITERATIONS, iterations);
-			values.put(Vault.COL_IV, iv);
-			values.put(Vault.COL_SALT, salt);
-			values.put(Vault.COL_HASH, hash);
+			values.put(Vault_.COL_NAME, name);
+			values.put(Vault_.COL_ITERATIONS, iterations);
+			values.put(Vault_.COL_IV, iv);
+			values.put(Vault_.COL_SALT, salt);
+			values.put(Vault_.COL_HASH, hash);
 
 			return values;
 		} catch (Exception e) {
@@ -81,14 +81,14 @@ public class Utils {
 
 	public static ContentValues createGroup(String name) {
 		ContentValues group = new ContentValues();
-		group.put(Group.COL_NAME, name);
+		group.put(Group_.COL_NAME, name);
 		return group;
 	}
 
 	public static ContentValues getGroup(Cursor c) {
 		ContentValues group = new ContentValues();
-		group.put(Group._ID, c.getLong(c.getColumnIndex(Group._ID)));
-		group.put(Group.COL_NAME, c.getString(c.getColumnIndex(Group.COL_NAME)));
+		group.put(Group_._ID, c.getLong(c.getColumnIndex(Group_._ID)));
+		group.put(Group_.COL_NAME, c.getString(c.getColumnIndex(Group_.COL_NAME)));
 		return group;
 	}
 
@@ -98,9 +98,9 @@ public class Utils {
 		try {
 			ContentValues account = new ContentValues();
 
-			byte[] salt = vault.getAsByteArray(Vault.COL_SALT);
-			int iterations = vault.getAsInteger(Vault.COL_ITERATIONS);
-			byte[] iv = vault.getAsByteArray(Vault.COL_IV);
+			byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
+			int iterations = vault.getAsInteger(Vault_.COL_ITERATIONS);
+			byte[] iv = vault.getAsByteArray(Vault_.COL_IV);
 			byte[] keyValue = getKey(password, salt, iterations);
 
 			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
@@ -110,11 +110,11 @@ public class Utils {
 			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
 			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
 
-			account.put(Account.COL_NAME, name);
-			account.put(Account.COL_GROUP_ID, groupId);
-			account.put(Account.COL_VAULT_ID, vault.getAsLong(Vault._ID));
-			account.put(Account.COL_USERNAME, encUser);
-			account.put(Account.COL_PASSWORD, encPass);
+			account.put(Account_.COL_NAME, name);
+			account.put(Account_.COL_GROUP_ID, groupId);
+			account.put(Account_.COL_VAULT_ID, vault.getAsLong(Vault_._ID));
+			account.put(Account_.COL_USERNAME, encUser);
+			account.put(Account_.COL_PASSWORD, encPass);
 
 			return account;
 		} catch (Exception e) {
@@ -166,11 +166,11 @@ public class Utils {
 			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
 			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
 
-			values.put(Account.COL_GROUP_ID, groupId);
-			values.put(Account.COL_NAME, name);
-			values.put(Account.COL_PASSWORD, encPass);
-			values.put(Account.COL_USERNAME, encUser);
-			values.put(Account.COL_VAULT_ID, vaultId);
+			values.put(Account_.COL_GROUP_ID, groupId);
+			values.put(Account_.COL_NAME, name);
+			values.put(Account_.COL_PASSWORD, encPass);
+			values.put(Account_.COL_USERNAME, encUser);
+			values.put(Account_.COL_VAULT_ID, vaultId);
 
 			return values;
 		} catch (Exception e) {
@@ -189,15 +189,15 @@ public class Utils {
 
 			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
 			byte[] encUser = Hex.decode(account
-					.getAsString(Account.COL_USERNAME));
+					.getAsString(Account_.COL_USERNAME));
 			byte[] encPass = Hex.decode(account
-					.getAsString(Account.COL_PASSWORD));
+					.getAsString(Account_.COL_PASSWORD));
 
 			byte[] decUser = c.doFinal(encUser);
 			byte[] decPass = c.doFinal(encPass);
 
-			account.put(Account.DEC_USERNAME, new String(decUser));
-			account.put(Account.DEC_USERNAME, new String(decPass));
+			account.put(Account_.DEC_USERNAME, new String(decUser));
+			account.put(Account_.DEC_USERNAME, new String(decPass));
 
 			return account;
 		} catch (Exception e) {
@@ -216,13 +216,13 @@ public class Utils {
 
 		ContentValues vault = new ContentValues();
 
-		vault.put(Vault._ID, c.getLong(c.getColumnIndex(Vault._ID)));
-		vault.put(Vault.COL_HASH, c.getBlob(c.getColumnIndex(Vault.COL_HASH)));
-		vault.put(Vault.COL_ITERATIONS,
-				c.getLong(c.getColumnIndex(Vault.COL_ITERATIONS)));
-		vault.put(Vault.COL_IV, c.getBlob(c.getColumnIndex(Vault.COL_IV)));
-		vault.put(Vault.COL_NAME, c.getString(c.getColumnIndex(Vault.COL_NAME)));
-		vault.put(Vault.COL_SALT, c.getBlob(c.getColumnIndex(Vault.COL_SALT)));
+		vault.put(Vault_._ID, c.getLong(c.getColumnIndex(Vault_._ID)));
+		vault.put(Vault_.COL_HASH, c.getBlob(c.getColumnIndex(Vault_.COL_HASH)));
+		vault.put(Vault_.COL_ITERATIONS,
+				c.getLong(c.getColumnIndex(Vault_.COL_ITERATIONS)));
+		vault.put(Vault_.COL_IV, c.getBlob(c.getColumnIndex(Vault_.COL_IV)));
+		vault.put(Vault_.COL_NAME, c.getString(c.getColumnIndex(Vault_.COL_NAME)));
+		vault.put(Vault_.COL_SALT, c.getBlob(c.getColumnIndex(Vault_.COL_SALT)));
 		c.close();
 		return vault;
 	}
