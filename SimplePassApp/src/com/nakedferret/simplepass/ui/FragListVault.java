@@ -1,6 +1,5 @@
 package com.nakedferret.simplepass.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -9,7 +8,9 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleCursorAdapter;
@@ -36,6 +37,12 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	public FragListVault() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.frag_list_vault, container, false);
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event
