@@ -103,11 +103,12 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-		if (mListener != null)
-			mListener.onVaultSelected(Utils.buildContentUri(Vault_.TABLE_NAME,
-					id));
+		if (mListener == null)
+			return;
+
+		mListener.onVaultSelected(ContentProvider.createUri(Vault.class, id));
 	}
-	
+
 	@Click(R.id.createVaultButton)
 	void onCreateVaultClicked() {
 		mListener.requestCreateVault();
