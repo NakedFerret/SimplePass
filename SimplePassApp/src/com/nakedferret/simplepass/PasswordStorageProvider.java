@@ -74,7 +74,7 @@ public class PasswordStorageProvider extends ContentProvider {
 			return null;
 
 		long id = db.insert(table, null, values);
-		Uri rowUri = Utils.buildContentUri(table, id);
+		Uri rowUri = null;
 		getContext().getContentResolver().notifyChange(rowUri, null);
 		return rowUri;
 	}

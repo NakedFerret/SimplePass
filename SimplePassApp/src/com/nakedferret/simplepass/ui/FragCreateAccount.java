@@ -12,12 +12,14 @@ import android.os.Bundle;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
+import com.activeandroid.content.ContentProvider;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.PasswordStorageContract.Group_;
@@ -88,7 +90,7 @@ public class FragCreateAccount extends Fragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		Utils.log(this, "Creating Loader");
-		Uri uri = Utils.buildContentUri(Group_.TABLE_NAME);
+		Uri uri = ContentProvider.createUri(Category.class, null);
 
 		return new CursorLoader(getActivity(), uri, PROJECTION, null, null,
 				null);

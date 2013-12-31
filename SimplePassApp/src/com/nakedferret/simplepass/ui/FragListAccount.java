@@ -34,7 +34,7 @@ public class FragListAccount extends ListFragment implements
 	private final String[] PROJECTION = { AccountWGroup.COL_NAME,
 			AccountWGroup.COL_GROUP_NAME };
 	private final int[] VIEWS = { android.R.id.text1, android.R.id.text2 };
-	private final Uri URI = Utils.buildContentUri(AccountWGroup.TABLE_NAME);
+	private final Uri URI = null;
 	private final String SELECTION = Account_.COL_VAULT_ID + " = ?";
 
 	private String[] selectionArgs;
