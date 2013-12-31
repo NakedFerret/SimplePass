@@ -1,10 +1,8 @@
 package com.nakedferret.simplepass;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -27,6 +25,9 @@ public class Vault extends Model {
 
 	@Column
 	public byte[] hash;
+
+	private boolean unlocked = false;
+	private byte[] key;
 
 	public Vault() {
 
@@ -54,6 +55,25 @@ public class Vault extends Model {
 		v.iv = cipher.getIV();
 		v.hash = Utils.getHash(encPass, v.salt);
 		return v;
+	}
+
+	public boolean unlock(String password) {
+		byte[] key = Utils.getKey(password, salt, iterations);
+
+		Cipher c = Utils.getEncryptionCipher(key, iv);
+		byte[] encPass = Utils.encrypt(c, password);
+		byte[] hash = Utils.getHash(encPass, salt);
+
+		if (Arrays.equals(hash, this.hash)) {
+			Utils.log(this, "unlock successful");
+			unlocked = true;
+			this.key = key;
+		}
+		return unlocked;
+	}
+
+	public boolean isUnlocked() {
+		return unlocked;
 	}
 
 }
