@@ -14,12 +14,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 
+import com.activeandroid.content.ContentProvider;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
+import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.PasswordStorageContract.AccountWGroup;
-import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 
@@ -30,12 +30,8 @@ public class FragListAccount extends ListFragment implements
 	@FragmentArg
 	String vaultUriString;
 
-	private final int LAYOUT = R.layout.listview_account;
-	private final String[] PROJECTION = { AccountWGroup.COL_NAME,
-			AccountWGroup.COL_GROUP_NAME };
-	private final int[] VIEWS = { android.R.id.text1, android.R.id.text2 };
-	private final Uri URI = null;
-	private final String SELECTION = Account_.COL_VAULT_ID + " = ?";
+	private static Uri URI = null;
+	private static String SELECTION = "account.vault = ?";
 
 	private String[] selectionArgs;
 	private Uri vaultUri;
@@ -60,18 +56,33 @@ public class FragListAccount extends ListFragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
-				PROJECTION, VIEWS, 0);
+		URI = ContentProvider.createUri(Account.class, null);
+
+		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
-		getLoaderManager().initLoader(0, null, this);
 
 		setHasOptionsMenu(true);
+	}
+
+	private SimpleCursorAdapter getAdapter() {
+		final int LAYOUT = android.R.layout.simple_list_item_1;
+		final String[] PROJECTION = { "name" };
+		final int[] VIEWS = { android.R.id.text1, android.R.id.text2 };
+
+		return new SimpleCursorAdapter(getActivity(), LAYOUT, null, PROJECTION,
+				VIEWS, 0);
 	}
 
 	@AfterViews
 	void init() {
 		vaultUri = Uri.parse(vaultUriString);
 		selectionArgs = new String[] { vaultUri.getLastPathSegment() };
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		getLoaderManager().initLoader(0, null, this);
 	}
 
 	@Override
@@ -99,7 +110,7 @@ public class FragListAccount extends ListFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), URI, PROJECTION, SELECTION,
+		return new CursorLoader(getActivity(), URI, null, SELECTION,
 				selectionArgs, null);
 	}
 
