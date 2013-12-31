@@ -1,12 +1,9 @@
 package com.nakedferret.simplepass;
 
-import java.security.InvalidKeyException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -188,28 +185,23 @@ public class Utils {
 		Log.d("SimplePass", message);
 	}
 
-	public static ContentValues getVault(Cursor c) {
-		c.moveToFirst();
-
-		ContentValues vault = new ContentValues();
-
-		vault.put(Vault_._ID, c.getLong(c.getColumnIndex(Vault_._ID)));
-		vault.put(Vault_.COL_HASH, c.getBlob(c.getColumnIndex(Vault_.COL_HASH)));
-		vault.put(Vault_.COL_ITERATIONS,
-				c.getLong(c.getColumnIndex(Vault_.COL_ITERATIONS)));
-		vault.put(Vault_.COL_IV, c.getBlob(c.getColumnIndex(Vault_.COL_IV)));
-		vault.put(Vault_.COL_NAME,
-				c.getString(c.getColumnIndex(Vault_.COL_NAME)));
-		vault.put(Vault_.COL_SALT, c.getBlob(c.getColumnIndex(Vault_.COL_SALT)));
-		c.close();
-		return vault;
-	}
-
 	public static Cipher getEncryptionCipher(byte[] keyValue) {
 		Key key = new SecretKeySpec(keyValue, KEY_SPEC);
 		try {
 			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
 			c.init(Cipher.ENCRYPT_MODE, key);
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Cipher getEncryptionCipher(byte[] keyValue, byte[] iv) {
+		Key key = new SecretKeySpec(keyValue, KEY_SPEC);
+		try {
+			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 			return c;
 		} catch (Exception e) {
 			e.printStackTrace();
