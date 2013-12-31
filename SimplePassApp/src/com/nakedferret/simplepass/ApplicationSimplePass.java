@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import android.app.Application;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -82,14 +83,9 @@ public class ApplicationSimplePass extends Application implements
 			return;
 		}
 
-		Cursor c = getContentResolver().query(vaultUri, null, null, null, null);
-		ContentValues vault = Utils.getVault(c);
-		byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
-		int iter = vault.getAsInteger(Vault_.COL_ITERATIONS);
-		byte[] key = Utils.getKey(password, salt, iter);
-		byte[] iv = vault.getAsByteArray(Vault_.COL_SALT);
-
-		onVaultUnlocked(vaultUri, key, iv);
+		Vault v = Vault.load(Vault.class, ContentUris.parseId(vaultUri));
+		byte[] key = Utils.getKey(password, v.salt, v.iterations);
+		onVaultUnlocked(vaultUri, key, v.iv);
 	}
 
 	@Background
