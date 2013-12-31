@@ -31,21 +31,6 @@ public class Utils {
 	public static final int SALT_SIZE = 32;
 	public static final Digest DIGEST = new SHA256Digest();
 
-	public static Uri buildContentUri(String table, long id) {
-		Uri.Builder builder = new Uri.Builder();
-		builder.scheme("content");
-		builder.authority(PasswordStorageProvider.AUTHORITY);
-		builder.appendPath(table);
-		if (id > 0)
-			builder.appendPath(Long.toString(id));
-
-		return builder.build();
-	}
-
-	public static Uri buildContentUri(String table) {
-		return buildContentUri(table, 0);
-	}
-
 	public static byte[] getSalt() {
 		byte[] salt = new byte[SALT_SIZE];
 		new SecureRandom().nextBytes(salt);
