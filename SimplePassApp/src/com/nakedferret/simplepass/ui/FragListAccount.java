@@ -14,11 +14,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 
-import com.activeandroid.content.ContentProvider;
+import com.activeandroid.Cache;
+import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.Account;
+import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -30,8 +32,10 @@ public class FragListAccount extends ListFragment implements
 	@FragmentArg
 	String vaultUriString;
 
-	private static Uri URI = null;
-	private static String SELECTION = "account.vault = ?";
+	private static Uri URI;
+	private static String SELECTION;
+	private static JoinView VIEW;
+	// View that represents the join of Account and Category
 
 	private String[] selectionArgs;
 	private Uri vaultUri;
@@ -56,7 +60,10 @@ public class FragListAccount extends ListFragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		URI = ContentProvider.createUri(Account.class, null);
+
+		VIEW = (JoinView) Cache.getView("account_w_cat");
+		URI = VIEW.getUri();
+		SELECTION = VIEW.getColumnName(Account.class, "vault") + " = ?";
 
 		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
@@ -65,8 +72,10 @@ public class FragListAccount extends ListFragment implements
 	}
 
 	private SimpleCursorAdapter getAdapter() {
-		final int LAYOUT = android.R.layout.simple_list_item_1;
-		final String[] PROJECTION = { "name" };
+		final int LAYOUT = R.layout.listview_account;
+		final String[] PROJECTION = {
+				VIEW.getColumnName(Account.class, "name"),
+				VIEW.getColumnName(Category.class, "name") };
 		final int[] VIEWS = { android.R.id.text1, android.R.id.text2 };
 
 		return new SimpleCursorAdapter(getActivity(), LAYOUT, null, PROJECTION,

@@ -3,18 +3,17 @@ package com.nakedferret.simplepass;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.IBinder;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
+import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EApplication;
 import com.googlecode.androidannotations.annotations.UiThread;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.ServicePassword.LocalBinder;
 
 @EApplication
@@ -31,6 +30,10 @@ public class ApplicationSimplePass extends Application implements
 		startService(serviceIntent);
 		bindService(serviceIntent, this, 0);
 		ActiveAndroid.initialize(this);
+
+		JoinView jv = JoinView.build("account_w_cat", Account.class)
+				.inner(Category.class).onIdAnd("category").create();
+		Cache.addView(jv);
 	}
 
 	@Override
