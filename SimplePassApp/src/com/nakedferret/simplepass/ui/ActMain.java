@@ -57,7 +57,7 @@ public class ActMain extends Activity {
 			ActiveAndroid.execSQL("delete from " + table.getTableName());
 		}
 
-		Vault vault = new Vault("Personal", null, null, 2500, null);
+		Vault vault = Vault.createVault("Personal", "secret", 2500);
 		vault.save();
 
 		insertAccount("Reddit", "Entertainment", vault);
