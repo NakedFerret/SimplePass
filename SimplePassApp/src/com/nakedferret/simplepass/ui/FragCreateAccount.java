@@ -22,8 +22,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.PasswordStorageContract.Account_;
-import com.nakedferret.simplepass.PasswordStorageContract.Group_;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.Vault;
@@ -31,10 +29,6 @@ import com.nakedferret.simplepass.Vault;
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends Fragment implements
 		LoaderCallbacks<Cursor> {
-
-	private static final int LAYOUT = android.R.layout.simple_spinner_item;
-	private static final String[] PROJECTION = { Group_.COL_NAME };
-	private static final int[] VIEWS = { android.R.id.text1 };
 
 	@ViewById
 	Spinner groupSpinner;
@@ -54,11 +48,19 @@ public class FragCreateAccount extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		adapter = new SimpleCursorAdapter(getActivity(), LAYOUT, null,
-				PROJECTION, VIEWS, 0);
+		adapter = getAdapter();
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		groupSpinner.setAdapter(adapter);
 		getLoaderManager().initLoader(0, null, this);
+	}
+
+	private SimpleCursorAdapter getAdapter() {
+		final int LAYOUT = android.R.layout.simple_spinner_item;
+		final String[] PROJECTION = { "name" };
+		final int[] VIEWS = { android.R.id.text1 };
+
+		return new SimpleCursorAdapter(getActivity(), LAYOUT, null, PROJECTION,
+				VIEWS, 0);
 	}
 
 	@Override
@@ -92,8 +94,7 @@ public class FragCreateAccount extends Fragment implements
 		Utils.log(this, "Creating Loader");
 		Uri uri = ContentProvider.createUri(Category.class, null);
 
-		return new CursorLoader(getActivity(), uri, PROJECTION, null, null,
-				null);
+		return new CursorLoader(getActivity(), uri, null, null, null, null);
 	}
 
 	@Override
