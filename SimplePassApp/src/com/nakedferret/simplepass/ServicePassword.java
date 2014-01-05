@@ -44,12 +44,6 @@ public class ServicePassword extends Service implements IWorkerListener {
 		if (v.unlock(pass)) {
 			Utils.log(this, "vault unlock successful");
 			unlockedVaults.put(uri, v);
-			Account a = new Select().from(Account.class).executeSingle();
-
-			Utils.log(this, "Account enc username: " + a.username);
-			v.decryptAccount(a);
-			Utils.log(this, "Account username: " + a.decryptedUsername);
-			Utils.log(this, "Account password: " + a.decryptedPassword);
 			return true;
 		}
 
