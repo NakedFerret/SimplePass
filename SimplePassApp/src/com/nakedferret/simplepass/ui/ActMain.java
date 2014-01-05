@@ -39,6 +39,7 @@ public class ActMain extends Activity {
 
 		Vault vault = Vault.createVault("Personal", "secret", 2500);
 		vault.save();
+		vault.unlock("secret");
 
 		insertAccount("Reddit", "Entertainment", vault);
 		insertAccount("Xda-Developers", "Development", vault);
@@ -51,7 +52,7 @@ public class ActMain extends Activity {
 		Category c = new Category(categoryName);
 		c.save();
 
-		Account a = new Account(name, c, null, null, vault);
+		Account a = vault.createAccount(name, "test_user", "account_pass", c);
 		a.save();
 	}
 
