@@ -22,6 +22,9 @@ public class Account extends Model {
 	@Column
 	public Vault vault;
 
+	public String decryptedUsername;
+	public String decryptedPassword;
+
 	public Account() {
 
 	}

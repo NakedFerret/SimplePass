@@ -76,4 +76,13 @@ public class Vault extends Model {
 		return unlocked;
 	}
 
+	public void decryptAccount(Account a) {
+		if (!unlocked)
+			return;
+
+		Cipher c = Utils.getDecryptionCipher(key, iv);
+		a.decryptedUsername = new String(Utils.decrypt(c, a.username));
+		a.decryptedPassword = new String(Utils.decrypt(c, a.password));
+	}
+
 }

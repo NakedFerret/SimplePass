@@ -16,7 +16,6 @@ import org.spongycastle.util.encoders.Hex;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
 
 import com.nakedferret.simplepass.PasswordStorageContract.Account_;
@@ -194,9 +193,30 @@ public class Utils {
 		return null;
 	}
 
-	public static byte[] encrypt(Cipher c, String password) {
+	public static Cipher getDecryptionCipher(byte[] keyValue, byte[] iv) {
+		Key key = new SecretKeySpec(keyValue, KEY_SPEC);
 		try {
-			return c.doFinal(password.getBytes("UTF-8"));
+			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
+			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static byte[] encrypt(Cipher c, String string) {
+		try {
+			return c.doFinal(string.getBytes("UTF-8"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static byte[] decrypt(Cipher c, byte[] data) {
+		try {
+			return c.doFinal(data);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
