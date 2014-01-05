@@ -23,6 +23,7 @@ public class ApplicationSimplePass extends Application implements
 
 	private IWorkerListener worker;
 	private IUIListener uiListener;
+	private ServicePassword service;
 
 	@Override
 	public void onCreate() {
@@ -52,11 +53,13 @@ public class ApplicationSimplePass extends Application implements
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		LocalBinder binder = (LocalBinder) service;
 		attachWorker(binder.getService());
+		this.service = (ServicePassword) binder.getService();
 	}
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		detachWorker();
+		service = null;
 	}
 
 	public void attachUIListener(IUIListener listener) {
@@ -136,6 +139,10 @@ public class ApplicationSimplePass extends Application implements
 
 	public boolean isVaultUnlocked(Uri vaultUri) {
 		return worker.isVaultUnlocked(vaultUri);
+	}
+
+	public Vault getVault(Uri vaultUri) {
+		return service.getVautl(vaultUri);
 	}
 
 }
