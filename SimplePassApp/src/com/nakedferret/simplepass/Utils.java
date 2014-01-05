@@ -25,7 +25,7 @@ import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 
 public class Utils {
 
-	public static final String ENCRYPTION_CIPHER = "AES/CBC/PKCS5Padding";
+	public static final String ENCRYPTION_ALGORITHM = "AES/CBC/PKCS5Padding";
 	public static final String KEY_SPEC = "AES";
 
 	public static final int SALT_SIZE = 32;
@@ -63,7 +63,7 @@ public class Utils {
 			byte[] keyValue = getKey(password, salt, iterations);
 
 			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 
 			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
@@ -119,7 +119,7 @@ public class Utils {
 			ContentValues values = new ContentValues();
 
 			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 
 			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
@@ -144,7 +144,7 @@ public class Utils {
 		try {
 
 			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 
 			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
 			byte[] encUser = Hex.decode(account
@@ -173,7 +173,7 @@ public class Utils {
 	public static Cipher getEncryptionCipher(byte[] keyValue) {
 		Key key = new SecretKeySpec(keyValue, KEY_SPEC);
 		try {
-			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			c.init(Cipher.ENCRYPT_MODE, key);
 			return c;
 		} catch (Exception e) {
@@ -185,7 +185,7 @@ public class Utils {
 	public static Cipher getEncryptionCipher(byte[] keyValue, byte[] iv) {
 		Key key = new SecretKeySpec(keyValue, KEY_SPEC);
 		try {
-			Cipher c = Cipher.getInstance(ENCRYPTION_CIPHER);
+			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
 			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 			return c;
 		} catch (Exception e) {
