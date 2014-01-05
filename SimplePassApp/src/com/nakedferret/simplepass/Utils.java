@@ -12,15 +12,8 @@ import org.spongycastle.crypto.PBEParametersGenerator;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.spongycastle.crypto.params.KeyParameter;
-import org.spongycastle.util.encoders.Hex;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.util.Log;
-
-import com.nakedferret.simplepass.PasswordStorageContract.Account_;
-import com.nakedferret.simplepass.PasswordStorageContract.Group_;
-import com.nakedferret.simplepass.PasswordStorageContract.Vault_;
 
 public class Utils {
 
