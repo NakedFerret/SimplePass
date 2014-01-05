@@ -36,52 +36,6 @@ public class Utils {
 		return salt;
 	}
 
-	public static ContentValues createGroup(String name) {
-		ContentValues group = new ContentValues();
-		group.put(Group_.COL_NAME, name);
-		return group;
-	}
-
-	public static ContentValues getGroup(Cursor c) {
-		ContentValues group = new ContentValues();
-		group.put(Group_._ID, c.getLong(c.getColumnIndex(Group_._ID)));
-		group.put(Group_.COL_NAME,
-				c.getString(c.getColumnIndex(Group_.COL_NAME)));
-		return group;
-	}
-
-	public static ContentValues createAccount(ContentValues vault, String name,
-			String username, String password, Long groupId, String vaultPass) {
-
-		try {
-			ContentValues account = new ContentValues();
-
-			byte[] salt = vault.getAsByteArray(Vault_.COL_SALT);
-			int iterations = vault.getAsInteger(Vault_.COL_ITERATIONS);
-			byte[] iv = vault.getAsByteArray(Vault_.COL_IV);
-			byte[] keyValue = getKey(password, salt, iterations);
-
-			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
-			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
-
-			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
-			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
-
-			account.put(Account_.COL_NAME, name);
-			account.put(Account_.COL_GROUP_ID, groupId);
-			account.put(Account_.COL_VAULT_ID, vault.getAsLong(Vault_._ID));
-			account.put(Account_.COL_USERNAME, encUser);
-			account.put(Account_.COL_PASSWORD, encPass);
-
-			return account;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return new ContentValues();
-	}
-
 	public static byte[] getKey(String pass, int iterations) {
 		byte[] salt = new byte[SALT_SIZE];
 		new SecureRandom().nextBytes(salt);
@@ -108,60 +62,6 @@ public class Utils {
 		byte[] hash = new byte[d.getDigestSize()];
 		d.doFinal(hash, 0);
 		return hash;
-	}
-
-	public static ContentValues createAccount(long groupId, long vaultId,
-			String name, String username, String password, byte[] keyValue,
-			byte[] iv) {
-
-		try {
-			ContentValues values = new ContentValues();
-
-			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
-
-			c.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
-			byte[] encUser = c.doFinal(username.getBytes("UTF-8"));
-			byte[] encPass = c.doFinal(password.getBytes("UTF-8"));
-
-			values.put(Account_.COL_GROUP_ID, groupId);
-			values.put(Account_.COL_NAME, name);
-			values.put(Account_.COL_PASSWORD, encPass);
-			values.put(Account_.COL_USERNAME, encUser);
-			values.put(Account_.COL_VAULT_ID, vaultId);
-
-			return values;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return new ContentValues();
-	}
-
-	public static ContentValues decryptAccount(ContentValues account,
-			byte[] keyValue, byte[] iv) {
-		try {
-
-			Key key = new SecretKeySpec(keyValue, KEY_SPEC);
-			Cipher c = Cipher.getInstance(ENCRYPTION_ALGORITHM);
-
-			c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
-			byte[] encUser = Hex.decode(account
-					.getAsString(Account_.COL_USERNAME));
-			byte[] encPass = Hex.decode(account
-					.getAsString(Account_.COL_PASSWORD));
-
-			byte[] decUser = c.doFinal(encUser);
-			byte[] decPass = c.doFinal(encPass);
-
-			account.put(Account_.DEC_USERNAME, new String(decUser));
-			account.put(Account_.DEC_USERNAME, new String(decPass));
-
-			return account;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return account;
 	}
 
 	public static void log(Object o, String message) {
