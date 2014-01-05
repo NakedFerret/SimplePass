@@ -81,8 +81,29 @@ public class Vault extends Model {
 			return;
 
 		Cipher c = Utils.getDecryptionCipher(key, iv);
-		a.decryptedUsername = new String(Utils.decrypt(c, a.username));
-		a.decryptedPassword = new String(Utils.decrypt(c, a.password));
+		try {
+			a.decryptedUsername = new String(Utils.decrypt(c, a.username),
+					"UTF-8");
+			a.decryptedPassword = new String(Utils.decrypt(c, a.password),
+					"UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public Account createAccount(String name, String username, String password,
+			Category category) {
+		if (!unlocked)
+			return null;
+
+		Account a = new Account(name, category, null, null, this);
+
+		Cipher c = Utils.getEncryptionCipher(key, iv);
+		a.username = Utils.encrypt(c, username);
+		a.password = Utils.encrypt(c, password);
+
+		return a;
 	}
 
 }
