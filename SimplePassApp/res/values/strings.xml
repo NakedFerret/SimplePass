@@ -23,6 +23,7 @@
     <string name="enterPassword">Enter Password</string>
     <string name="chooseAccount">Choose an Account</string>
     <string name="create_new_vault">Create New Vault</string>
+    <string name="create_new_account">Create new account</string>
    
 
 </resources>

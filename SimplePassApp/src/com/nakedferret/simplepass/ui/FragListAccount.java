@@ -8,22 +8,25 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 
 import com.activeandroid.Cache;
+import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
 
 @EFragment
 public class FragListAccount extends ListFragment implements
@@ -47,6 +50,12 @@ public class FragListAccount extends ListFragment implements
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.frag_list_account, container, false);
+	}
+
+	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
@@ -67,8 +76,6 @@ public class FragListAccount extends ListFragment implements
 
 		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
-
-		setHasOptionsMenu(true);
 	}
 
 	private SimpleCursorAdapter getAdapter() {
@@ -113,8 +120,9 @@ public class FragListAccount extends ListFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long id) {
-		// TODO: react when account selected
-		Utils.log(this, "account selected: " + id);
+
+		Uri accountUri = ContentProvider.createUri(Account.class, id);
+		mListener.onAccountSelected(accountUri);
 	}
 
 	@Override
@@ -132,6 +140,11 @@ public class FragListAccount extends ListFragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		adapter.changeCursor(null);
+	}
+
+	@Click(R.id.createAccountButton)
+	public void onCreateAccountClicked() {
+		mListener.requestCreateAccount(vaultUri);
 	}
 
 }
