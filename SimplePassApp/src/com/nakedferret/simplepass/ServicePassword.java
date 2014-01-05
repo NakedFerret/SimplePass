@@ -11,7 +11,6 @@ import android.os.Binder;
 import android.os.IBinder;
 
 import com.activeandroid.content.ContentProvider;
-import com.activeandroid.query.Select;
 import com.googlecode.androidannotations.annotations.EService;
 
 @EService
@@ -80,10 +79,6 @@ public class ServicePassword extends Service implements IWorkerListener {
 		return false;
 		// TODO Auto-generated method stub
 
-	}
-
-	public Vault getVautl(Uri vaultUri) {
-		return unlockedVaults.get(vaultUri);
 	}
 
 }

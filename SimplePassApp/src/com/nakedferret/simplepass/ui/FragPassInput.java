@@ -15,7 +15,7 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.ApplicationSimplePass;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -36,7 +36,7 @@ public class FragPassInput extends DialogFragment {
 	ProgressBar progressIndicator;
 
 	@App
-	ApplicationSimplePass app;
+	SimplePass app;
 
 	@FragmentArg
 	String vaultUriString;

@@ -23,7 +23,7 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.ApplicationSimplePass;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
@@ -43,7 +43,7 @@ public class FragCreateAccount extends Fragment implements
 	EditText accountNameInput, accountUsernameInput, accountPasswordInput;
 
 	@App
-	ApplicationSimplePass app;
+	SimplePass app;
 
 	private IFragListener mListener;
 	private SimpleCursorAdapter adapter;

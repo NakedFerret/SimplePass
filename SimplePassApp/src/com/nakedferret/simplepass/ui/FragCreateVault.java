@@ -17,7 +17,7 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import com.nakedferret.simplepass.ApplicationSimplePass;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.R;
 
 @EFragment(R.layout.frag_create_vault)
@@ -25,7 +25,7 @@ public class FragCreateVault extends Fragment implements
 		OnItemSelectedListener {
 
 	@App
-	ApplicationSimplePass app;
+	SimplePass app;
 
 	@ViewById
 	Spinner iterationSpinner;

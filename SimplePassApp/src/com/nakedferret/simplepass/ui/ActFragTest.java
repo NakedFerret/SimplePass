@@ -8,7 +8,7 @@ import android.net.Uri;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.nakedferret.simplepass.ApplicationSimplePass;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.R;
@@ -19,7 +19,7 @@ public class ActFragTest extends ActFloating implements IUIListener,
 		IFragListener {
 
 	@App
-	ApplicationSimplePass app;
+	SimplePass app;
 
 	private FragPassInput fragPasswordInput;
 
