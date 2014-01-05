@@ -65,11 +65,14 @@ public class ServicePassword extends Service implements IWorkerListener {
 	}
 
 	@Override
-	public Uri createAccount(Uri vault, Uri group, String name,
+	public Uri createAccount(Uri vaultUri, Uri categoryUri, String name,
 			String username, String password) {
-		return null;
-		// TODO Auto-generated method stub
-
+		Vault v = unlockedVaults.get(vaultUri);
+		long categoryId = ContentUris.parseId(categoryUri);
+		Category c = Category.load(Category.class, categoryId);
+		Account a = v.createAccount(name, username, password, c);
+		a.save();
+		return ContentProvider.createUri(Account.class, a.getId());
 	}
 
 	@Override
@@ -84,7 +87,7 @@ public class ServicePassword extends Service implements IWorkerListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public Vault getVautl(Uri vaultUri) {
 		return unlockedVaults.get(vaultUri);
 	}

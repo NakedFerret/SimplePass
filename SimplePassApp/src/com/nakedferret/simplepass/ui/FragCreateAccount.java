@@ -16,7 +16,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.activeandroid.content.ContentProvider;
-import com.activeandroid.query.Select;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
@@ -24,13 +23,11 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.ApplicationSimplePass;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
-import com.nakedferret.simplepass.Vault;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends Fragment implements
@@ -129,15 +126,12 @@ public class FragCreateAccount extends Fragment implements
 
 	@Background
 	void createAccount() {
-		Vault v = app.getVault(vaultUri);
-		Category c = Category.load(Category.class, categoryId);
-
+		Uri categoryUri = ContentProvider.createUri(Category.class, categoryId);
 		String name = accountNameInput.getText().toString();
 		String username = accountUsernameInput.getText().toString();
 		String password = accountPasswordInput.getText().toString();
 
-		Account a = v.createAccount(name, username, password, c);
-		a.save();
+		app.createAccount(vaultUri, categoryUri, name, username, password);
 	}
 
 	@Override
