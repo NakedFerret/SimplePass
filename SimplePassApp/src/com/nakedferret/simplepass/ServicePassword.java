@@ -6,7 +6,6 @@ import java.util.Map;
 import android.app.Service;
 import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;

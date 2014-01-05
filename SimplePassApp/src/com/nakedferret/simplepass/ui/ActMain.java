@@ -2,14 +2,11 @@ package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.StrictMode;
-import android.util.Log;
 import android.widget.Button;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
 import com.activeandroid.TableInfo;
-import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -27,23 +24,6 @@ public class ActMain extends Activity {
 
 	@ViewById
 	Button testDataButton;
-
-	@AfterViews
-	void initialize() {
-		Log.d("SimplePass", "Strict mode disabled...");
-		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
-		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
-
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-				.detectAll().penaltyLog().build());
-
-		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
-				.penaltyLog().build());
-
-		Log.d("SimplePass", "Strict mode enabled...");
-		Log.d("SimplePass", "Thread Policy: " + StrictMode.getThreadPolicy());
-		Log.d("SimplePass", "VM Policy: " + StrictMode.getVmPolicy());
-	}
 
 	@Click(R.id.testDataButton)
 	void onCreateTestData() {

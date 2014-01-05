@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.IBinder;
+import android.os.StrictMode;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
@@ -26,14 +27,25 @@ public class ApplicationSimplePass extends Application implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		setStrictMode();
+
 		Intent serviceIntent = ServicePassword_.intent(this).get();
 		startService(serviceIntent);
 		bindService(serviceIntent, this, 0);
+
 		ActiveAndroid.initialize(this);
 
 		JoinView jv = JoinView.build("account_w_cat", Account.class)
 				.inner(Category.class).onIdAnd("category").create();
 		Cache.addView(jv);
+	}
+
+	private void setStrictMode() {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+				.detectAll().penaltyLog().build());
+
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
+				.penaltyLog().build());
 	}
 
 	@Override
