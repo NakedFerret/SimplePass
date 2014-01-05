@@ -3,32 +3,38 @@ package com.nakedferret.simplepass.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.activeandroid.content.ContentProvider;
+import com.activeandroid.query.Select;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.Account;
+import com.nakedferret.simplepass.ApplicationSimplePass;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.PasswordStorageContract.Account_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.Vault;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends Fragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, OnItemSelectedListener {
 
 	@ViewById
 	Spinner groupSpinner;
@@ -36,9 +42,16 @@ public class FragCreateAccount extends Fragment implements
 	@FragmentArg
 	String vaultUriString;
 
+	@ViewById
+	EditText accountNameInput, accountUsernameInput, accountPasswordInput;
+
+	@App
+	ApplicationSimplePass app;
+
 	private IFragListener mListener;
 	private SimpleCursorAdapter adapter;
 	private Uri vaultUri;
+	private long categoryId;
 
 	public FragCreateAccount() {
 		// Required empty public constructor
@@ -51,6 +64,7 @@ public class FragCreateAccount extends Fragment implements
 		adapter = getAdapter();
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		groupSpinner.setAdapter(adapter);
+		groupSpinner.setOnItemSelectedListener(this);
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -110,30 +124,30 @@ public class FragCreateAccount extends Fragment implements
 
 	@Click(R.id.createButton)
 	void onCreateButton() {
-		testAccount();
+		createAccount();
 	}
 
 	@Background
-	void testAccount() {
-		String masterPass = "master_password";
+	void createAccount() {
+		Vault v = app.getVault(vaultUri);
+		Category c = Category.load(Category.class, categoryId);
 
-		Vault v = Vault.createVault("Personal", masterPass, 5000);
-		byte[] key = Utils.getKey(masterPass, v.salt, v.iterations);
+		String name = accountNameInput.getText().toString();
+		String username = accountUsernameInput.getText().toString();
+		String password = accountPasswordInput.getText().toString();
 
-		String password = "account_pass";
-		String name = "test account";
-		String username = "test user";
-
-		ContentValues account = Utils.createAccount(1, 1, name, username,
-				password, key, v.iv);
-		Utils.log(this, "Created Account");
-
-		Utils.log(this, "Decrypting account...");
-		account = Utils.decryptAccount(account, key, v.iv);
-		Utils.log(
-				this,
-				"Account username: "
-						+ account.getAsString(Account_.DEC_USERNAME));
-
+		Account a = v.createAccount(name, username, password, c);
+		a.save();
 	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> a, View v, int p, long id) {
+		categoryId = id;
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> a) {
+		categoryId = 1;
+	}
+
 }
