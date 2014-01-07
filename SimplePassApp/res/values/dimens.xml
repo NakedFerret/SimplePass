@@ -8,4 +8,6 @@
     <integer name="widthPercent">90</integer>
     <integer name="heightPercent">85</integer>
 
+    <dimen name="key_height">50dp</dimen>
+
 </resources>
