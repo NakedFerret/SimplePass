@@ -99,14 +99,15 @@ public class FragPassInput extends DialogFragment {
 		passwordInput.setEnabled(false);
 		unlockButton.setEnabled(false);
 		infoText.setText("Unlocking Vault...");
-
 		infoText.setVisibility(View.VISIBLE);
 		progressIndicator.setVisibility(View.VISIBLE);
 	}
 
 	public void onPasswordIncorrect() {
-		// TODO: implement onPasswordIncorrect
-		Utils.log(this, "password incorrect!");
+		passwordInput.setEnabled(true);
+		unlockButton.setEnabled(true);
+		infoText.setText("Wrong Password!");
+		progressIndicator.setVisibility(View.INVISIBLE);
 	}
 
 }
