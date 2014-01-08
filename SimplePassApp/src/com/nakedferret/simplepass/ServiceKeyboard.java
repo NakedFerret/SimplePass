@@ -164,7 +164,7 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 			unbindService(this);
 	}
 
-	static void alertAccountSelected(Context c, Account a) {
+	public static void alertAccountSelected(Context c, Account a) {
 		Intent i = new Intent(ServiceKeyboard.FILTER);
 		i.putExtra(ServiceKeyboard.ACTIVITY_EVENT_EXTRA, ACCOUNT_SELECTED);
 		i.putExtra(USERNAME_EXTRA, a.decryptedUsername);

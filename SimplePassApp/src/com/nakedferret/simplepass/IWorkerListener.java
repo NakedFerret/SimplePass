@@ -18,4 +18,5 @@ public interface IWorkerListener {
 	// Check to see if vault is unlocked or not
 	boolean isVaultUnlocked(Uri vault);
 	
+	Account getDecryptedAccount(Uri accountUri);
 }

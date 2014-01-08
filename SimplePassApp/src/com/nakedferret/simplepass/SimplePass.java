@@ -133,6 +133,21 @@ public class SimplePass extends Application implements ServiceConnection {
 		uiListener.onAccountCreated(account);
 	}
 
+	public void onAccountSelected(Uri accountUri) {
+		getSelectedAccountForKeyboard(accountUri);
+	}
+
+	@Background
+	void getSelectedAccountForKeyboard(Uri accountUri) {
+		Account a = worker.getDecryptedAccount(accountUri);
+		alertKeyboardAccountSelected(a);
+	}
+
+	@UiThread
+	void alertKeyboardAccountSelected(Account a) {
+		ServiceKeyboard.alertAccountSelected(this, a);
+	}
+
 	public boolean isVaultUnlocked(Uri vaultUri) {
 		return worker.isVaultUnlocked(vaultUri);
 	}

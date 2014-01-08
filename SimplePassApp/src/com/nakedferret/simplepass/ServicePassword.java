@@ -79,4 +79,17 @@ public class ServicePassword extends Service implements IWorkerListener {
 		return unlockedVaults.get(vaultUri) != null;
 	}
 
+	@Override
+	public Account getDecryptedAccount(Uri accountUri) {
+		long accountId = ContentUris.parseId(accountUri);
+		Account a = Account.load(Account.class, accountId);
+		Uri vaultUri = ContentProvider.createUri(Vault.class, a.vault.getId());
+
+		Vault v = unlockedVaults.get(vaultUri);
+		if (v == null)
+			return null;
+
+		v.decryptAccount(a);
+		return a;
+	}
 }

@@ -8,11 +8,10 @@ import android.net.Uri;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.SimplePass;
 
 @EActivity(R.layout.act_frag_test)
 public class ActFragTest extends ActFloating implements IUIListener,
@@ -74,8 +73,9 @@ public class ActFragTest extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	public void onAccountSelected(Uri uri) {
-		Utils.log(this, "account selected: " + uri.toString());
+	public void onAccountSelected(Uri accountUri) {
+		app.onAccountSelected(accountUri);
+		finish();
 	}
 
 	@Override
