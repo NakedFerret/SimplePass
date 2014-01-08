@@ -12,7 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.inputmethod.EditorInfo;
 
 import com.nakedferret.simplepass.ServicePassword.LocalBinder;
-import com.nakedferret.simplepass.ui.ActFragTest_;
+import com.nakedferret.simplepass.ui.ActPasswordSelect_;
 
 public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		ServiceConnection {
@@ -141,7 +141,7 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 	}
 
 	private void showAccountSelection() {
-		Intent i = new Intent(getApplicationContext(), ActFragTest_.class);
+		Intent i = new Intent(getApplicationContext(), ActPasswordSelect_.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(i);
 	}
