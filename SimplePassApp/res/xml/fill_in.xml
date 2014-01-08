@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0px"
+    android:keyHeight="@dimen/key_height"
+    android:keyWidth="10%p"
+    android:verticalGap="2dp" >
+
+    <Row>
+        <Key
+            android:codes="1"
+            android:horizontalGap="25%p"
+            android:keyLabel="Username"
+            android:keyWidth="50%p" />
+    </Row>
+    <Row>
+        <Key
+            android:codes="2"
+            android:horizontalGap="25%p"
+            android:keyLabel="Password"
+            android:keyWidth="50%p" />
+    </Row>
+    <Row android:rowEdgeFlags="bottom" >
+        <Key
+            android:codes="3"
+            android:keyEdgeFlags="left"
+            android:keyLabel="Clear"
+            android:keyWidth="25%p" />
+        <Key
+            android:codes="4"
+            android:horizontalGap="50%p"
+            android:keyEdgeFlags="right"
+            android:keyLabel="Go Back"
+            android:keyWidth="25%p" />
+    </Row>
+
+</Keyboard>

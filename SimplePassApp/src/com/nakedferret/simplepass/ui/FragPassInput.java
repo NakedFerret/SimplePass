@@ -3,6 +3,7 @@ package com.nakedferret.simplepass.ui;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +16,10 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.ServiceKeyboard;
+import com.nakedferret.simplepass.SimplePass;
 
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment {
@@ -62,6 +63,10 @@ public class FragPassInput extends DialogFragment {
 	@AfterViews
 	void init() {
 		vaultUri = Uri.parse(vaultUriString);
+
+		Bundle inputExtras = passwordInput.getInputExtras(true);
+		inputExtras.putString(ServiceKeyboard.INPUT_ID_EXTRA,
+				ServiceKeyboard.INPUT_ID);
 	}
 
 	@Override
