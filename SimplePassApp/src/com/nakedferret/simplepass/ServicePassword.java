@@ -69,16 +69,14 @@ public class ServicePassword extends Service implements IWorkerListener {
 	}
 
 	@Override
-	public void lockVault(Uri vault) {
-		// TODO Auto-generated method stub
+	public void lockVault(Uri vaultUri) {
+		unlockedVaults.remove(vaultUri);
 
 	}
 
 	@Override
-	public boolean isVaultUnlocked(Uri vault) {
-		return false;
-		// TODO Auto-generated method stub
-
+	public boolean isVaultUnlocked(Uri vaultUri) {
+		return unlockedVaults.get(vaultUri) != null;
 	}
 
 }
