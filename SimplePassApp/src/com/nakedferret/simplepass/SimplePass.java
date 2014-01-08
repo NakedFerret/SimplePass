@@ -33,6 +33,9 @@ public class SimplePass extends Application implements ServiceConnection {
 		bindService(serviceIntent, this, 0);
 
 		ActiveAndroid.initialize(this);
+		// Insert default Category
+		ActiveAndroid
+				.execSQL("insert or ignore into category (_id, name) values (1, 'Default')");
 
 		JoinView jv = JoinView.build("account_w_cat", Account.class)
 				.inner(Category.class).onIdAnd("category").create();
