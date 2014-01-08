@@ -91,7 +91,16 @@ public class FragCreateVault extends Fragment implements
 		int iterations = iters;
 
 		app.createVault(name, pass, iterations);
-
 	}
+
+	@Override
+	public void onDestroy() {
+		if( progressDialog != null)
+			progressDialog.dismiss();
+		
+		super.onDestroy();
+	}
+	
+	
 
 }
