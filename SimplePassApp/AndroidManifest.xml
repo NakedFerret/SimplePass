@@ -74,6 +74,11 @@
                 android:name="android.view.im"
                 android:resource="@xml/method" />
         </service>
+
+        <activity
+            android:name="com.nakedferret.simplepass.ui.ActTutorial_"
+            android:label="@string/title_activity_act_tutorial" >
+        </activity>
     </application>
 
 </manifest>
