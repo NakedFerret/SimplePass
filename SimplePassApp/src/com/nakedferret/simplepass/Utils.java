@@ -13,6 +13,10 @@ import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.spongycastle.crypto.params.KeyParameter;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Service;
+import android.content.Context;
 import android.util.Log;
 
 public class Utils {
@@ -114,6 +118,20 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	
+	public static boolean isServiceRunning(Context c,
+			Class<? extends Service> serviceClass) {
+		ActivityManager manager = (ActivityManager) c
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		for (RunningServiceInfo service : manager
+				.getRunningServices(Integer.MAX_VALUE)) {
+			if (serviceClass.getName().equals(service.service.getClassName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

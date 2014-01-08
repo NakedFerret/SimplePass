@@ -23,10 +23,10 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_account)

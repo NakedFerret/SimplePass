@@ -4,61 +4,37 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Button;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Cache;
-import com.activeandroid.TableInfo;
-import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.Account;
-import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Vault;
+import com.nakedferret.simplepass.ServiceOverlay_;
+import com.nakedferret.simplepass.Utils;
 
 @EActivity(R.layout.act_main)
 public class ActMain extends Activity {
 
 	@ViewById
-	Button insertButton;
+	Button overlayButton;
 
-	@ViewById
-	Button testDataButton;
+	@AfterViews
+	void init() {
 
-	@Click(R.id.testDataButton)
-	void onCreateTestData() {
-		clearAndInsertTestData();
+		if (Utils.isServiceRunning(this, ServiceOverlay_.class))
+			overlayButton.setText(R.string.stop_overlay);
+		else
+			overlayButton.setText(R.string.start_overlay);
 	}
 
-	@Background
-	void clearAndInsertTestData() {
-		// Clear all the info in the tables
-		for (TableInfo table : Cache.getTableInfos()) {
-			ActiveAndroid.execSQL("delete from " + table.getTableName());
-		}
+	@Click(R.id.overlayButton)
+	void onOverlayButtonClicked() {
+		Intent serviceIntent = new Intent(this, ServiceOverlay_.class);
 
-		Vault vault = Vault.createVault("Personal", "secret", 2500);
-		vault.save();
-		vault.unlock("secret");
-
-		insertAccount("Reddit", "Entertainment", vault);
-		insertAccount("Xda-Developers", "Development", vault);
-		insertAccount("Twitter", "Social", vault);
-		insertAccount("Bank", "Financial", vault);
-		insertAccount("Amazon", "Retail", vault);
-	}
-
-	private void insertAccount(String name, String categoryName, Vault vault) {
-		Category c = new Category(categoryName);
-		c.save();
-
-		Account a = vault.createAccount(name, "test_user", "account_pass", c);
-		a.save();
-	}
-
-	@Click(R.id.testFrags)
-	void testGenericFrag() {
-		startActivity(new Intent(this, ActFragTest_.class));
+		if (Utils.isServiceRunning(this, ServiceOverlay_.class))
+			stopService(serviceIntent);
+		else
+			startService(serviceIntent);
 	}
 
 }
