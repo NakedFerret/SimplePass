@@ -88,6 +88,10 @@ public class FragCreateAccount extends Fragment implements
 	@AfterViews
 	void init() {
 		vaultUri = Uri.parse(vaultUriString);
+
+		Utils.addKeyboardInputExtras(accountNameInput);
+		Utils.addKeyboardInputExtras(accountUsernameInput);
+		Utils.addKeyboardInputExtras(accountPasswordInput);
 	}
 
 	@Override

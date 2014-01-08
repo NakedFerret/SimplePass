@@ -17,7 +17,9 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 
 public class Utils {
 
@@ -120,7 +122,6 @@ public class Utils {
 		return null;
 	}
 
-	
 	public static boolean isServiceRunning(Context c,
 			Class<? extends Service> serviceClass) {
 		ActivityManager manager = (ActivityManager) c
@@ -132,6 +133,12 @@ public class Utils {
 			}
 		}
 		return false;
+	}
+
+	public static void addKeyboardInputExtras(EditText editText) {
+		Bundle inputExtras = editText.getInputExtras(true);
+		inputExtras.putString(ServiceKeyboard.INPUT_ID_EXTRA,
+				ServiceKeyboard.INPUT_ID);
 	}
 
 }

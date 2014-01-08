@@ -20,6 +20,7 @@ import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ServiceKeyboard;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment {
@@ -63,10 +64,7 @@ public class FragPassInput extends DialogFragment {
 	@AfterViews
 	void init() {
 		vaultUri = Uri.parse(vaultUriString);
-
-		Bundle inputExtras = passwordInput.getInputExtras(true);
-		inputExtras.putString(ServiceKeyboard.INPUT_ID_EXTRA,
-				ServiceKeyboard.INPUT_ID);
+		Utils.addKeyboardInputExtras(passwordInput);
 	}
 
 	@Override

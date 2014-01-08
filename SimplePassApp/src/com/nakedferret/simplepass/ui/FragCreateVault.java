@@ -19,6 +19,7 @@ import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_vault)
 public class FragCreateVault extends Fragment implements
@@ -64,6 +65,9 @@ public class FragCreateVault extends Fragment implements
 		iterationSpinner.setAdapter(adapter);
 		iterationSpinner.setOnItemSelectedListener(this);
 		iters = securityLevelIterArray[0];
+		
+		Utils.addKeyboardInputExtras(vaultNameInput);
+		Utils.addKeyboardInputExtras(vaultPasswordInput);
 	}
 
 	@Override
