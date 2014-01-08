@@ -31,10 +31,20 @@ public class ActMain extends Activity {
 	void onOverlayButtonClicked() {
 		Intent serviceIntent = new Intent(this, ServiceOverlay_.class);
 
-		if (Utils.isServiceRunning(this, ServiceOverlay_.class))
+		if (Utils.isServiceRunning(this, ServiceOverlay_.class)) {
 			stopService(serviceIntent);
-		else
+			overlayButton.setText(R.string.start_overlay);
+		} else {
 			startService(serviceIntent);
+			overlayButton.setText(R.string.stop_overlay);
+		}
+
+	}
+
+	@Override
+	protected void onPause() {
+		finish(); // Finish the activity so the task gets destroyed
+		super.onPause();
 	}
 
 }
