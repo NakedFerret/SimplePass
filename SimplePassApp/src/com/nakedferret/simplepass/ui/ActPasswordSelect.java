@@ -49,6 +49,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	@Override
 	// The user entered the correct password
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
+		
 		showFragListAccount(vault);
 	}
 
@@ -69,7 +70,9 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onAccountCreated(Uri vaultUri) {
-		showFragListAccount(vaultUri);
+		// FragCreateAccount is currently showing, so pop it out to show FragListAccount
+		FragmentManager m = getFragmentManager();
+		m.popBackStack();
 	}
 
 	@Override
