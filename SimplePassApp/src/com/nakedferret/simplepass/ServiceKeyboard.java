@@ -11,9 +11,11 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.inputmethod.EditorInfo;
 
+import com.googlecode.androidannotations.annotations.EService;
 import com.nakedferret.simplepass.ServicePassword.LocalBinder;
 import com.nakedferret.simplepass.ui.ActPasswordSelect_;
 
+@EService
 public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		ServiceConnection {
 
