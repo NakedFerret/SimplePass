@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -127,8 +126,13 @@ public class FragListAccount extends ListFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		return new CursorLoader(getActivity(), URI, null, SELECTION,
-				selectionArgs, null);
+		MultiUriCursorLoader loader = new MultiUriCursorLoader(getActivity(),
+				URI, null, SELECTION, selectionArgs, null);
+
+		loader.addUri(ContentProvider.createUri(Account.class, null));
+		loader.addUri(ContentProvider.createUri(Category.class, null));
+
+		return loader;
 	}
 
 	@Override
