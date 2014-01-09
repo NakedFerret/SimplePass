@@ -125,11 +125,6 @@ public class FragCreateAccount extends Fragment implements
 
 	@Click(R.id.createButton)
 	void onCreateButton() {
-		createAccount();
-	}
-
-	@Background
-	void createAccount() {
 		Uri categoryUri = ContentProvider.createUri(Category.class, categoryId);
 		String name = accountNameInput.getText().toString();
 		String username = accountUsernameInput.getText().toString();
