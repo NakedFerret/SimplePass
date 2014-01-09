@@ -1,7 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -10,7 +10,7 @@ import android.view.WindowManager.LayoutParams;
 
 import com.nakedferret.simplepass.R;
 
-public class ActFloating extends Activity {
+public class ActFloating extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {

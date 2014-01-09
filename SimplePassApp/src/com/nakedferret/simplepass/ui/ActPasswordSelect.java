@@ -1,9 +1,9 @@
 package com.nakedferret.simplepass.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
@@ -49,7 +49,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	@Override
 	// The user entered the correct password
 	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-		
+
 		showFragListAccount(vault);
 	}
 
@@ -70,8 +70,9 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onAccountCreated(Uri vaultUri) {
-		// FragCreateAccount is currently showing, so pop it out to show FragListAccount
-		FragmentManager m = getFragmentManager();
+		// FragCreateAccount is currently showing, so pop it out to show
+		// FragListAccount
+		FragmentManager m = getSupportFragmentManager();
 		m.popBackStack();
 	}
 
@@ -83,19 +84,19 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onCancel() {
-		FragmentManager m = getFragmentManager();
+		FragmentManager m = getSupportFragmentManager();
 		m.popBackStack();
 	}
 
 	private void showFragListVault() {
-		FragmentManager m = getFragmentManager();
+		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
 		t.replace(R.id.fragmentContainer, new FragListVault_());
 		t.commit();
 	}
 
 	private void showFragCreateVault() {
-		FragmentManager m = getFragmentManager();
+		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
 		t.replace(R.id.fragmentContainer, new FragCreateVault_());
 		t.addToBackStack(null);
@@ -107,7 +108,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		fragPasswordInput = FragPassInput_.builder()
 				.vaultUriString(vaultUri.toString()).build();
 
-		FragmentManager m = getFragmentManager();
+		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
 		t.replace(R.id.fragmentContainer, fragPasswordInput);
 		t.addToBackStack(null);
@@ -119,7 +120,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		Fragment f = FragListAccount_.builder()
 				.vaultUriString(vault.toString()).build();
 
-		FragmentManager m = getFragmentManager();
+		FragmentManager m = getSupportFragmentManager();
 		m.popBackStack(); // Remove the password input fragment
 		FragmentTransaction t = m.beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
@@ -131,7 +132,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		Fragment f = FragCreateAccount_.builder()
 				.vaultUriString(vaultUri.toString()).build();
 
-		FragmentManager m = getFragmentManager();
+		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);

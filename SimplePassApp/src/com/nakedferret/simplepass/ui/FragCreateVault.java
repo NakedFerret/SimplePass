@@ -1,8 +1,8 @@
 package com.nakedferret.simplepass.ui;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -17,13 +17,12 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_create_vault)
-public class FragCreateVault extends Fragment implements
-		OnItemSelectedListener {
+public class FragCreateVault extends Fragment implements OnItemSelectedListener {
 
 	@App
 	SimplePass app;
@@ -65,7 +64,7 @@ public class FragCreateVault extends Fragment implements
 		iterationSpinner.setAdapter(adapter);
 		iterationSpinner.setOnItemSelectedListener(this);
 		iters = securityLevelIterArray[0];
-		
+
 		Utils.addKeyboardInputExtras(vaultNameInput);
 		Utils.addKeyboardInputExtras(vaultPasswordInput);
 	}
@@ -95,12 +94,10 @@ public class FragCreateVault extends Fragment implements
 
 	@Override
 	public void onDestroy() {
-		if( progressDialog != null)
+		if (progressDialog != null)
 			progressDialog.dismiss();
-		
+
 		super.onDestroy();
 	}
-	
-	
 
 }
