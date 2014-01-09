@@ -10,14 +10,19 @@ import android.inputmethodservice.Keyboard;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import com.googlecode.androidannotations.annotations.EService;
+import com.googlecode.androidannotations.annotations.SystemService;
 import com.nakedferret.simplepass.ServicePassword.LocalBinder;
 import com.nakedferret.simplepass.ui.ActPasswordSelect_;
 
 @EService
 public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		ServiceConnection {
+
+	@SystemService
+	InputMethodManager inputMethodManager;
 
 	private ActivityListener activityListener = new ActivityListener();
 	static final String FILTER = "activity_listener";
@@ -94,6 +99,7 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 			break;
 		case DONE_BUTTON:
 			cancelPasswordInput();
+			inputMethodManager.showInputMethodPicker();
 			break;
 		case CANCEL_BUTTON:
 			cancelPasswordInput();
