@@ -44,7 +44,9 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onVaultCreated(Uri vaultUri) {
-		showFragListAccount(vaultUri);
+		FragmentManager m = getSupportFragmentManager();
+		m.popBackStack();
+		showFragPassInput(vaultUri);
 	}
 
 	@Override

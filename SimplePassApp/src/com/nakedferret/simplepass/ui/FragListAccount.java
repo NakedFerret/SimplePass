@@ -25,6 +25,7 @@ import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
+import com.nakedferret.simplepass.MultiUriCursorLoader;
 import com.nakedferret.simplepass.R;
 
 @EFragment

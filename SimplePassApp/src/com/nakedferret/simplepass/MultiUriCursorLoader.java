@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass.ui;
+package com.nakedferret.simplepass;
 
 import android.content.Context;
 import android.net.Uri;
