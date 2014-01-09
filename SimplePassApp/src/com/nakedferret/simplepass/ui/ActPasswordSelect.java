@@ -21,6 +21,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	SimplePass app;
 
 	private FragPassInput fragPasswordInput;
+	private Uri accountUri;
 
 	@AfterViews
 	void initializeInterface() {
@@ -78,8 +79,16 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onAccountSelected(Uri accountUri) {
-		app.onAccountSelected(accountUri);
-		finish();
+		this.accountUri = accountUri;
+		showFragChangeKeyboard();
+	}
+
+	private void showFragChangeKeyboard() {
+		FragmentManager m = getSupportFragmentManager();
+		FragmentTransaction t = m.beginTransaction();
+		t.replace(R.id.fragmentContainer, new FragChangeKeyboard_());
+		t.addToBackStack(null);
+		t.commit();
 	}
 
 	@Override
@@ -143,6 +152,12 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	protected void onStop() {
 		super.onStop();
 		app.detachUIListener();
+	}
+
+	@Override
+	public void onKeyboardChanged() {
+		app.onAccountSelected(accountUri);
+		finish();
 	}
 
 }

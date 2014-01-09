@@ -13,4 +13,6 @@ public interface IFragListener {
 	void requestCreateVault();
 
 	void requestCreateAccount(Uri vaultUri);
+	
+	void onKeyboardChanged();
 }
