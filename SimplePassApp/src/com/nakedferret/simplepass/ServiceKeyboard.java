@@ -27,8 +27,9 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 
 	private static final int USERNAME_BUTTON = 1;
 	private static final int PASSWORD_BUTTON = 2;
-	private static final int CLEAR_BUTTON = 3;
-	private static final int BACK_BUTTON = 4;
+	private static final int DONE_BUTTON = 3;
+	private static final int CLEAR_BUTTON = 4;
+	private static final int CANCEL_BUTTON = 5;
 
 	public static final String INPUT_ID_EXTRA = "input_extra";
 	public static final String INPUT_ID = "com.nakedferret.simplepass.id";
@@ -84,12 +85,16 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 
 		switch (code) {
 		case USERNAME_BUTTON:
+			getCurrentInputConnection().commitText(username, 1);
+			break;
 		case PASSWORD_BUTTON:
-			commitTextAndClear(code);
-			if (username != null || password != null)
-				break;
-		case BACK_BUTTON:
-			exitFillInMode();
+			getCurrentInputConnection().commitText(password, 1);
+			break;
+		case DONE_BUTTON:
+			cancelPasswordInput();
+			break;
+		case CANCEL_BUTTON:
+			cancelPasswordInput();
 			break;
 		case CLEAR_BUTTON:
 			getCurrentInputConnection().deleteSurroundingText(1000, 1000);
@@ -97,18 +102,6 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		default:
 			super.onKey(code, keyCodes);
 		}
-	}
-
-	private void commitTextAndClear(int code) {
-		String text = (code == USERNAME_BUTTON) ? username : password;
-		if (text == null)
-			return;
-
-		getCurrentInputConnection().commitText(text, 1);
-		if (code == USERNAME_BUTTON)
-			username = null;
-		else
-			password = null;
 	}
 
 	class ActivityListener extends BroadcastReceiver {
@@ -132,11 +125,10 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		fillInMode = true;
 	}
 
-	private void exitFillInMode() {
+	private void cancelPasswordInput() {
 		username = null;
 		password = null;
 		fillInMode = false;
-		setNextKeyboard();
 		requestHideSelf(0);
 	}
 

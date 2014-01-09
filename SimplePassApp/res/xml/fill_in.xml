@@ -8,28 +8,34 @@
     <Row>
         <Key
             android:codes="1"
-            android:horizontalGap="25%p"
+            android:keyEdgeFlags="left"
             android:keyLabel="Username"
-            android:keyWidth="50%p" />
+            android:keyWidth="40%p" />
+        <Key
+            android:codes="2"
+            android:horizontalGap="20%p"
+            android:keyEdgeFlags="right"
+            android:keyLabel="Password"
+            android:keyWidth="40%p" />
     </Row>
     <Row>
         <Key
-            android:codes="2"
-            android:horizontalGap="25%p"
-            android:keyLabel="Password"
-            android:keyWidth="50%p" />
+            android:codes="3"
+            android:horizontalGap="30%p"
+            android:keyLabel="Done"
+            android:keyWidth="40%p" />
     </Row>
     <Row android:rowEdgeFlags="bottom" >
         <Key
-            android:codes="3"
+            android:codes="4"
             android:keyEdgeFlags="left"
             android:keyLabel="Clear"
             android:keyWidth="25%p" />
         <Key
-            android:codes="4"
+            android:codes="5"
             android:horizontalGap="50%p"
             android:keyEdgeFlags="right"
-            android:keyLabel="Go Back"
+            android:keyLabel="Cancel"
             android:keyWidth="25%p" />
     </Row>
 
