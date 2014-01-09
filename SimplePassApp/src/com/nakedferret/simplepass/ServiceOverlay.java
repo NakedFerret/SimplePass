@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.googlecode.androidannotations.annotations.EService;
 import com.googlecode.androidannotations.annotations.SystemService;
 import com.nakedferret.simplepass.OverlayViewManager.OnOverlayTriggerListener;
+import com.nakedferret.simplepass.ui.ActPasswordSelect_;
 
 @EService
 public class ServiceOverlay extends Service implements OnOverlayTriggerListener {
@@ -87,7 +88,9 @@ public class ServiceOverlay extends Service implements OnOverlayTriggerListener 
 
 	@Override
 	public void OnOverlayTriggered() {
-		inputMethodManager.showInputMethodPicker();
+		Intent i = new Intent(getApplicationContext(), ActPasswordSelect_.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(i);
 	}
 
 }
