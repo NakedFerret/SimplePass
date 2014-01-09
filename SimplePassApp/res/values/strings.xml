@@ -33,5 +33,7 @@
         Select SimplePass. Click "Done"</string>
     <string name="change_keyboard">Change Keyboard</string>
     <string name="done">Done</string>
+    <string name="lock_vault">Lock Vault</string>
+    <string name="lock_vault_condensed">Lock</string>
 
 </resources>

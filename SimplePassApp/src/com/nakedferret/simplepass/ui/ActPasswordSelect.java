@@ -63,7 +63,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onVaultLocked(Uri vault) {
-		// Can't think of when this will be called...
+		showFragListVault();
 	}
 
 	@Override

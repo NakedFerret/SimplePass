@@ -10,6 +10,9 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +22,7 @@ import com.activeandroid.Cache;
 import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
@@ -27,6 +31,7 @@ import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.MultiUriCursorLoader;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.SimplePass;
 
 @EFragment
 public class FragListAccount extends ListFragment implements
@@ -34,6 +39,9 @@ public class FragListAccount extends ListFragment implements
 
 	@FragmentArg
 	String vaultUriString;
+
+	@App
+	SimplePass app;
 
 	private static Uri URI;
 	private static String SELECTION;
@@ -50,9 +58,21 @@ public class FragListAccount extends ListFragment implements
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.frag_list_account, container, false);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.frag_list_account, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -150,6 +170,18 @@ public class FragListAccount extends ListFragment implements
 	@Click(R.id.createAccountButton)
 	public void onCreateAccountClicked() {
 		mListener.requestCreateAccount(vaultUri);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_lock_vault:
+			app.lockVault(vaultUri);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+
 	}
 
 }

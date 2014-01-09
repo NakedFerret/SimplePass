@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_lock_vault"
+        android:icon="@drawable/ic_action_lock"
+        android:showAsAction="ifRoom"
+        android:title="@string/lock_vault"
+        android:titleCondensed="@string/lock_vault_condensed">
+    </item>
+
+</menu>

@@ -49,7 +49,6 @@
             android:name="com.nakedferret.simplepass.ui.ActPasswordSelect_"
             android:label="@string/title_activity_act_generic_frag_test"
             android:theme="@style/PopupTheme"
-            android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustPan" >
         </activity>
 
