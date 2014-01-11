@@ -31,6 +31,7 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 import com.nakedferret.simplepass.Vault;
 
 @EFragment
@@ -58,12 +59,6 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.frag_list_vault, container, false);
-	}
-
-	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
@@ -79,11 +74,13 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		super.onStart();
 		URI = ContentProvider.createUri(Vault.class, null);
 
+		setListShown(false);
+		setEmptyText(getText(R.string.no_vaults_message));
+
 		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
 
 		setActionMode();
-
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -177,6 +174,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor c) {
+		setListShown(true);
 		setListAdapter(adapter);
 		adapter.changeCursor(c);
 	}

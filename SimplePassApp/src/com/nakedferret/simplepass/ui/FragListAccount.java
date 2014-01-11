@@ -73,12 +73,6 @@ public class FragListAccount extends ListFragment implements
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.frag_list_account, container, false);
-	}
-
-	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.frag_list_account, menu);
 		super.onCreateOptionsMenu(menu, inflater);
@@ -104,6 +98,8 @@ public class FragListAccount extends ListFragment implements
 		SELECTION = VIEW.getColumnName(Account.class, "vault") + " = ?";
 
 		adapter = getAdapter();
+		setListShown(false);
+		setEmptyText(getText(R.string.empty_vault_message));
 		getListView().setOnItemClickListener(this);
 
 		setActionMode();
