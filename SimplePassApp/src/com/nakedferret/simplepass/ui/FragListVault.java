@@ -1,5 +1,8 @@
 package com.nakedferret.simplepass.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,8 +24,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.content.ContentProvider;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Vault;
@@ -86,9 +92,33 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 
+			private List<Long> selectedItems = new ArrayList<Long>();
+
 			@Override
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				return false;
+				switch (item.getItemId()) {
+				case R.id.action_delete_vault:
+					deleteVault(selectedItems, mode);
+				default:
+					return false;
+				}
+
+			}
+
+			@Background
+			void deleteVault(List<Long> selectedItems, ActionMode mode) {
+				ActiveAndroid.beginTransaction();
+				for (Long l : selectedItems) {
+					Vault.delete(Vault.class, l);
+				}
+				ActiveAndroid.setTransactionSuccessful();
+				ActiveAndroid.endTransaction();
+				exitMode(mode);
+			}
+
+			@UiThread
+			void exitMode(ActionMode mode) {
+				mode.finish();
 			}
 
 			@Override
@@ -111,6 +141,10 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 			public void onItemCheckedStateChanged(ActionMode mode,
 					int position, long id, boolean checked) {
 
+				if (checked)
+					selectedItems.add(id);
+				else
+					selectedItems.remove(id);
 			}
 		});
 	}
