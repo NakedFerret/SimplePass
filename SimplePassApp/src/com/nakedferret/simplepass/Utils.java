@@ -17,9 +17,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
 
 public class Utils {
 

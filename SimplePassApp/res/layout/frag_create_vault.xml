@@ -79,16 +79,16 @@
             android:id="@+id/iterationSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/verticalSeparator"
+            android:layout_below="@+id/iterationSpinnerInfo"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/iterationSpinnerInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/iterationSpinner"
-            android:layout_below="@+id/iterationSpinner"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/verticalSeparator"
             android:text="@string/iterationSpinnerInfo" />
     </RelativeLayout>
 
