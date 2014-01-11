@@ -173,6 +173,9 @@ public class FragListAccount extends ListFragment implements
 		case R.id.action_lock_vault:
 			app.lockVault(vaultUri);
 			return true;
+		case R.id.action_add_account:
+			mListener.requestCreateAccount(vaultUri);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

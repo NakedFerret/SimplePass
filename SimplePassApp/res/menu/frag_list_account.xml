@@ -4,9 +4,16 @@
     <item
         android:id="@+id/action_lock_vault"
         android:icon="@drawable/ic_action_lock"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="@string/lock_vault"
         android:titleCondensed="@string/lock_vault_condensed">
+    </item>
+    <item
+        android:id="@+id/action_add_account"
+        android:icon="@drawable/ic_action_add"
+        android:showAsAction="always"
+        android:title="@string/add_new_account"
+        android:titleCondensed="@string/add_new_account_condensed">
     </item>
 
 </menu>
