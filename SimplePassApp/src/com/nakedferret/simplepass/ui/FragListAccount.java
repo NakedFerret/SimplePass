@@ -124,7 +124,7 @@ public class FragListAccount extends ListFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		getActivity().setTitle(R.string.chooseAccount);
+		getActivity().setTitle(R.string.frag_list_account_title);
 	}
 
 	@Override

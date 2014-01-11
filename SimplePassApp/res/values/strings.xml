@@ -23,7 +23,7 @@
     <string name="unlock">Unlock</string>
     <string name="enterVaultPasswordTitle">Enter Vault Password</string>
     <string name="enterPassword">Enter Password</string>
-    <string name="chooseAccount">Choose an Account</string>
+    <string name="frag_list_account_title">Accounts</string>
     <string name="create_new_vault">Create New Vault</string>
     <string name="create_new_account">Create new account</string>
     <string name="start_overlay">Start Overlay</string>
