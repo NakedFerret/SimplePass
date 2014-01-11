@@ -19,7 +19,7 @@
     <string name="username">Username</string>
     <string name="groupHeader">Group:</string>
     <string name="defaultGroup">Default</string>
-    <string name="selectVaultTitle">Choose a Vault</string>
+    <string name="frag_list_vault_title">Vaults</string>
     <string name="unlock">Unlock</string>
     <string name="enterVaultPasswordTitle">Enter Vault Password</string>
     <string name="enterPassword">Enter Password</string>

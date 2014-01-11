@@ -74,7 +74,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	@Override
 	public void onResume() {
 		super.onResume();
-		getActivity().setTitle(R.string.selectVaultTitle);
+		getActivity().setTitle(R.string.frag_list_vault_title);
 	}
 
 	@Override
