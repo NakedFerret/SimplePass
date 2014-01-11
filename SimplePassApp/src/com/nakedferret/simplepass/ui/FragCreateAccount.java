@@ -88,9 +88,6 @@ public class FragCreateAccount extends Fragment implements
 	void init() {
 		vaultUri = Uri.parse(vaultUriString);
 
-		Utils.addKeyboardInputExtras(accountNameInput);
-		Utils.addKeyboardInputExtras(accountUsernameInput);
-		Utils.addKeyboardInputExtras(accountPasswordInput);
 	}
 
 	@Override

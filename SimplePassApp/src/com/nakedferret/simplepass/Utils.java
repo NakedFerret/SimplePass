@@ -135,10 +135,4 @@ public class Utils {
 		return false;
 	}
 
-	public static void addKeyboardInputExtras(EditText editText) {
-		Bundle inputExtras = editText.getInputExtras(true);
-		inputExtras.putString(ServiceKeyboard.INPUT_ID_EXTRA,
-				ServiceKeyboard.INPUT_ID);
-	}
-
 }

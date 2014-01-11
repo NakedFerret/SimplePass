@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager;
 import com.googlecode.androidannotations.annotations.EService;
 import com.googlecode.androidannotations.annotations.SystemService;
 import com.nakedferret.simplepass.ServicePassword.LocalBinder;
-import com.nakedferret.simplepass.ui.ActPasswordSelect_;
 
 @EService
 public class ServiceKeyboard extends ServiceSimpleKeyboard implements
@@ -37,10 +36,6 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 	private static final int DONE_BUTTON = 3;
 	private static final int CLEAR_BUTTON = 4;
 	private static final int CANCEL_BUTTON = 5;
-
-	public static final String INPUT_ID_EXTRA = "input_extra";
-	public static final String INPUT_ID = "com.nakedferret.simplepass.id";
-	public static final String LOGGED_IN = "logged_in";
 
 	private String username;
 	private String password;
@@ -68,23 +63,11 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 	public void onStartInputView(EditorInfo info, boolean restarting) {
 		super.onStartInputView(info, restarting);
 
-		if (!editorIsLocal(info) && !fillInMode) {
-
-			showAccountSelection();
-			requestHideSelf(0);
-
-		} else if (fillInMode) {
-
+		if (fillInMode) {
 			setKeyboard(fillInKeyboard);
+		} else {
+			requestHideSelf(0);
 		}
-	}
-
-	private boolean editorIsLocal(EditorInfo info) {
-		if (info.extras == null)
-			return false;
-
-		String editorId = info.extras.getString(INPUT_ID_EXTRA);
-		return INPUT_ID.equals(editorId);
 	}
 
 	@Override
@@ -118,9 +101,7 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		public void onReceive(Context context, Intent i) {
 			String event = (String) i.getExtras().get(ACTIVITY_EVENT_EXTRA);
 
-			if (LOGGED_IN.equals(event))
-				showAccountSelection();
-			else if (ACCOUNT_SELECTED.equals(event)) {
+			if (ACCOUNT_SELECTED.equals(event)) {
 				enterFillInMode(i);
 			}
 		}
@@ -138,12 +119,6 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 		password = null;
 		fillInMode = false;
 		requestHideSelf(0);
-	}
-
-	private void showAccountSelection() {
-		Intent i = new Intent(getApplicationContext(), ActPasswordSelect_.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(i);
 	}
 
 	@Override

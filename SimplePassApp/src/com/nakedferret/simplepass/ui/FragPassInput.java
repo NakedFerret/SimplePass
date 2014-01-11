@@ -18,7 +18,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
-import com.nakedferret.simplepass.Utils;
 
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment {
@@ -62,7 +61,6 @@ public class FragPassInput extends DialogFragment {
 	@AfterViews
 	void init() {
 		vaultUri = Uri.parse(vaultUriString);
-		Utils.addKeyboardInputExtras(passwordInput);
 	}
 
 	@Override
