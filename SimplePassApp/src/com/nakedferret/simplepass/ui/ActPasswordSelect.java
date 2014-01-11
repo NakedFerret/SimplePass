@@ -23,9 +23,14 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	private FragPassInput fragPasswordInput;
 	private Uri accountUri;
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		app.attachUIListener(this);
+	}
+
 	@AfterViews
 	void initializeInterface() {
-		app.attachUIListener(this);
 		showFragListVault();
 	}
 
