@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_delete_account"
+        android:icon="@drawable/ic_action_delete"
+        android:showAsAction="always"
+        android:title="@string/delete_account"
+        android:titleCondensed="@string/delete_account_condensed">
+    </item>
+
+</menu>

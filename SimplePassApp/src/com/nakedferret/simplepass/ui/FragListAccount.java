@@ -1,5 +1,8 @@
 package com.nakedferret.simplepass.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,6 +12,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,15 +20,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
 import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
@@ -96,10 +105,75 @@ public class FragListAccount extends ListFragment implements
 
 		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
+
+		setActionMode();
+	}
+
+	private void setActionMode() {
+		ListView listView = getListView();
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+
+			private List<Long> selectedItems = new ArrayList<Long>();
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				switch (item.getItemId()) {
+				case R.id.action_delete_account:
+					deleteAccounts(selectedItems, mode);
+				default:
+					return false;
+				}
+
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				mode.getMenuInflater().inflate(R.menu.ac_frag_list_account,
+						menu);
+				return true;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				return false;
+			}
+
+			@Override
+			public void onItemCheckedStateChanged(ActionMode mode,
+					int position, long id, boolean checked) {
+
+				if (checked)
+					selectedItems.add(id);
+				else
+					selectedItems.remove(id);
+			}
+		});
+	}
+
+	@Background
+	void deleteAccounts(List<Long> selectedItems, ActionMode mode) {
+		ActiveAndroid.beginTransaction();
+		for (Long l : selectedItems) {
+			Account.delete(Account.class, l);
+		}
+		ActiveAndroid.setTransactionSuccessful();
+		ActiveAndroid.endTransaction();
+		exitMode(mode);
+	}
+
+	@UiThread
+	void exitMode(ActionMode mode) {
+		mode.finish();
 	}
 
 	private SimpleCursorAdapter getAdapter() {
-		final int LAYOUT = R.layout.listview_account;
+		final int LAYOUT = android.R.layout.simple_list_item_activated_2;
 		final String[] PROJECTION = {
 				VIEW.getColumnName(Account.class, "name"),
 				VIEW.getColumnName(Category.class, "name") };
