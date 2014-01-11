@@ -38,5 +38,8 @@
     <string name="empty_vault_message">The Vault is empty! Add a new Account using the \"plus\" button above</string>
     <string name="add_new_account">Add New Account</string>
     <string name="add_new_account_condensed">Add Account</string>
+    <string name="add_new_vault">Add New Vault</string>
+    <string name="add_new_vault_condensed">Add Vault</string>
+    <string name="no_vaults_message">You have no vaults! Add a new Account using the plus button above</string>
 
 </resources>

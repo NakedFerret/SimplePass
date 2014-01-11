@@ -10,13 +10,15 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.activeandroid.content.ContentProvider;
-import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
@@ -32,6 +34,18 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	public FragListVault() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.frag_list_vault, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -107,9 +121,15 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		mListener.onVaultSelected(ContentProvider.createUri(Vault.class, id));
 	}
 
-	@Click(R.id.createVaultButton)
-	void onCreateVaultClicked() {
-		mListener.requestCreateVault();
-	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_add_vault:
+			mListener.requestCreateVault();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 
+	}
 }
