@@ -116,7 +116,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	}
 
 	private SimpleCursorAdapter getAdapter() {
-		final int LAYOUT = android.R.layout.simple_list_item_1;
+		final int LAYOUT = android.R.layout.simple_list_item_activated_1;
 		final String[] PROJECTION = { "name" };
 		final int[] VIEWS = { android.R.id.text1 };
 
