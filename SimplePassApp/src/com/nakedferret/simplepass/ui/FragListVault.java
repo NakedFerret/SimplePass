@@ -9,14 +9,17 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.activeandroid.content.ContentProvider;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -73,7 +76,43 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		adapter = getAdapter();
 		getListView().setOnItemClickListener(this);
 
+		setActionMode();
+
 		getLoaderManager().initLoader(0, null, this);
+	}
+
+	private void setActionMode() {
+		ListView listView = getListView();
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				return false;
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				mode.getMenuInflater().inflate(R.menu.ac_frag_list_vault, menu);
+				return true;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				return false;
+			}
+
+			@Override
+			public void onItemCheckedStateChanged(ActionMode mode,
+					int position, long id, boolean checked) {
+
+			}
+		});
 	}
 
 	private SimpleCursorAdapter getAdapter() {

@@ -41,5 +41,7 @@
     <string name="add_new_vault">Add New Vault</string>
     <string name="add_new_vault_condensed">Add Vault</string>
     <string name="no_vaults_message">You have no vaults! Add a new Account using the plus button above</string>
+    <string name="delete_vault">Delete Vault(s)</string>
+    <string name="delete_vault_condensed">Delete</string>
 
 </resources>
