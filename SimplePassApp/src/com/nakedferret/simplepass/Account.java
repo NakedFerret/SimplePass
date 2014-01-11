@@ -2,6 +2,7 @@ package com.nakedferret.simplepass;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Column.ForeignKeyAction;
 import com.activeandroid.annotation.Table;
 
 @Table
@@ -19,7 +20,7 @@ public class Account extends Model {
 	@Column
 	public byte[] password;
 
-	@Column
+	@Column(onDelete = ForeignKeyAction.CASCADE)
 	public Vault vault;
 
 	public String decryptedUsername;
