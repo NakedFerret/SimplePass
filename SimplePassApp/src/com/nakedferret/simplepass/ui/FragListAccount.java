@@ -23,7 +23,6 @@ import com.activeandroid.content.ContentProvider;
 import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.nakedferret.simplepass.Account;

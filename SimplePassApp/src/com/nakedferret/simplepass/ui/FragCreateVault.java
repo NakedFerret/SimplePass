@@ -1,7 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +17,7 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
+import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.Utils;
@@ -42,6 +43,7 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 	ProgressDialog progressDialog;
 
 	private int iters;
+	private IFragListener mListener;
 
 	public FragCreateVault() {
 		// Required empty public constructor
@@ -52,8 +54,15 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 		super.onDetach();
 	}
 
-	public interface OnVaultCreatedListener {
-		public void onVaultCreated(Uri uri);
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (IFragListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement IFragListener");
+		}
 	}
 
 	@AfterViews
@@ -90,6 +99,11 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 		int iterations = iters;
 
 		app.createVault(name, pass, iterations);
+	}
+
+	@Click(R.id.cancelButton)
+	void onCancel() {
+		mListener.onCancel();
 	}
 
 	@Override
