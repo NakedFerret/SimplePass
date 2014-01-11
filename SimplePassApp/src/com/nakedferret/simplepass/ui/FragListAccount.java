@@ -167,11 +167,6 @@ public class FragListAccount extends ListFragment implements
 		adapter.changeCursor(null);
 	}
 
-	@Click(R.id.createAccountButton)
-	public void onCreateAccountClicked() {
-		mListener.requestCreateAccount(vaultUri);
-	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

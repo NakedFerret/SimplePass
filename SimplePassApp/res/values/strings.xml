@@ -35,5 +35,6 @@
     <string name="done">Done</string>
     <string name="lock_vault">Lock Vault</string>
     <string name="lock_vault_condensed">Lock</string>
+    <string name="empty_vault_message">The Vault is empty! Add a new Account using the \"plus\" button above</string>
 
 </resources>

@@ -6,15 +6,24 @@
     <ListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/createAccountButton" />
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/createAccountButton"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@id/android:empty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/create_new_account" />
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:id="@+id/emptyListMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/empty_vault_message"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </RelativeLayout>
 
 </RelativeLayout>
