@@ -98,27 +98,11 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				switch (item.getItemId()) {
 				case R.id.action_delete_vault:
-					deleteVault(selectedItems, mode);
+					deleteVaults(selectedItems, mode);
 				default:
 					return false;
 				}
 
-			}
-
-			@Background
-			void deleteVault(List<Long> selectedItems, ActionMode mode) {
-				ActiveAndroid.beginTransaction();
-				for (Long l : selectedItems) {
-					Vault.delete(Vault.class, l);
-				}
-				ActiveAndroid.setTransactionSuccessful();
-				ActiveAndroid.endTransaction();
-				exitMode(mode);
-			}
-
-			@UiThread
-			void exitMode(ActionMode mode) {
-				mode.finish();
 			}
 
 			@Override
@@ -147,6 +131,22 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 					selectedItems.remove(id);
 			}
 		});
+	}
+
+	@Background
+	void deleteVaults(List<Long> selectedItems, ActionMode mode) {
+		ActiveAndroid.beginTransaction();
+		for (Long l : selectedItems) {
+			Vault.delete(Vault.class, l);
+		}
+		ActiveAndroid.setTransactionSuccessful();
+		ActiveAndroid.endTransaction();
+		exitMode(mode);
+	}
+
+	@UiThread
+	void exitMode(ActionMode mode) {
+		mode.finish();
 	}
 
 	private SimpleCursorAdapter getAdapter() {
