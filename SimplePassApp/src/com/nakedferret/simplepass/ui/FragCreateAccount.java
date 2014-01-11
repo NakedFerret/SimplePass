@@ -132,6 +132,11 @@ public class FragCreateAccount extends Fragment implements
 		app.createAccount(vaultUri, categoryUri, name, username, password);
 	}
 
+	@Click(R.id.cancelButton)
+	void onCancel() {
+		mListener.onCancel();
+	}
+
 	@Override
 	public void onItemSelected(AdapterView<?> a, View v, int p, long id) {
 		categoryId = id;
