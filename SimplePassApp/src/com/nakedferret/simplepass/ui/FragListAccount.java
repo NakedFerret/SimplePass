@@ -31,6 +31,7 @@ import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.MultiUriCursorLoader;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.Utils;
 
 @EFragment
 public class FragListAccount extends ListFragment implements

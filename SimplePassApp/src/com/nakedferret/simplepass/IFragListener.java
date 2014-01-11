@@ -8,7 +8,7 @@ public interface IFragListener {
 
 	void onAccountSelected(Uri account);
 
-	void onCancel();
+	void cancel();
 
 	void requestCreateVault();
 

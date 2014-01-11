@@ -84,7 +84,7 @@ public class FragPassInput extends DialogFragment {
 	@Click(R.id.cancelButton)
 	void cancel() {
 		if (mListener != null)
-			mListener.onCancel();
+			mListener.cancel();
 	}
 
 	@Click(R.id.unlockButton)

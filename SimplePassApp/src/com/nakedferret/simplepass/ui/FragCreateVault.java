@@ -100,7 +100,7 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 
 	@Click(R.id.cancelButton)
 	void onCancel() {
-		mListener.onCancel();
+		mListener.cancel();
 	}
 
 	@Override

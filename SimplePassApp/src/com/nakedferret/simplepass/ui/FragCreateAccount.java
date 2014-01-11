@@ -131,7 +131,7 @@ public class FragCreateAccount extends Fragment implements
 
 	@Click(R.id.cancelButton)
 	void onCancel() {
-		mListener.onCancel();
+		mListener.cancel();
 	}
 
 	@Override
