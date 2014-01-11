@@ -29,8 +29,8 @@
     <string name="start_overlay">Start Overlay</string>
     <string name="stop_overlay">Stop Overlay</string>
     <string name="title_activity_act_tutorial">Tutorial</string>
-    <string name="change_keyboard_instructions">Click "Change Keyboard" the button above. 
-        Select SimplePass. Click "Done"</string>
+    <string name="change_keyboard_instructions">Click \"Change Keyboard\" the button above. 
+        Select SimplePass. Click \"Done\"</string>
     <string name="change_keyboard">Change Keyboard</string>
     <string name="done">Done</string>
     <string name="lock_vault">Lock Vault</string>
