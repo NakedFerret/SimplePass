@@ -225,6 +225,7 @@ public class FragListAccount extends ListFragment implements
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor c) {
+		setListShown(true);
 		setListAdapter(adapter);
 		adapter.changeCursor(c);
 	}
