@@ -13,16 +13,14 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Cache;
@@ -40,7 +38,6 @@ import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.MultiUriCursorLoader;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
-import com.nakedferret.simplepass.Utils;
 
 @EFragment
 public class FragListAccount extends ListFragment implements

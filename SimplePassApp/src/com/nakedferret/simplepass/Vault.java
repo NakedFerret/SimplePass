@@ -72,6 +72,11 @@ public class Vault extends Model {
 		return unlocked;
 	}
 
+	public void lock() {
+		key = null;
+		unlocked = false;
+	}
+
 	public boolean isUnlocked() {
 		return unlocked;
 	}

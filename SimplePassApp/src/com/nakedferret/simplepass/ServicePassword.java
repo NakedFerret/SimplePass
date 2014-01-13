@@ -70,8 +70,9 @@ public class ServicePassword extends Service implements IWorkerListener {
 
 	@Override
 	public void lockVault(Uri vaultUri) {
+		Vault v = unlockedVaults.get(vaultUri);
+		v.lock();
 		unlockedVaults.remove(vaultUri);
-
 	}
 
 	@Override
