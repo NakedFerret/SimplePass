@@ -27,19 +27,8 @@ public class SimplePass extends Application implements ServiceConnection {
 	public void onCreate() {
 		super.onCreate();
 		setStrictMode();
-
-		Intent serviceIntent = ServicePassword_.intent(this).get();
-		startService(serviceIntent);
-		bindService(serviceIntent, this, 0);
-
-		ActiveAndroid.initialize(this);
-		// Insert default Category
-		ActiveAndroid
-				.execSQL("insert or ignore into category (_id, name) values (1, 'Default')");
-
-		JoinView jv = JoinView.build("account_w_cat", Account.class)
-				.inner(Category.class).onIdAnd("category").create();
-		Cache.addView(jv);
+		bindServicePassword();
+		initializeDB();
 	}
 
 	private void setStrictMode() {
@@ -48,6 +37,24 @@ public class SimplePass extends Application implements ServiceConnection {
 
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll()
 				.penaltyLog().build());
+	}
+
+	private void bindServicePassword() {
+		Intent serviceIntent = ServicePassword_.intent(this).get();
+		startService(serviceIntent);
+		bindService(serviceIntent, this, 0);
+	}
+
+	@Background
+	void initializeDB() {
+		ActiveAndroid.initialize(this);
+		// Insert default Category
+		ActiveAndroid
+				.execSQL("insert or ignore into category (_id, name) values (1, 'Default')");
+
+		JoinView jv = JoinView.build("account_w_cat", Account.class)
+				.inner(Category.class).onIdAnd("category").create();
+		Cache.addView(jv);
 	}
 
 	@Override
