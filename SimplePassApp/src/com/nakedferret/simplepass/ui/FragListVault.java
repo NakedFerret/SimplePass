@@ -186,7 +186,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		if (mListener == null)
 			return;
 
-		mListener.onVaultSelected(ContentProvider.createUri(Vault.class, id));
+		mListener.onVaultSelected(id);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.nakedferret.simplepass.ui;
 
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,7 +20,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	SimplePass app;
 
 	private FragPassInput fragPasswordInput;
-	private Uri accountUri;
+	private Long selectedAccountId;
 
 	@Override
 	protected void onStart() {
@@ -35,11 +34,11 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	public void onVaultSelected(Uri vaultUri) {
-		if (app.isVaultUnlocked(vaultUri))
-			showFragListAccount(vaultUri);
+	public void onVaultSelected(Long vaultId) {
+		if (app.isVaultUnlocked(vaultId))
+			showFragListAccount(vaultId);
 		else
-			showFragPassInput(vaultUri);
+			showFragPassInput(vaultId);
 	}
 
 	@Override
@@ -48,43 +47,43 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	public void onVaultCreated(Uri vaultUri) {
+	public void onVaultCreated(Long vaultId) {
 		cancel();
-		showFragPassInput(vaultUri);
+		showFragPassInput(vaultId);
 	}
 
 	@Override
 	// The user entered the correct password
-	public void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-		showFragListAccount(vault);
+	public void onVaultUnlocked(Long vaultId, byte[] key, byte[] iv) {
+		showFragListAccount(vaultId);
 	}
 
 	@Override
-	public void onVaultUnlockedFailed(Uri vault) {
+	public void onVaultUnlockedFailed(Long vaultId) {
 		fragPasswordInput.onPasswordIncorrect();
 	}
 
 	@Override
-	public void onVaultLocked(Uri vault) {
+	public void onVaultLocked(Long vaultId) {
 		cancel();
 		showFragListVault();
 	}
 
 	@Override
-	public void requestCreateAccount(Uri vaultUri) {
-		showFragCreateAccount(vaultUri);
+	public void requestCreateAccount(Long vaultId) {
+		showFragCreateAccount(vaultId);
 	}
 
 	@Override
-	public void onAccountCreated(Uri vaultUri) {
+	public void onAccountCreated(Long vaultId) {
 		// FragCreateAccount is currently showing, so pop it out to show
 		// FragListAccount
 		cancel();
 	}
 
 	@Override
-	public void onAccountSelected(Uri accountUri) {
-		this.accountUri = accountUri;
+	public void onAccountSelected(Long accountId) {
+		selectedAccountId = accountId;
 		showFragChangeKeyboard();
 	}
 
@@ -117,9 +116,8 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	}
 
-	private void showFragPassInput(Uri vaultUri) {
-		fragPasswordInput = FragPassInput_.builder()
-				.vaultUriString(vaultUri.toString()).build();
+	private void showFragPassInput(Long vaultId) {
+		fragPasswordInput = FragPassInput_.builder().vaultId(vaultId).build();
 
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
@@ -128,10 +126,9 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		t.commit();
 	}
 
-	private void showFragListAccount(Uri vault) {
+	private void showFragListAccount(Long vaultId) {
 
-		Fragment f = FragListAccount_.builder()
-				.vaultUriString(vault.toString()).build();
+		Fragment f = FragListAccount_.builder().vaultId(vaultId).build();
 
 		FragmentManager m = getSupportFragmentManager();
 		m.popBackStack(); // Remove the password input fragment
@@ -141,9 +138,8 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		t.commit();
 	}
 
-	private void showFragCreateAccount(Uri vaultUri) {
-		Fragment f = FragCreateAccount_.builder()
-				.vaultUriString(vaultUri.toString()).build();
+	private void showFragCreateAccount(Long vaultId) {
+		Fragment f = FragCreateAccount_.builder().vaultId(vaultId).build();
 
 		FragmentManager m = getSupportFragmentManager();
 		FragmentTransaction t = m.beginTransaction();
@@ -160,7 +156,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onKeyboardChanged() {
-		app.onAccountSelected(accountUri);
+		app.onAccountSelected(selectedAccountId);
 		finish();
 	}
 

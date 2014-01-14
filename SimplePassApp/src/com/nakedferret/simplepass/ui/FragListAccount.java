@@ -44,7 +44,7 @@ public class FragListAccount extends ListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor> {
 
 	@FragmentArg
-	String vaultUriString;
+	Long vaultId;
 
 	@App
 	SimplePass app;
@@ -55,7 +55,6 @@ public class FragListAccount extends ListFragment implements
 	// View that represents the join of Account and Category
 
 	private String[] selectionArgs;
-	private Uri vaultUri;
 	private CursorAdapter adapter;
 	private IFragListener mListener;
 
@@ -178,8 +177,7 @@ public class FragListAccount extends ListFragment implements
 
 	@AfterViews
 	void init() {
-		vaultUri = Uri.parse(vaultUriString);
-		selectionArgs = new String[] { vaultUri.getLastPathSegment() };
+		selectionArgs = new String[] { Long.toString(vaultId) };
 	}
 
 	@Override
@@ -205,11 +203,8 @@ public class FragListAccount extends ListFragment implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-			long id) {
-
-		Uri accountUri = ContentProvider.createUri(Account.class, id);
-		mListener.onAccountSelected(accountUri);
+	public void onItemClick(AdapterView<?> parent, View arg1, int p, long id) {
+		mListener.onAccountSelected(id);
 	}
 
 	@Override
@@ -239,10 +234,10 @@ public class FragListAccount extends ListFragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_lock_vault:
-			app.lockVault(vaultUri);
+			app.lockVault(vaultId);
 			return true;
 		case R.id.action_add_account:
-			mListener.requestCreateAccount(vaultUri);
+			mListener.requestCreateAccount(vaultId);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

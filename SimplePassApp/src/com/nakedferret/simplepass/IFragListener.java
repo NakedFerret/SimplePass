@@ -1,18 +1,17 @@
 package com.nakedferret.simplepass;
 
-import android.net.Uri;
 
 public interface IFragListener {
 
-	void onVaultSelected(Uri vault);
+	void onVaultSelected(Long vaultId);
 
-	void onAccountSelected(Uri account);
+	void onAccountSelected(Long accountId);
 
 	void cancel();
 
 	void requestCreateVault();
 
-	void requestCreateAccount(Uri vaultUri);
+	void requestCreateAccount(Long vaultId);
 	
 	void onKeyboardChanged();
 }

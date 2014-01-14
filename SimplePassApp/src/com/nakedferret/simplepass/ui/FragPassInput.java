@@ -1,7 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +21,9 @@ import com.nakedferret.simplepass.SimplePass;
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment {
 
+	@FragmentArg
+	Long vaultId;
+
 	@ViewById
 	EditText passwordInput;
 
@@ -37,11 +39,7 @@ public class FragPassInput extends DialogFragment {
 	@App
 	SimplePass app;
 
-	@FragmentArg
-	String vaultUriString;
-
 	private IFragListener mListener;
-	private Uri vaultUri;
 
 	public FragPassInput() {
 		// Required empty public constructor
@@ -56,11 +54,6 @@ public class FragPassInput extends DialogFragment {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnVaultInteractionListerner");
 		}
-	}
-
-	@AfterViews
-	void init() {
-		vaultUri = Uri.parse(vaultUriString);
 	}
 
 	@Override
@@ -90,7 +83,7 @@ public class FragPassInput extends DialogFragment {
 	@Click(R.id.unlockButton)
 	void unlock() {
 		String password = passwordInput.getText().toString();
-		app.unlockVault(vaultUri, password);
+		app.unlockVault(vaultId, password);
 		showProgress();
 	}
 

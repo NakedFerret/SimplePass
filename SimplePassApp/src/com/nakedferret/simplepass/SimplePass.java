@@ -2,10 +2,8 @@ package com.nakedferret.simplepass;
 
 import android.app.Application;
 import android.content.ComponentName;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.Uri;
 import android.os.IBinder;
 import android.os.StrictMode;
 
@@ -86,70 +84,71 @@ public class SimplePass extends Application implements ServiceConnection {
 
 	@Background
 	public void createVault(String name, String password, int iterations) {
-		Uri vaultUri = worker.createVault(name, password, iterations);
-		onVaultCreated(vaultUri);
+		Long vaultId = worker.createVault(name, password, iterations);
+		onVaultCreated(vaultId);
 	}
 
 	@Background
-	public void createAccount(Uri vault, Uri group, String name,
+	public void createAccount(Long vaultId, Long groupId, String name,
 			String username, String password) {
-		Uri accountUri = worker.createAccount(vault, group, name, username,
+		Long accountId = worker.createAccount(vaultId, groupId, name, username,
 				password);
-		onAccountCreated(accountUri);
+		onAccountCreated(accountId);
 	}
 
 	@Background
-	public void unlockVault(Uri vaultUri, String password) {
-		boolean unlocked = worker.unlockVault(vaultUri, password);
+	public void unlockVault(Long vaultId, String password) {
+		boolean unlocked = worker.unlockVault(vaultId, password);
 
 		if (!unlocked) {
-			onVaultUnlockedFailed(vaultUri);
+			onVaultUnlockedFailed(vaultId);
 			return;
 		}
 
-		Vault v = Vault.load(Vault.class, ContentUris.parseId(vaultUri));
+		Vault v = Vault.load(Vault.class, vaultId);
 		byte[] key = Utils.getKey(password, v.salt, v.iterations);
-		onVaultUnlocked(vaultUri, key, v.iv);
+		onVaultUnlocked(vaultId, key, v.iv);
 	}
 
 	@Background
-	public void lockVault(Uri vault) {
-		worker.lockVault(vault);
-		onVaultLocked(vault);
+	public void lockVault(Long vaultId) {
+		worker.lockVault(vaultId);
+		onVaultLocked(vaultId);
 	}
 
 	@UiThread
-	void onVaultCreated(Uri vault) {
-		uiListener.onVaultCreated(vault);
+	void onVaultCreated(Long vaultId) {
+		uiListener.onVaultCreated(vaultId);
 	}
 
 	@UiThread
-	void onVaultUnlocked(Uri vault, byte[] key, byte[] iv) {
-		uiListener.onVaultUnlocked(vault, key, iv);
+	void onVaultUnlocked(Long vaultId, byte[] key, byte[] iv) {
+		uiListener.onVaultUnlocked(vaultId, key, iv);
 	}
 
 	@UiThread
-	void onVaultUnlockedFailed(Uri vaultUri) {
-		uiListener.onVaultUnlockedFailed(vaultUri);
+	void onVaultUnlockedFailed(Long vaultId) {
+		uiListener.onVaultUnlockedFailed(vaultId);
 	}
 
 	@UiThread
-	void onVaultLocked(Uri vault) {
-		uiListener.onVaultLocked(vault);
+	void onVaultLocked(Long vaultId) {
+		uiListener.onVaultLocked(vaultId);
 	}
 
 	@UiThread
-	void onAccountCreated(Uri account) {
-		uiListener.onAccountCreated(account);
+	void onAccountCreated(Long accountId) {
+		uiListener.onAccountCreated(accountId);
 	}
 
-	public void onAccountSelected(Uri accountUri) {
-		getSelectedAccountForKeyboard(accountUri);
+	public void onAccountSelected(Long accountId) {
+		getSelectedAccountForKeyboard(accountId);
 	}
 
 	@Background
-	void getSelectedAccountForKeyboard(Uri accountUri) {
-		Account a = worker.getDecryptedAccount(accountUri);
+	void getSelectedAccountForKeyboard(Long accountId) {
+		Account a = worker.getDecryptedAccount(accountId);
+		Utils.log(this, "account: " + a);
 		alertKeyboardAccountSelected(a);
 	}
 
@@ -158,8 +157,8 @@ public class SimplePass extends Application implements ServiceConnection {
 		ServiceKeyboard.alertAccountSelected(this, a);
 	}
 
-	public boolean isVaultUnlocked(Uri vaultUri) {
-		return worker.isVaultUnlocked(vaultUri);
+	public boolean isVaultUnlocked(Long vaultId) {
+		return worker.isVaultUnlocked(vaultId);
 	}
 
 }

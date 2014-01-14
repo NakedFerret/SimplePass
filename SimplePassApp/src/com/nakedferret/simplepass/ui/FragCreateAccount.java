@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.activeandroid.content.ContentProvider;
-import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -36,7 +35,7 @@ public class FragCreateAccount extends Fragment implements
 	Spinner groupSpinner;
 
 	@FragmentArg
-	String vaultUriString;
+	Long vaultId;
 
 	@ViewById
 	EditText accountNameInput, accountUsernameInput, accountPasswordInput;
@@ -46,7 +45,6 @@ public class FragCreateAccount extends Fragment implements
 
 	private IFragListener mListener;
 	private SimpleCursorAdapter adapter;
-	private Uri vaultUri;
 	private long categoryId;
 
 	public FragCreateAccount() {
@@ -84,12 +82,6 @@ public class FragCreateAccount extends Fragment implements
 		}
 	}
 
-	@AfterViews
-	void init() {
-		vaultUri = Uri.parse(vaultUriString);
-
-	}
-
 	@Override
 	public void onDetach() {
 		super.onDetach();
@@ -121,12 +113,11 @@ public class FragCreateAccount extends Fragment implements
 
 	@Click(R.id.createButton)
 	void onCreateButton() {
-		Uri categoryUri = ContentProvider.createUri(Category.class, categoryId);
 		String name = accountNameInput.getText().toString();
 		String username = accountUsernameInput.getText().toString();
 		String password = accountPasswordInput.getText().toString();
 
-		app.createAccount(vaultUri, categoryUri, name, username, password);
+		app.createAccount(vaultId, categoryId, name, username, password);
 	}
 
 	@Click(R.id.cancelButton)
