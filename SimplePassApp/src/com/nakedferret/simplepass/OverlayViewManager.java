@@ -18,8 +18,9 @@ public class OverlayViewManager implements OnTouchListener {
 	private WindowManager windowManager;
 	private OnOverlayTriggerListener listener;
 
-	public OverlayViewManager(Context c) {
+	public OverlayViewManager(Context c, OnOverlayTriggerListener listener) {
 		this.context = c;
+		this.listener = listener;
 		windowManager = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);
 

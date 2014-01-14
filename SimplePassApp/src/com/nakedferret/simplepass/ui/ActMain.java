@@ -9,6 +9,7 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.ServiceOverlay;
 import com.nakedferret.simplepass.ServiceOverlay_;
 import com.nakedferret.simplepass.Utils;
 
@@ -21,7 +22,7 @@ public class ActMain extends Activity {
 	@AfterViews
 	void init() {
 
-		if (Utils.isServiceRunning(this, ServiceOverlay_.class))
+		if (ServiceOverlay.overlayRunning())
 			overlayButton.setText(R.string.stop_overlay);
 		else
 			overlayButton.setText(R.string.start_overlay);
@@ -29,13 +30,12 @@ public class ActMain extends Activity {
 
 	@Click(R.id.overlayButton)
 	void onOverlayButtonClicked() {
-		Intent serviceIntent = new Intent(this, ServiceOverlay_.class);
 
-		if (Utils.isServiceRunning(this, ServiceOverlay_.class)) {
-			stopService(serviceIntent);
+		if (ServiceOverlay.overlayRunning()) {
+			ServiceOverlay.stopOverlay(this);
 			overlayButton.setText(R.string.start_overlay);
 		} else {
-			startService(serviceIntent);
+			ServiceOverlay.startOverlay(this);
 			overlayButton.setText(R.string.stop_overlay);
 		}
 

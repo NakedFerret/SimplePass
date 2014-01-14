@@ -7,8 +7,8 @@
     <string name="title_activity_act_select_account">Select Account</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_act_generic_frag_test">Testing Generic FragList</string>
-    <string name="notification_overlay_title">Overlay is Running</string>
-    <string name="notification_overlay_text">Press me to hide the overlay</string>
+    <string name="notificationOverlayTitle">Overlay is Running</string>
+    <string name="notificationOverlayText">Press me to hide the overlay</string>
     <string name="vaultNameHint">Vault Name</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
