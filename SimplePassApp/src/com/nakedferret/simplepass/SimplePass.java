@@ -60,7 +60,7 @@ public class SimplePass extends Application implements ServiceConnection {
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		LocalBinder binder = (LocalBinder) service;
-		attachWorker(binder.getService());
+		attachWorker(binder.getWorker());
 	}
 
 	@Override
