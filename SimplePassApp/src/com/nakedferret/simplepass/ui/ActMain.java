@@ -9,6 +9,7 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.OverlayManager;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 
 @EActivity(R.layout.act_main)
 public class ActMain extends Activity {
@@ -39,9 +40,9 @@ public class ActMain extends Activity {
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onStop() {
+		super.onStop();
 		finish(); // Finish the activity so the task gets destroyed
-		super.onPause();
 	}
 
 }
