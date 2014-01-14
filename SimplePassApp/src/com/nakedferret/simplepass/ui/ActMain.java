@@ -20,6 +20,8 @@ public class ActMain extends Activity {
 	@ViewById
 	Button overlayButton;
 
+	private static final int PICK_FILE_REQUEST_CODE = 1;
+
 	@AfterViews
 	void init() {
 
@@ -63,13 +65,14 @@ public class ActMain extends Activity {
 		Intent i = new Intent(Intent.ACTION_GET_CONTENT);
 		i.addCategory(Intent.CATEGORY_OPENABLE);
 		i.setType("file/*");
-		startActivity(i);
+		startActivityForResult(i, PICK_FILE_REQUEST_CODE);
 	}
 
 	@Override
-	protected void onStop() {
-		super.onStop();
-		finish(); // Finish the activity so the task gets destroyed
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (data != null)
+			Utils.log(this, data.getData().toString());
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 }
