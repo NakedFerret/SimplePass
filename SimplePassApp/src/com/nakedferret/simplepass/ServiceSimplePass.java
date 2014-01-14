@@ -18,7 +18,7 @@ import com.googlecode.androidannotations.annotations.EService;
 public class ServiceSimplePass extends Service implements IWorkerListener {
 
 	@Bean
-	OverlayViewManager overlayViewManager;
+	OverlayManager overlayManager;
 
 	private Map<Uri, Vault> unlockedVaults = new HashMap<Uri, Vault>();
 
@@ -101,7 +101,7 @@ public class ServiceSimplePass extends Service implements IWorkerListener {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		overlayViewManager.destroy();
+		overlayManager.onDestroy();
 	}
 
 }

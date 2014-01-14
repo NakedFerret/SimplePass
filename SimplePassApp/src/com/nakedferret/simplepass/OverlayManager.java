@@ -27,7 +27,7 @@ import com.googlecode.androidannotations.annotations.res.StringRes;
 import com.nakedferret.simplepass.ui.ActPasswordSelect_;
 
 @EBean
-public class OverlayViewManager implements OnTouchListener {
+public class OverlayManager implements OnTouchListener {
 
 	@RootContext
 	Service service;
@@ -200,7 +200,7 @@ public class OverlayViewManager implements OnTouchListener {
 		LocalBroadcastManager.getInstance(c).sendBroadcast(i);
 	}
 
-	public void destroy() {
+	public void onDestroy() {
 		hideViews();
 		LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
 		context.unregisterReceiver(receiver);

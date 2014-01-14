@@ -7,7 +7,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.OverlayViewManager;
+import com.nakedferret.simplepass.OverlayManager;
 import com.nakedferret.simplepass.R;
 
 @EActivity(R.layout.act_main)
@@ -19,7 +19,7 @@ public class ActMain extends Activity {
 	@AfterViews
 	void init() {
 
-		if (OverlayViewManager.overlayRunning())
+		if (OverlayManager.overlayRunning())
 			overlayButton.setText(R.string.stop_overlay);
 		else
 			overlayButton.setText(R.string.start_overlay);
@@ -28,11 +28,11 @@ public class ActMain extends Activity {
 	@Click(R.id.overlayButton)
 	void onOverlayButtonClicked() {
 
-		if (OverlayViewManager.overlayRunning()) {
-			OverlayViewManager.stopOverlay(this);
+		if (OverlayManager.overlayRunning()) {
+			OverlayManager.stopOverlay(this);
 			overlayButton.setText(R.string.start_overlay);
 		} else {
-			OverlayViewManager.startOverlay(this);
+			OverlayManager.startOverlay(this);
 			overlayButton.setText(R.string.stop_overlay);
 		}
 
