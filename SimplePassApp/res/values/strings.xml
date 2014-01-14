@@ -48,5 +48,7 @@
     
     <string name="START_OVERLAY_ACTION">com.nakedferret.simplepass.START_OVERLAY</string>
     <string name="STOP_OVERLAY_ACTION">com.nakedferret.simplepass.STOP_OVERLAY</string>
+    <string name="import_accounts">Import Accounts</string>
+    <string name="import_account_condensed">Import</string>
 
 </resources>
