@@ -1,0 +1,3 @@
+[submodule "aFileChooser"]
+	path = aFileChooser
+	url = git@github.com:iPaulPro/aFileChooser.git
