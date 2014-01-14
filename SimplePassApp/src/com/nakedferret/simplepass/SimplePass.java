@@ -28,6 +28,7 @@ public class SimplePass extends Application implements ServiceConnection {
 		super.onCreate();
 		setStrictMode();
 		bindServicePassword();
+		startService(new Intent(this, ServiceOverlay_.class));
 		initializeDB();
 	}
 

@@ -45,5 +45,8 @@
     <string name="delete_vault_condensed">Delete</string>
     <string name="delete_account">Delete Account(s)</string>
     <string name="delete_account_condensed">Delete</string>
+    
+    <string name="START_OVERLAY_ACTION">com.nakedferret.simplepass.START_OVERLAY</string>
+    <string name="STOP_OVERLAY_ACTION">com.nakedferret.simplepass.STOP_OVERLAY</string>
 
 </resources>
