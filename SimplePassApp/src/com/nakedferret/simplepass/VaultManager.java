@@ -10,7 +10,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 
 @EBean
-public class VaultManager implements IWorkerListener {
+public class VaultManager implements IWorker {
 
 	private Map<Uri, Vault> unlockedVaults = new HashMap<Uri, Vault>();
 

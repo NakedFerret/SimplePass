@@ -20,7 +20,7 @@ import com.nakedferret.simplepass.ServiceSimplePass.LocalBinder;
 @EApplication
 public class SimplePass extends Application implements ServiceConnection {
 
-	private IWorkerListener worker;
+	private IWorker worker;
 	private IUIListener uiListener;
 
 	@Override
@@ -76,7 +76,7 @@ public class SimplePass extends Application implements ServiceConnection {
 		uiListener = null;
 	}
 
-	public void attachWorker(IWorkerListener listener) {
+	public void attachWorker(IWorker listener) {
 		worker = listener;
 	}
 

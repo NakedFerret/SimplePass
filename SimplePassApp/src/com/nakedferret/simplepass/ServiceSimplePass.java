@@ -32,7 +32,7 @@ public class ServiceSimplePass extends Service {
 			return ServiceSimplePass.this;
 		}
 
-		public IWorkerListener getWorker() {
+		public IWorker getWorker() {
 			return vaultManager;
 		}
 	}

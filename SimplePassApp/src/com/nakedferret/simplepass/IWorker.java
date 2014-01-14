@@ -3,7 +3,7 @@ package com.nakedferret.simplepass;
 import android.net.Uri;
 
 // A background worker that deals with Vaults and Accounts needs to implement these
-public interface IWorkerListener {
+public interface IWorker {
 
 	Uri createVault(String name, String password, int iterations);
 
