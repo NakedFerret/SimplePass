@@ -14,7 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.googlecode.androidannotations.annotations.EService;
 import com.googlecode.androidannotations.annotations.SystemService;
-import com.nakedferret.simplepass.ServicePassword.LocalBinder;
+import com.nakedferret.simplepass.ServiceSimplePass.LocalBinder;
 
 @EService
 public class ServiceKeyboard extends ServiceSimpleKeyboard implements
@@ -41,7 +41,7 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 	private String password;
 	private boolean fillInMode;
 
-	private ServicePassword service = null;
+	private ServiceSimplePass service = null;
 
 	private Keyboard fillInKeyboard;
 
@@ -67,6 +67,7 @@ public class ServiceKeyboard extends ServiceSimpleKeyboard implements
 			setKeyboard(fillInKeyboard);
 		} else {
 			requestHideSelf(0);
+			inputMethodManager.showInputMethodPicker();
 		}
 	}
 

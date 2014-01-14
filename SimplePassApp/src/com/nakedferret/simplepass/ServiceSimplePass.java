@@ -11,16 +11,20 @@ import android.os.Binder;
 import android.os.IBinder;
 
 import com.activeandroid.content.ContentProvider;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EService;
 
 @EService
-public class ServicePassword extends Service implements IWorkerListener {
+public class ServiceSimplePass extends Service implements IWorkerListener {
+
+	@Bean
+	OverlayViewManager overlayViewManager;
 
 	private Map<Uri, Vault> unlockedVaults = new HashMap<Uri, Vault>();
 
 	public class LocalBinder extends Binder {
-		ServicePassword getService() {
-			return ServicePassword.this;
+		ServiceSimplePass getService() {
+			return ServiceSimplePass.this;
 		}
 	}
 
@@ -93,4 +97,11 @@ public class ServicePassword extends Service implements IWorkerListener {
 		v.decryptAccount(a);
 		return a;
 	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		overlayViewManager.destroy();
+	}
+
 }

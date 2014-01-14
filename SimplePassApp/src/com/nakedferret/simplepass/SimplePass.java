@@ -15,7 +15,7 @@ import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EApplication;
 import com.googlecode.androidannotations.annotations.UiThread;
-import com.nakedferret.simplepass.ServicePassword.LocalBinder;
+import com.nakedferret.simplepass.ServiceSimplePass.LocalBinder;
 
 @EApplication
 public class SimplePass extends Application implements ServiceConnection {
@@ -28,7 +28,6 @@ public class SimplePass extends Application implements ServiceConnection {
 		super.onCreate();
 		setStrictMode();
 		bindServicePassword();
-		startService(new Intent(this, ServiceOverlay_.class));
 		initializeDB();
 	}
 
@@ -41,7 +40,7 @@ public class SimplePass extends Application implements ServiceConnection {
 	}
 
 	private void bindServicePassword() {
-		Intent serviceIntent = ServicePassword_.intent(this).get();
+		Intent serviceIntent = ServiceSimplePass_.intent(this).get();
 		startService(serviceIntent);
 		bindService(serviceIntent, this, 0);
 	}

@@ -9,7 +9,6 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.OverlayViewManager;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.ServiceOverlay;
 
 @EActivity(R.layout.act_main)
 public class ActMain extends Activity {

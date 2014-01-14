@@ -53,14 +53,10 @@
         </activity>
 
         <service
-            android:name="com.nakedferret.simplepass.ServicePassword_"
+            android:name="com.nakedferret.simplepass.ServiceSimplePass_"
             android:enabled="true"
-            android:exported="false" >
-        </service>
-        <service
-            android:name="com.nakedferret.simplepass.ServiceOverlay_"
-            android:enabled="true"
-            android:exported="false" >
+            android:exported="false" 
+            android:label="SimplePass Service">
         </service>
         <service
             android:name="com.nakedferret.simplepass.ServiceKeyboard_"
