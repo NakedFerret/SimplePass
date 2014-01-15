@@ -84,6 +84,11 @@
                 android:name="android.view.im"
                 android:resource="@xml/method" />
         </service>
+
+        <activity
+            android:name="com.nakedferret.simplepass.ActImport_"
+            android:label="@string/title_act_import" >
+        </activity>
     </application>
 
 </manifest>

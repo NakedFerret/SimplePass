@@ -1,10 +1,15 @@
 package com.nakedferret.simplepass;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -106,4 +111,30 @@ public class CSVImporter {
 
 	}
 
+	public String getFirstRow() {
+		final Charset charSet = Charset.forName("UTF-8");
+
+		String row = null;
+		BufferedReader br = null;
+
+		try {
+			InputStream fis = new FileInputStream(file);
+			br = new BufferedReader(new InputStreamReader(fis, charSet));
+			row = br.readLine();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			try {
+				if (br != null)
+					br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return row;
+	}
 }

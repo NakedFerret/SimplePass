@@ -45,10 +45,15 @@
     <string name="delete_vault_condensed">Delete</string>
     <string name="delete_account">Delete Account(s)</string>
     <string name="delete_account_condensed">Delete</string>
-    
     <string name="START_OVERLAY_ACTION">com.nakedferret.simplepass.START_OVERLAY</string>
     <string name="STOP_OVERLAY_ACTION">com.nakedferret.simplepass.STOP_OVERLAY</string>
     <string name="import_accounts">Import Accounts</string>
     <string name="import_account_condensed">Import</string>
+    <string name="title_act_import">Import</string>
+    <string name="first_row">First Row:</string>
+    <string name="name_column">Name Column:</string>
+    <string name="username_column">Username Column:</string>
+    <string name="password_column">Password Column:</string>
+    <string name="category_column">Category Column:</string>
 
 </resources>
