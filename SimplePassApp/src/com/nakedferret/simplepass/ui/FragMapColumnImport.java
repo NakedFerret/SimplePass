@@ -2,8 +2,13 @@ package com.nakedferret.simplepass.ui;
 
 import java.io.File;
 
+import android.app.Activity;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -39,8 +44,39 @@ public class FragMapColumnImport extends Fragment implements
 	Spinner nameSpinner, usernameSpinner, passwordSpinner, categorySpinner;
 
 	private int nameColumn, usernameColumn, passwordColumn, categoryColumn;
+	private ActImport activity;
 
 	public FragMapColumnImport() {
+
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		this.activity = (ActImport) activity;
+		super.onAttach(activity);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.frag_map_column_import, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_done:
+			activity.showFragModifyImportInfo(nameColumn, usernameColumn,
+					passwordColumn, categoryColumn);
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 
 	}
 

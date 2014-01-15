@@ -55,5 +55,6 @@
     <string name="username_column">Username Column:</string>
     <string name="password_column">Password Column:</string>
     <string name="category_column">Category Column:</string>
+    <string name="next">Next</string>
 
 </resources>

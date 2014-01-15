@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.nakedferret.simplepass.FragModifyImportInfo_;
+import com.nakedferret.simplepass.FragModifyImportInfo_.FragmentBuilder_;
 import com.nakedferret.simplepass.R;
 
 @EActivity(R.layout.fragment_container)
@@ -28,6 +30,21 @@ public class ActImport extends FragmentActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction t = fm.beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
+		t.commitAllowingStateLoss();
+	}
+
+	public void showFragModifyImportInfo(int n, int u, int p, int c) {
+		FragmentBuilder_ b = FragModifyImportInfo_.builder();
+		b.nameColumn(n);
+		b.usernameColumn(u);
+		b.passwordColumn(p);
+		b.categoryColumn(c);
+		b.fileUri(fileUri);
+		Fragment f = b.build();
+
+		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
 		t.commitAllowingStateLoss();
 	}
 
