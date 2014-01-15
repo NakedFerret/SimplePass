@@ -54,20 +54,11 @@
         android:layout_below="@+id/nameColumnHeader"
         android:layout_marginTop="5dp" />
 
-    <TextView
-        android:id="@+id/usernameColumnHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/nameSpinner"
-        android:layout_marginTop="15dp"
-        android:text="@string/username_column" />
-
     <Spinner
         android:id="@+id/usernameSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/usernameColumnHeader"
         android:layout_marginTop="5dp" />
 
@@ -88,21 +79,30 @@
         android:layout_below="@+id/passwordColumnHeader"
         android:layout_marginTop="5dp" />
 
-    <TextView
-        android:id="@+id/categoryColumnHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/passwordSpinner"
-        android:layout_marginTop="15dp"
-        android:text="@string/category_column" />
-
     <Spinner
         android:id="@+id/categorySpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/categoryColumnHeader"
         android:layout_marginTop="5dp" />
+
+    <TextView
+        android:id="@+id/usernameColumnHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/nameColumnHeader"
+        android:layout_alignBottom="@+id/nameColumnHeader"
+        android:layout_alignParentRight="true"
+        android:text="@string/username_column" />
+
+    <TextView
+        android:id="@+id/categoryColumnHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/passwordColumnHeader"
+        android:layout_alignBottom="@+id/passwordColumnHeader"
+        android:layout_alignParentRight="true"
+        android:text="@string/category_column" />
 
 </RelativeLayout>
