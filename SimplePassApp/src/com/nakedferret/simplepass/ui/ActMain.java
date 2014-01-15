@@ -1,15 +1,21 @@
 package com.nakedferret.simplepass.ui;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.OverlayManager;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
@@ -19,6 +25,9 @@ public class ActMain extends Activity {
 
 	@ViewById
 	Button overlayButton;
+
+	@Bean
+	CSVImporter importer;
 
 	private static final int PICK_FILE_REQUEST_CODE = 1;
 
@@ -72,7 +81,16 @@ public class ActMain extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data != null)
 			Utils.log(this, data.getData().toString());
+
+		checkFile(data.getData());
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	@Background
+	void checkFile(Uri fileUri) {
+		File file = new File(fileUri.getPath());
+		importer.setFile(file);
+		Utils.log(this, "file is csv: " + importer.isValid());
+		Utils.log(this, "Number of columns: " + importer.getWidth());
+	}
 }
