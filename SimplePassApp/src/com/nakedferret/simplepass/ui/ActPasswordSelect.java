@@ -12,7 +12,7 @@ import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
 
-@EActivity(R.layout.act_password_select)
+@EActivity(R.layout.fragment_container)
 public class ActPasswordSelect extends ActFloating implements IUIListener,
 		IFragListener {
 
