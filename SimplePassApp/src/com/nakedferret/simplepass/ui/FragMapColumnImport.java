@@ -21,7 +21,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Utils;
-import com.nakedferret.simplepass.R.layout;
 
 @EFragment(R.layout.frag_map_column_import)
 public class FragMapColumnImport extends Fragment implements
@@ -38,6 +37,8 @@ public class FragMapColumnImport extends Fragment implements
 
 	@ViewById
 	Spinner nameSpinner, usernameSpinner, passwordSpinner, categorySpinner;
+
+	private int nameColumn, usernameColumn, passwordColumn, categoryColumn;
 
 	public FragMapColumnImport() {
 
@@ -68,10 +69,12 @@ public class FragMapColumnImport extends Fragment implements
 
 	private String[] getArrayForAdapter() {
 		int numOfColumns = importer.getWidth();
-		String[] numArray = new String[numOfColumns];
+		String[] numArray = new String[numOfColumns + 1];
+
+		numArray[0] = "None";
 
 		for (int i = 1; i <= numOfColumns; i++)
-			numArray[i - 1] = "Column " + Integer.toString(i);
+			numArray[i] = "Column " + Integer.toString(i);
 
 		return numArray;
 	}
@@ -85,8 +88,18 @@ public class FragMapColumnImport extends Fragment implements
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemSelected(AdapterView<?> adapter, View view, int p, long id) {
+
+		int columnNum = (int) id - 1;
+
+		if (adapter.getId() == nameSpinner.getId())
+			nameColumn = columnNum;
+		else if (adapter.getId() == usernameSpinner.getId())
+			usernameColumn = columnNum;
+		else if (adapter.getId() == passwordSpinner.getId())
+			passwordColumn = columnNum;
+		else if (adapter.getId() == categorySpinner.getId())
+			categoryColumn = columnNum;
 
 	}
 
