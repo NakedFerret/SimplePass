@@ -16,16 +16,15 @@ public class CSVImporter {
 	private File file;
 	private SafeCSVReader reader;
 	private boolean isValid = false;
-	private int width;
+	private int width = -1;
 
 	public void setFile(File file) {
 		this.file = file;
-		scanCSV();
 	}
 
 	// Checks to see if CSV file is valid. If it is, it scans to see how many
 	// columns it contains
-	private void scanCSV() {
+	public void process() {
 		resetReader();
 
 		int maxColumns = -1;

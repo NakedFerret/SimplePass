@@ -89,6 +89,7 @@ public class ActMain extends Activity {
 	void checkFile(Uri fileUri) {
 		File file = new File(fileUri.getPath());
 		importer.setFile(file);
+		importer.process();
 		Utils.log(this, "file is csv: " + importer.isValid());
 		Utils.log(this, "Number of columns: " + importer.getWidth());
 	}
