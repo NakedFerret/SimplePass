@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import java.io.File;
 
@@ -19,6 +19,9 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.nakedferret.simplepass.CSVImporter;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
 
 @EActivity(R.layout.act_import)
 public class ActImport extends Activity implements OnItemSelectedListener {

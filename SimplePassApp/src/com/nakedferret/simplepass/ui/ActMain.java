@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.ActImport_;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.OverlayManager;
 import com.nakedferret.simplepass.R;

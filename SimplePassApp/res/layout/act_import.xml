@@ -37,69 +37,72 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
+    <TextView
+        android:id="@+id/nameColumnHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/verticalSeparator"
+        android:layout_marginTop="15dp"
+        android:text="@string/name_column" />
+
     <Spinner
         android:id="@+id/nameSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/verticalSeparator"
-        android:layout_marginTop="10dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/nameColumnHeader"
+        android:layout_marginTop="5dp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/usernameColumnHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/nameSpinner"
-        android:layout_marginTop="10dp"
-        android:text="@string/name_column" />
+        android:layout_below="@+id/nameSpinner"
+        android:layout_marginTop="15dp"
+        android:text="@string/username_column" />
 
     <Spinner
         android:id="@+id/usernameSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/nameSpinner"
-        android:layout_marginTop="10dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/usernameColumnHeader"
+        android:layout_marginTop="5dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/passwordColumnHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/usernameSpinner"
-        android:text="@string/username_column" />
+        android:layout_below="@+id/usernameSpinner"
+        android:layout_marginTop="15dp"
+        android:text="@string/password_column" />
 
     <Spinner
         android:id="@+id/passwordSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/usernameSpinner"
-        android:layout_marginTop="10dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/passwordColumnHeader"
+        android:layout_marginTop="5dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/categoryColumnHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/passwordSpinner"
-        android:text="@string/password_column" />
+        android:layout_below="@+id/passwordSpinner"
+        android:layout_marginTop="15dp"
+        android:text="@string/category_column" />
 
     <Spinner
         android:id="@+id/categorySpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/passwordSpinner"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/categorySpinner"
-        android:text="@string/category_column" />
+        android:layout_below="@+id/categoryColumnHeader"
+        android:layout_marginTop="5dp" />
 
 </RelativeLayout>
