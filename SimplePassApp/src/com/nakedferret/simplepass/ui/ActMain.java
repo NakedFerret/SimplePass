@@ -80,9 +80,8 @@ public class ActMain extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (data != null)
-			Utils.log(this, data.getData().toString());
+			checkFile(data.getData());
 
-		checkFile(data.getData());
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
