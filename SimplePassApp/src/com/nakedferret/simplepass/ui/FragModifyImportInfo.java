@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +24,11 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.UiThread;
+import com.nakedferret.simplepass.CSVImporter;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.R.id;
+import com.nakedferret.simplepass.R.layout;
 
 @EFragment
 public class FragModifyImportInfo extends ListFragment implements

@@ -9,9 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.nakedferret.simplepass.FragModifyImportInfo_;
-import com.nakedferret.simplepass.FragModifyImportInfo_.FragmentBuilder_;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.ui.FragModifyImportInfo_.FragmentBuilder_;
 
 @EActivity(R.layout.fragment_container)
 public class ActImport extends FragmentActivity {
