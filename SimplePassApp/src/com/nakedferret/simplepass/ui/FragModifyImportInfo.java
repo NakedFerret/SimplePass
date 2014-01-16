@@ -9,7 +9,10 @@ import android.net.Uri;
 import android.support.v4.app.ListFragment;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -76,7 +79,7 @@ public class FragModifyImportInfo extends ListFragment implements
 		getListView().setOnItemClickListener(this);
 	}
 
-	class ModifyDetailAdapter extends BaseAdapter {
+	class ModifyDetailAdapter extends BaseAdapter implements OnTouchListener {
 
 		private Context context;
 		private LayoutInflater inflater;
@@ -104,23 +107,45 @@ public class FragModifyImportInfo extends ListFragment implements
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View r, ViewGroup parent) {
 
-			if (convertView == null) {
-				convertView = LayoutInflater.from(context).inflate(
+			if (r == null) {
+				r = LayoutInflater.from(context).inflate(
 						R.layout.importer_detail_listview, parent, false);
 			}
 
-			ViewFlipper textFlipper = ViewHolder.get(convertView,
-					R.id.textFlipper);
-			ImageButton showInfoButton = ViewHolder.get(convertView,
-					R.id.showInfoButton);
-
+			TextView text1 = ViewHolder.get(r, R.id.text1);
+			TextView text2 = ViewHolder.get(r, R.id.text2);
+			ImageButton showInfoButton = ViewHolder.get(r, R.id.showInfoButton);
 			MockAccount a = getItem(position);
-			TextView text = (TextView) textFlipper.getCurrentView();
-			text.setText(a.name);
 
-			return convertView;
+			text1.setText(a.name + "\n" + a.category);
+			text2.setText(a.username + "\n" + a.password);
+
+			showInfoButton.setOnTouchListener(this);
+			return r;
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			View p;
+			TextView text2;
+
+			switch (event.getActionMasked()) {
+			case MotionEvent.ACTION_DOWN:
+				p = (View) v.getParent();
+				text2 = ViewHolder.get(p, R.id.text2);
+				text2.setVisibility(View.VISIBLE);
+				return true;
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_CANCEL:
+				p = (View) v.getParent();
+				text2 = ViewHolder.get(p, R.id.text2);
+				text2.setVisibility(View.INVISIBLE);
+				return true;
+			default:
+				return false;
+			}
 		}
 	}
 
