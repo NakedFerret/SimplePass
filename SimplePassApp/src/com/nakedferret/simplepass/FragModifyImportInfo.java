@@ -7,9 +7,12 @@ import java.util.List;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.ListFragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,7 +26,8 @@ import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.UiThread;
 
 @EFragment
-public class FragModifyImportInfo extends ListFragment {
+public class FragModifyImportInfo extends ListFragment implements
+		OnItemClickListener {
 
 	@FragmentArg
 	int nameColumn, usernameColumn, passwordColumn, categoryColumn;
@@ -64,6 +68,7 @@ public class FragModifyImportInfo extends ListFragment {
 	@UiThread
 	void populateUI(List<MockAccount> accounts) {
 		setListAdapter(new ModifyDetailAdapter(getActivity(), accounts));
+		getListView().setOnItemClickListener(this);
 	}
 
 	class ModifyDetailAdapter extends BaseAdapter {
@@ -114,8 +119,34 @@ public class FragModifyImportInfo extends ListFragment {
 		}
 	}
 
+	// http://www.piwai.info/android-adapter-good-practices/
+	static class ViewHolder {
+		// I added a generic return type to reduce the casting noise in
+		// client code
+		@SuppressWarnings("unchecked")
+		public static <T extends View> T get(View view, int id) {
+			SparseArray<View> viewHolder = (SparseArray<View>) view.getTag();
+			if (viewHolder == null) {
+				viewHolder = new SparseArray<View>();
+				view.setTag(viewHolder);
+			}
+			View childView = viewHolder.get(id);
+			if (childView == null) {
+				childView = view.findViewById(id);
+				viewHolder.put(id, childView);
+			}
+			return (T) childView;
+		}
+	}
+
 	class MockAccount {
 		String name, username, password, category;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Utils.log(this, "list clicked");
 	}
 
 }
