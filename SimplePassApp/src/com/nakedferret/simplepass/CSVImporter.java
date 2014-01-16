@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -64,6 +66,17 @@ public class CSVImporter {
 	// Returns the number of columns in the CSV file
 	public int getWidth() {
 		return width;
+	}
+
+	public List<String[]> readAll() {
+		resetReader();
+
+		List<String[]> list = new ArrayList<String[]>();
+		list.add(reader.readNext());
+		list.add(reader.readNext());
+
+		closeReader();
+		return list;
 	}
 
 	private void resetReader() {
