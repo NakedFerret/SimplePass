@@ -1,6 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -16,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -45,6 +49,8 @@ public class FragModifyImportInfo extends ListFragment implements
 	CSVImporter importer;
 
 	private Dialog dialog;
+
+	private HashMap<Integer, MockAccount> selectedAccounts = new HashMap<Integer, MockAccount>();
 
 	public FragModifyImportInfo() {
 		// Required empty public constructor
@@ -81,7 +87,8 @@ public class FragModifyImportInfo extends ListFragment implements
 		getListView().setOnItemClickListener(this);
 	}
 
-	class ModifyDetailAdapter extends BaseAdapter implements OnTouchListener {
+	class ModifyDetailAdapter extends BaseAdapter implements OnTouchListener,
+			OnCheckedChangeListener {
 
 		private Context context;
 		private List<MockAccount> accounts;
@@ -117,12 +124,16 @@ public class FragModifyImportInfo extends ListFragment implements
 			TextView text1 = ViewHolder.get(r, R.id.text1);
 			TextView text2 = ViewHolder.get(r, R.id.text2);
 			ImageButton showInfoButton = ViewHolder.get(r, R.id.showInfoButton);
+			CheckBox cb = ViewHolder.get(r, android.R.id.checkbox);
 			MockAccount a = getItem(position);
 
 			text1.setText(a.name + "\n" + a.category);
 			text2.setText(a.username + "\n" + a.password);
-
 			showInfoButton.setOnTouchListener(this);
+			cb.setOnCheckedChangeListener(this);
+			cb.setTag(position);
+			cb.setChecked(selectedAccounts.get(position) != null ? true : false);
+
 			return r;
 		}
 
@@ -145,6 +156,18 @@ public class FragModifyImportInfo extends ListFragment implements
 				return true;
 			default:
 				return false;
+			}
+		}
+
+		@Override
+		public void onCheckedChanged(CompoundButton cb, boolean isChecked) {
+			int position = (Integer) cb.getTag();
+			MockAccount a = accounts.get(position);
+
+			if (isChecked) {
+				selectedAccounts.put(position, a);
+			} else {
+				selectedAccounts.remove(position);
 			}
 		}
 	}
