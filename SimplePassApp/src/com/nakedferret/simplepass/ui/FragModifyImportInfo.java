@@ -9,16 +9,21 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.ListFragment;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -37,7 +42,7 @@ import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
 public class FragModifyImportInfo extends ListFragment implements
-		OnItemClickListener {
+		OnItemClickListener, MultiChoiceModeListener {
 
 	@FragmentArg
 	int nameColumn, usernameColumn, passwordColumn, categoryColumn;
@@ -85,6 +90,8 @@ public class FragModifyImportInfo extends ListFragment implements
 	void populateUI(List<MockAccount> accounts) {
 		setListAdapter(new ModifyDetailAdapter(getActivity(), accounts));
 		getListView().setOnItemClickListener(this);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		getListView().setMultiChoiceModeListener(this);
 	}
 
 	class ModifyDetailAdapter extends BaseAdapter implements OnTouchListener,
@@ -164,11 +171,15 @@ public class FragModifyImportInfo extends ListFragment implements
 			int position = (Integer) cb.getTag();
 			MockAccount a = accounts.get(position);
 
+			Utils.log(this, "checkbox checked: " + position);
+
 			if (isChecked) {
 				selectedAccounts.put(position, a);
 			} else {
 				selectedAccounts.remove(position);
 			}
+
+			getListView().setItemChecked(position, isChecked);
 		}
 	}
 
@@ -182,6 +193,35 @@ public class FragModifyImportInfo extends ListFragment implements
 	public void onStop() {
 		super.onStop();
 		dialog.dismiss();
+	}
+
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onItemCheckedStateChanged(ActionMode mode, int position,
+			long id, boolean checked) {
+		Utils.log(this, "item checked: " + position);
 	}
 
 }
