@@ -57,5 +57,6 @@
     <string name="category_column">Category Column:</string>
     <string name="next">Next</string>
     <string name="pickVaultForImport">Choose the Accounts to place in a Vault</string>
+    <string name="mapColumnsForImport">Specify which columns in the CSV file contain the Account name, username, password, and category</string>
 
 </resources>
