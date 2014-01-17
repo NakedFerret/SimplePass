@@ -3,6 +3,8 @@ package com.nakedferret.simplepass.ui;
 import java.io.File;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.ListFragment;
@@ -42,6 +44,8 @@ public class FragModifyImportInfo extends ListFragment implements
 	@Bean
 	CSVImporter importer;
 
+	private Dialog dialog;
+
 	public FragModifyImportInfo() {
 		// Required empty public constructor
 	}
@@ -49,6 +53,15 @@ public class FragModifyImportInfo extends ListFragment implements
 	@AfterViews
 	void init() {
 		processFile();
+		showInstructions();
+	}
+
+	private void showInstructions() {
+		AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+		b.setMessage(R.string.pickVaultForImport);
+		b.setPositiveButton(android.R.string.ok, null);
+		dialog = b.create();
+		dialog.show();
 	}
 
 	@Background
@@ -140,6 +153,12 @@ public class FragModifyImportInfo extends ListFragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Utils.log(this, "list clicked");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		dialog.dismiss();
 	}
 
 }

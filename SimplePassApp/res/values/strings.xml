@@ -56,5 +56,6 @@
     <string name="password_column">Password Column:</string>
     <string name="category_column">Category Column:</string>
     <string name="next">Next</string>
+    <string name="pickVaultForImport">Choose the Accounts to place in a Vault</string>
 
 </resources>
