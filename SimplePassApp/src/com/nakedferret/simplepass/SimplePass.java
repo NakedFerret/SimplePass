@@ -14,6 +14,7 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EApplication;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.ServiceSimplePass.LocalBinder;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EApplication
 public class SimplePass extends Application implements ServiceConnection {

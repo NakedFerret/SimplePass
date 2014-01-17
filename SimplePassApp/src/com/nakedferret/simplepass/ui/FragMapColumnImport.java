@@ -25,7 +25,7 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_map_column_import)
 public class FragMapColumnImport extends Fragment implements

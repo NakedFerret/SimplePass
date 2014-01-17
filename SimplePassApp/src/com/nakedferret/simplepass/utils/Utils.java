@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.utils;
 
 import java.security.Key;
 import java.security.SecureRandom;

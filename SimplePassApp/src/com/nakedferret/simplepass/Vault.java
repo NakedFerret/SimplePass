@@ -7,6 +7,7 @@ import javax.crypto.Cipher;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.nakedferret.simplepass.utils.Utils;
 
 @Table
 public class Vault extends Model {

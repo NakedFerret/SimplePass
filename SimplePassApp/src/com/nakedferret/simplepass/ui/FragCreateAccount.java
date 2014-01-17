@@ -25,7 +25,7 @@ import com.nakedferret.simplepass.Category;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
-import com.nakedferret.simplepass.Utils;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_create_account)
 public class FragCreateAccount extends Fragment implements

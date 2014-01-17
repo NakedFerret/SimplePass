@@ -68,17 +68,6 @@ public class CSVImporter {
 		return width;
 	}
 
-	public List<String[]> readAll() {
-		resetReader();
-
-		List<String[]> list = new ArrayList<String[]>();
-		list.add(reader.readNext());
-		list.add(reader.readNext());
-
-		closeReader();
-		return list;
-	}
-
 	private void resetReader() {
 		closeReader();
 
@@ -149,5 +138,29 @@ public class CSVImporter {
 		}
 
 		return row;
+	}
+
+	// Used to keep info for future accounts to import
+	public class MockAccount {
+		public String name, username, password, category;
+	}
+
+	public List<MockAccount> getAccounts(int nameColumn, int usernameColumn,
+			int passwordColumn, int categoryColumn) {
+
+		resetReader();
+		List<MockAccount> accounts = new ArrayList<MockAccount>();
+		String[] line;
+
+		while ((line = reader.readNext()) != null) {
+			MockAccount a = new MockAccount();
+			a.name = line[nameColumn];
+			a.username = line[usernameColumn];
+			a.password = line[passwordColumn];
+			a.category = line[categoryColumn];
+			accounts.add(a);
+		}
+		reader.close();
+		return accounts;
 	}
 }
