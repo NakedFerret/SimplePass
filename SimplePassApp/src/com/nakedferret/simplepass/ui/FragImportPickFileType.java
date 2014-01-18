@@ -18,15 +18,10 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_import_pick_file_type)
 public class FragImportPickFileType extends Fragment implements
 		OnItemSelectedListener {
-
-	public static final class TYPE {
-		public static final int CSV = 0;
-	}
 
 	@StringArrayRes
 	String[] fileTypeArray, fileFormatArray;
@@ -78,14 +73,10 @@ public class FragImportPickFileType extends Fragment implements
 	public void onItemSelected(AdapterView<?> spinner, View view, int position,
 			long id) {
 
-		
-		if (spinner == fileTypeSpinner) {
-			Utils.log(this, "spinner: fileType");
+		if (spinner == fileTypeSpinner)
 			fileType = position;
-		} else if (spinner == fileMappingSpinner) {
-			Utils.log(this, "spinner: fileMapping");
+		else if (spinner == fileMappingSpinner)
 			fileMapping = position;
-		}
 	}
 
 	@Override
@@ -97,7 +88,6 @@ public class FragImportPickFileType extends Fragment implements
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-
 	}
 
 	@Override

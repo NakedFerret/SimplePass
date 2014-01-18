@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
+import com.googlecode.androidannotations.annotations.Background;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
-import com.nakedferret.simplepass.CSVImporter;
-import com.nakedferret.simplepass.CSVImporter.COLUMN_MAPPING;
+import com.googlecode.androidannotations.annotations.UiThread;
+import com.nakedferret.simplepass.CSVImporter.CSVMapping;
+import com.nakedferret.simplepass.ImportManager;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.ui.FragImportDesignateVaults_.FragmentBuilder_;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
@@ -25,6 +27,10 @@ public class ActImport extends FragmentActivity {
 
 	@NonConfigurationInstance
 	Uri fileUri;
+
+	@NonConfigurationInstance
+	@Bean
+	ImportManager importManager;
 
 	@Override
 	protected void onStart() {
@@ -47,7 +53,8 @@ public class ActImport extends FragmentActivity {
 		t.commit();
 	}
 
-	private void showFragMapColumnImport() {
+	@UiThread
+	void showFragMapColumnImport() {
 		Fragment f = FragImportMapColumn_.builder().fileUri(fileUri).build();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
@@ -59,15 +66,9 @@ public class ActImport extends FragmentActivity {
 		dialog.show(getSupportFragmentManager(), null);
 	}
 
-	public void showFragModifyImportInfo(int[] mapping) {
-		FragmentBuilder_ b = FragImportDesignateVaults_.builder();
-		b.nameColumn(mapping[COLUMN_MAPPING.NAME]);
-		b.usernameColumn(mapping[COLUMN_MAPPING.USERNAME]);
-		b.passwordColumn(mapping[COLUMN_MAPPING.PASSWORD]);
-		b.categoryColumn(mapping[COLUMN_MAPPING.CATEGORY]);
-		b.fileUri(fileUri);
-		Fragment f = b.build();
-
+	@UiThread
+	public void showFragModifyImportInfo() {
+		Fragment f = new FragImportDesignateVaults_();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
@@ -106,21 +107,34 @@ public class ActImport extends FragmentActivity {
 		t.commit();
 	}
 
+	@Background
 	public void processFile(int fileType, int fileMapping) {
-		Utils.log(this, "fileType: " + fileType);
-		Utils.log(this, "fileMapping: " + fileMapping);
 
-		if (fileMapping == CSVImporter.MAPPING.OTHER) {
+		// Assuming the fileType is CSV...because it's the only one supported at
+		// this time >.>
+		CSVMapping mapping = CSVMapping.getMapping(fileMapping);
+
+		if (mapping == null) {
 			showFragMapColumnImport();
-		} else if (fileMapping == CSVImporter.MAPPING.LASTPASS) {
-			showFragModifyImportInfo(CSVImporter.LASTPASS_MAPPING);
+		} else {
+			processCSV(mapping);
 		}
+	}
+
+	@Background
+	void processCSV(CSVMapping mapping) {
+		importManager.processCSV(fileUri, mapping);
+		showFragModifyImportInfo();
 	}
 
 	@Override
 	public Object onRetainCustomNonConfigurationInstance() {
 		configurationChanged = true;
 		return super.onRetainCustomNonConfigurationInstance();
+	}
+
+	public ImportManager getImportManager() {
+		return importManager;
 	}
 
 }

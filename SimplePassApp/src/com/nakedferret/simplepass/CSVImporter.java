@@ -11,24 +11,45 @@ import java.util.List;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.googlecode.androidannotations.annotations.EBean;
-import com.nakedferret.simplepass.ui.Importer.MockAccount;
+import com.nakedferret.simplepass.ImportManager.Importer;
+import com.nakedferret.simplepass.ImportManager.MockAccount;
 
 @EBean
-public class CSVImporter {
+public class CSVImporter implements Importer {
 
-	public static final class MAPPING {
-		public static final int LASTPASS = 0;
-		public static final int OTHER = 1;
+	public static class CSVMapping {
+		final int name, username, password, category;
+
+		public CSVMapping(int name, int username, int password, int category) {
+			this.name = name;
+			this.username = username;
+			this.password = password;
+			this.category = category;
+		}
+
+		public static final CSVMapping LASTPASS = new CSVMapping(4, 1, 2, 5);
+
+		public static List<CSVMapping> mappings = new ArrayList<CSVMapping>();
+
+		static {
+			mappings.add(LASTPASS);
+		}
+
+		public static final CSVMapping getMapping(int type) {
+			try {
+				return mappings.get(type);
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		public static int addMapping(CSVMapping csvMapping) {
+			int id = mappings.size();
+			mappings.add(csvMapping);
+			return id;
+		}
+
 	}
-
-	public static final class COLUMN_MAPPING {
-		public static final int NAME = 0;
-		public static final int USERNAME = 1;
-		public static final int PASSWORD = 2;
-		public static final int CATEGORY = 3;
-	}
-
-	public static final int[] LASTPASS_MAPPING = new int[] { 4, 1, 2, 5 };
 
 	private File file;
 	private SafeCSVReader reader;
@@ -36,10 +57,10 @@ public class CSVImporter {
 	private boolean isValid = false;
 	private int width = -1;
 	private String[] firstRow;
-	private int[] mapping;
+	private CSVMapping mapping;
 	private List<MockAccount> accounts = new ArrayList<MockAccount>();
 
-	public void prepare(File file, int[] mapping) {
+	public void prepare(File file, CSVMapping mapping) {
 		this.file = file;
 		this.mapping = mapping;
 	}
@@ -66,6 +87,7 @@ public class CSVImporter {
 
 		int maxColumns = -1;
 		String[] line;
+		int position = 0;
 		boolean isCSV = false;
 		List<MockAccount> parsedAccounts = new ArrayList<MockAccount>();
 
@@ -74,7 +96,7 @@ public class CSVImporter {
 			maxColumns = line.length;
 			firstRow = line;
 			if (mapping != null)
-				parsedAccounts.add(getAccount(line));
+				parsedAccounts.add(getAccount(line, position++));
 		}
 
 		while ((line = reader.readNext()) != null) {
@@ -83,7 +105,7 @@ public class CSVImporter {
 				break;
 			}
 			if (mapping != null)
-				parsedAccounts.add(getAccount(line));
+				parsedAccounts.add(getAccount(line, position++));
 		}
 
 		if (isCSV) {
@@ -119,13 +141,12 @@ public class CSVImporter {
 		return b.substring(0, b.length() - 2);
 	}
 
-	private MockAccount getAccount(String[] line) {
-		MockAccount a = new MockAccount();
-		a.name = line[mapping[COLUMN_MAPPING.NAME]];
-		a.username = line[mapping[COLUMN_MAPPING.USERNAME]];
-		a.password = line[mapping[COLUMN_MAPPING.PASSWORD]];
-		a.category = line[mapping[COLUMN_MAPPING.CATEGORY]];
-		return a;
+	private MockAccount getAccount(String[] line, int id) {
+		String name = line[mapping.name];
+		String username = line[mapping.username];
+		String password = line[mapping.password];
+		String category = line[mapping.category];
+		return new MockAccount(name, username, password, category, id);
 	}
 
 	class SafeCSVReader extends CSVReader {

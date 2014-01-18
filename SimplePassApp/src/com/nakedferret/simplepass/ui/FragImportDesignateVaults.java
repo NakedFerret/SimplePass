@@ -1,11 +1,9 @@
 package com.nakedferret.simplepass.ui;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.app.ListFragment;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
@@ -27,56 +25,35 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.FragmentArg;
-import com.googlecode.androidannotations.annotations.UiThread;
-import com.nakedferret.simplepass.CSVImporter;
+import com.nakedferret.simplepass.ImportManager;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.ui.Importer.MockAccount;
+import com.nakedferret.simplepass.ImportManager.MockAccount;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
 public class FragImportDesignateVaults extends ListFragment implements
 		OnItemClickListener, Callback {
 
-	@FragmentArg
-	int nameColumn, usernameColumn, passwordColumn, categoryColumn;
-
-	@FragmentArg
-	Uri fileUri;
-
-	@Bean
-	CSVImporter importer;
-
-	private HashMap<Integer, MockAccount> selectedAccounts = new HashMap<Integer, MockAccount>();
 	private ActionMode mode;
+	private ActImport activity;
+	private ImportManager importManager;
 
 	public FragImportDesignateVaults() {
 		// Required empty public constructor
 	}
 
+	@Override
+	public void onAttach(Activity attachingActivity) {
+		super.onAttach(attachingActivity);
+		activity = (ActImport) attachingActivity;
+		importManager = activity.getImportManager();
+	}
+
 	@AfterViews
-	void init() {
-		processFile();
-	}
-
-	@Background
-	void processFile() {
-		int[] mapping = new int[] { nameColumn, usernameColumn, passwordColumn,
-				categoryColumn };
-
-		importer.prepare(new File(fileUri.getPath()), mapping);
-		importer.process();
-
-		populateUI();
-	}
-
-	@UiThread
 	void populateUI() {
 		setListAdapter(new ModifyDetailAdapter(getActivity(),
-				importer.getAccounts()));
+				importManager.getAccounts()));
 		getListView().setOnItemClickListener(this);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	}
@@ -121,12 +98,12 @@ public class FragImportDesignateVaults extends ListFragment implements
 			CheckBox cb = ViewHolder.get(r, android.R.id.checkbox);
 			MockAccount a = getItem(position);
 
-			text1.setText(a.name + "\n" + a.category);
-			text2.setText(a.username + "\n" + a.password);
+			text1.setText(a.getName() + "\n" + a.getCategory());
+			text2.setText(a.getUsername() + "\n" + a.getPassword());
 			showInfoButton.setOnTouchListener(this);
 			cb.setOnCheckedChangeListener(this);
 			cb.setTag(position);
-			cb.setChecked(selectedAccounts.get(position) != null ? true : false);
+			cb.setChecked(importManager.isSelected(a));
 
 			return r;
 		}
@@ -158,11 +135,7 @@ public class FragImportDesignateVaults extends ListFragment implements
 			int position = (Integer) cb.getTag();
 
 			MockAccount a = accounts.get(position);
-			if (isChecked) {
-				selectedAccounts.put(position, a);
-			} else {
-				selectedAccounts.remove(position);
-			}
+			importManager.setAccountSelection(a, isChecked);
 
 			ListView listView = getListView();
 			if (listView.isItemChecked(position) != isChecked)
@@ -175,10 +148,11 @@ public class FragImportDesignateVaults extends ListFragment implements
 
 	public void handleActionMode() {
 
-		if (selectedAccounts.size() == 1 && mode == null)
+		int numOfSelectedAccounts = importManager.getSelectedAccounts().size();
+		if (numOfSelectedAccounts >= 1 && mode == null)
 			mode = getActivity().startActionMode(this);
 
-		if (selectedAccounts.size() == 0 && mode != null) {
+		if (numOfSelectedAccounts == 0 && mode != null) {
 			mode.finish();
 			mode = null;
 		}

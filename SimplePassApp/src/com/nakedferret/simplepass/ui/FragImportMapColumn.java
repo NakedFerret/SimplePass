@@ -24,6 +24,8 @@ import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.CSVImporter;
+import com.nakedferret.simplepass.CSVImporter.CSVMapping;
+import com.nakedferret.simplepass.ImportManager.FILE_TYPE;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.utils.Utils;
 
@@ -72,9 +74,10 @@ public class FragImportMapColumn extends Fragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_done:
-			final int[] mapping = new int[] { nameColumn, usernameColumn,
-					passwordColumn, categoryColumn };
-			activity.showFragModifyImportInfo(mapping);
+			CSVMapping newMapping = new CSVMapping(nameColumn, usernameColumn,
+					passwordColumn, categoryColumn);
+			int id = CSVMapping.addMapping(newMapping);
+			activity.processFile(FILE_TYPE.CSV, id);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
