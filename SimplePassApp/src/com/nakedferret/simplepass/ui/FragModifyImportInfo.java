@@ -124,7 +124,7 @@ public class FragModifyImportInfo extends ListFragment implements
 
 			if (r == null) {
 				r = LayoutInflater.from(context).inflate(
-						R.layout.importer_detail_listview, parent, false);
+						R.layout.listitem_importer_detail, parent, false);
 			}
 
 			TextView text1 = ViewHolder.get(r, R.id.text1);
