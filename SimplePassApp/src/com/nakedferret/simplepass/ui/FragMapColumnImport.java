@@ -3,8 +3,6 @@ package com.nakedferret.simplepass.ui;
 import java.io.File;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,7 +45,6 @@ public class FragMapColumnImport extends Fragment implements
 
 	private int nameColumn, usernameColumn, passwordColumn, categoryColumn;
 	private ActImport activity;
-	private Dialog dialog;
 
 	public FragMapColumnImport() {
 
@@ -88,15 +85,6 @@ public class FragMapColumnImport extends Fragment implements
 	@AfterViews
 	void init() {
 		processFile(fileUri);
-		showInstructions();
-	}
-
-	private void showInstructions() {
-		AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-		b.setMessage(R.string.mapColumnsForImport);
-		b.setPositiveButton(android.R.string.ok, null);
-		dialog = b.create();
-		dialog.show();
 	}
 
 	@Background

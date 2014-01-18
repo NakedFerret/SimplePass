@@ -63,6 +63,10 @@ public class ActImport extends FragmentActivity {
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
 		t.commit();
+
+		DialogFragment dialog = FragInstructionsDialog_.builder()
+				.messageId(R.string.mapColumnsForImport).build();
+		dialog.show(getSupportFragmentManager(), null);
 	}
 
 	public void showFragModifyImportInfo(int[] mapping) {
