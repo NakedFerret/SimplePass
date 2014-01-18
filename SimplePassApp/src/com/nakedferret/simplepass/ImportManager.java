@@ -37,7 +37,6 @@ public class ImportManager {
 	}
 
 	public void setAccountSelection(MockAccount a, boolean selected) {
-
 		// Add to selectedAccounts
 		if (selected) {
 			selectedAccounts.put(a.id, a);
@@ -50,7 +49,7 @@ public class ImportManager {
 		return selectedAccounts.values();
 	}
 
-	public void removeSelectedAccounts() {
+	public void deselectAllAccounts() {
 		selectedAccounts.clear();
 	}
 

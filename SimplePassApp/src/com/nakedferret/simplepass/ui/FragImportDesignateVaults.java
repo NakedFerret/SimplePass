@@ -27,8 +27,8 @@ import android.widget.TextView;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.ImportManager;
-import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ImportManager.MockAccount;
+import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
@@ -38,6 +38,7 @@ public class FragImportDesignateVaults extends ListFragment implements
 	private ActionMode mode;
 	private ActImport activity;
 	private ImportManager importManager;
+	private ModifyDetailAdapter adapter;
 
 	public FragImportDesignateVaults() {
 		// Required empty public constructor
@@ -52,8 +53,9 @@ public class FragImportDesignateVaults extends ListFragment implements
 
 	@AfterViews
 	void populateUI() {
-		setListAdapter(new ModifyDetailAdapter(getActivity(),
-				importManager.getAccounts()));
+		adapter = new ModifyDetailAdapter(getActivity(),
+				importManager.getAccounts());
+		setListAdapter(adapter);
 		getListView().setOnItemClickListener(this);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	}
@@ -166,7 +168,8 @@ public class FragImportDesignateVaults extends ListFragment implements
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
+		importManager.deselectAllAccounts();
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
