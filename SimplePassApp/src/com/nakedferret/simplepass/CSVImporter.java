@@ -25,6 +25,13 @@ public class CSVImporter {
 		public static final int OTHER = 1;
 	}
 
+	public static final class COLUMN_MAPPING {
+		public static final int NAME = 0;
+		public static final int USERNAME = 1;
+		public static final int PASSWORD = 2;
+		public static final int CATEGORY = 3;
+	}
+
 	private File file;
 	private SafeCSVReader reader;
 	private boolean isValid = false;
@@ -150,8 +157,7 @@ public class CSVImporter {
 		public String name, username, password, category;
 	}
 
-	public List<MockAccount> getAccounts(int nameColumn, int usernameColumn,
-			int passwordColumn, int categoryColumn) {
+	public List<MockAccount> getAccounts(int[] mappings) {
 
 		resetReader();
 		List<MockAccount> accounts = new ArrayList<MockAccount>();
@@ -159,10 +165,10 @@ public class CSVImporter {
 
 		while ((line = reader.readNext()) != null) {
 			MockAccount a = new MockAccount();
-			a.name = line[nameColumn];
-			a.username = line[usernameColumn];
-			a.password = line[passwordColumn];
-			a.category = line[categoryColumn];
+			a.name = line[mappings[COLUMN_MAPPING.NAME]];
+			a.username = line[COLUMN_MAPPING.USERNAME];
+			a.password = line[COLUMN_MAPPING.PASSWORD];
+			a.category = line[COLUMN_MAPPING.CATEGORY];
 			accounts.add(a);
 		}
 		reader.close();

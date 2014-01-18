@@ -27,8 +27,8 @@ import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.utils.Utils;
 
-@EFragment(R.layout.frag_map_column_import)
-public class FragMapColumnImport extends Fragment implements
+@EFragment(R.layout.frag_import_map_column)
+public class FragImportMapColumn extends Fragment implements
 		OnItemSelectedListener {
 
 	@FragmentArg
@@ -46,7 +46,7 @@ public class FragMapColumnImport extends Fragment implements
 	private int nameColumn, usernameColumn, passwordColumn, categoryColumn;
 	private ActImport activity;
 
-	public FragMapColumnImport() {
+	public FragImportMapColumn() {
 
 	}
 

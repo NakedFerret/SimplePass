@@ -11,21 +11,15 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.nakedferret.simplepass.CSVImporter;
+import com.nakedferret.simplepass.CSVImporter.COLUMN_MAPPING;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.ui.FragModifyImportInfo_.FragmentBuilder_;
+import com.nakedferret.simplepass.ui.FragImportDesignateVaults_.FragmentBuilder_;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
 public class ActImport extends FragmentActivity {
 
 	public static final int REQUEST_PICK_FILE = 1;
-
-	private static final class COLUMN_MAPPING {
-		private static final int NAME = 0;
-		private static final int USERNAME = 1;
-		private static final int PASSWORD = 2;
-		private static final int CATEGORY = 3;
-	}
 
 	@NonConfigurationInstance
 	boolean configurationChanged = false, resultHandled = false;
@@ -58,7 +52,7 @@ public class ActImport extends FragmentActivity {
 	}
 
 	private void showFragMapColumnImport() {
-		Fragment f = FragMapColumnImport_.builder().fileUri(fileUri).build();
+		Fragment f = FragImportMapColumn_.builder().fileUri(fileUri).build();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
@@ -70,7 +64,7 @@ public class ActImport extends FragmentActivity {
 	}
 
 	public void showFragModifyImportInfo(int[] mapping) {
-		FragmentBuilder_ b = FragModifyImportInfo_.builder();
+		FragmentBuilder_ b = FragImportDesignateVaults_.builder();
 		b.nameColumn(mapping[COLUMN_MAPPING.NAME]);
 		b.usernameColumn(mapping[COLUMN_MAPPING.USERNAME]);
 		b.passwordColumn(mapping[COLUMN_MAPPING.PASSWORD]);

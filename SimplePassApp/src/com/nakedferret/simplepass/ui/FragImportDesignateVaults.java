@@ -38,7 +38,7 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
-public class FragModifyImportInfo extends ListFragment implements
+public class FragImportDesignateVaults extends ListFragment implements
 		OnItemClickListener, Callback {
 
 	@FragmentArg
@@ -53,7 +53,7 @@ public class FragModifyImportInfo extends ListFragment implements
 	private HashMap<Integer, MockAccount> selectedAccounts = new HashMap<Integer, MockAccount>();
 	private ActionMode mode;
 
-	public FragModifyImportInfo() {
+	public FragImportDesignateVaults() {
 		// Required empty public constructor
 	}
 
@@ -67,8 +67,9 @@ public class FragModifyImportInfo extends ListFragment implements
 		importer.setFile(new File(fileUri.getPath()));
 		importer.process();
 
-		List<MockAccount> accounts = importer.getAccounts(nameColumn,
-				usernameColumn, passwordColumn, categoryColumn);
+		int[] mapping = new int[] { nameColumn, usernameColumn, passwordColumn,
+				categoryColumn };
+		List<MockAccount> accounts = importer.getAccounts(mapping);
 
 		populateUI(accounts);
 	}
