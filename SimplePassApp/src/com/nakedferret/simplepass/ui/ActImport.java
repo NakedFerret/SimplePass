@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.nakedferret.simplepass.FragImportPickFileType_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ui.FragModifyImportInfo_.FragmentBuilder_;
 import com.nakedferret.simplepass.utils.Utils;

@@ -1,4 +1,4 @@
-package com.nakedferret.simplepass;
+package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,7 +17,10 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import com.nakedferret.simplepass.ui.ActImport;
+import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.R.id;
+import com.nakedferret.simplepass.R.layout;
+import com.nakedferret.simplepass.R.menu;
 
 @EFragment(R.layout.frag_import_pick_file_type)
 public class FragImportPickFileType extends Fragment implements
