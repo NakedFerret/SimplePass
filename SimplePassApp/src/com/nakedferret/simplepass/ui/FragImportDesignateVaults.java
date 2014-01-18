@@ -33,8 +33,8 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.CSVImporter;
-import com.nakedferret.simplepass.CSVImporter.MockAccount;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.ui.Importer.MockAccount;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
@@ -64,19 +64,19 @@ public class FragImportDesignateVaults extends ListFragment implements
 
 	@Background
 	void processFile() {
-		importer.setFile(new File(fileUri.getPath()));
-		importer.process();
-
 		int[] mapping = new int[] { nameColumn, usernameColumn, passwordColumn,
 				categoryColumn };
-		List<MockAccount> accounts = importer.getAccounts(mapping);
 
-		populateUI(accounts);
+		importer.prepare(new File(fileUri.getPath()), mapping);
+		importer.process();
+
+		populateUI();
 	}
 
 	@UiThread
-	void populateUI(List<MockAccount> accounts) {
-		setListAdapter(new ModifyDetailAdapter(getActivity(), accounts));
+	void populateUI() {
+		setListAdapter(new ModifyDetailAdapter(getActivity(),
+				importer.getAccounts()));
 		getListView().setOnItemClickListener(this);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	}

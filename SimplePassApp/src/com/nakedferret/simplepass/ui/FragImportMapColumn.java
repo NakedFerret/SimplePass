@@ -90,7 +90,7 @@ public class FragImportMapColumn extends Fragment implements
 	@Background
 	void processFile(Uri fileUri) {
 		Utils.log(this, "processing: " + fileUri.toString());
-		importer.setFile(new File(fileUri.getPath()));
+		importer.prepare(new File(fileUri.getPath()), null);
 		importer.process();
 		populateUI();
 	}
