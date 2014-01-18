@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.R;
@@ -27,21 +26,34 @@ public class ActImport extends FragmentActivity {
 		private static final int CATEGORY = 3;
 	}
 
+	@NonConfigurationInstance
+	boolean configurationChanged = false, resultHandled = false;
+
+	@NonConfigurationInstance
+	Uri fileUri;
+
 	@IntArrayRes
 	int[] lastpassMapping;
 
-	private Uri fileUri;
+	@Override
+	protected void onStart() {
+		super.onStart();
 
-	@AfterViews
-	void init() {
-		showFragImportPickFile();
+		if (!configurationChanged)
+			showFragImportPickFile();
+
+		// showFragImportPickFileType() called here to avoid a bug with
+		if (fileUri != null && !resultHandled) {
+			showFragImportPickFileType();
+			resultHandled = true;
+		}
 	}
 
 	private void showFragImportPickFile() {
 		Fragment f = new FragImportPickFile_();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
-		t.commitAllowingStateLoss();
+		t.commit();
 	}
 
 	private void showFragMapColumnImport() {
@@ -49,7 +61,7 @@ public class ActImport extends FragmentActivity {
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
-		t.commitAllowingStateLoss();
+		t.commit();
 	}
 
 	public void showFragModifyImportInfo(int[] mapping) {
@@ -64,7 +76,7 @@ public class ActImport extends FragmentActivity {
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
-		t.commitAllowingStateLoss();
+		t.commit();
 	}
 
 	@Override
@@ -74,7 +86,12 @@ public class ActImport extends FragmentActivity {
 		case REQUEST_PICK_FILE:
 			if (data != null) {
 				fileUri = data.getData();
+			}
+			if (configurationChanged) {
 				showFragImportPickFileType();
+				resultHandled = true;
+			} else {
+				resultHandled = false;
 			}
 			break;
 		default:
@@ -87,7 +104,7 @@ public class ActImport extends FragmentActivity {
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
-		t.commitAllowingStateLoss();
+		t.commit();
 	}
 
 	public void processFile(int fileType, int fileMapping) {
@@ -100,4 +117,11 @@ public class ActImport extends FragmentActivity {
 			showFragModifyImportInfo(lastpassMapping);
 		}
 	}
+
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		configurationChanged = true;
+		return super.onRetainCustomNonConfigurationInstance();
+	}
+
 }
