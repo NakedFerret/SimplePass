@@ -59,5 +59,9 @@
     <string name="pickVaultForImport">Choose the Accounts to place in a Vault</string>
     <string name="mapColumnsForImport">Specify which columns in the CSV file contain the Account name, username, password, and category</string>
     <string name="pick_file_button">Pick File</string>
+    <string name="import_pick_file_type_instruction">Choose the file type</string>
+    <string name="import_pick_file_mapping_instruction">Choose the file format</string>
+    <string name="continue_">Continue</string>
+    <string name="continue_condensed">Continue</string>
 
 </resources>

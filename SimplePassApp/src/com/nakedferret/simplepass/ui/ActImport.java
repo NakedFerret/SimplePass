@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.nakedferret.simplepass.FragImportPickFileType_;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ui.FragModifyImportInfo_.FragmentBuilder_;
 import com.nakedferret.simplepass.utils.Utils;
@@ -60,16 +61,25 @@ public class ActImport extends FragmentActivity {
 		Utils.log(this, "onActivityResult: " + requestCode);
 		switch (requestCode) {
 		case REQUEST_PICK_FILE:
-			Utils.log(this, "REQUEST_PICK_FILE");
-			Utils.log(this, "data: " + data);
 			if (data != null) {
-				Utils.log(this, "file was picked");
 				fileUri = data.getData();
-				showFragMapColumnImport();
+				showFragImportPickFileType();
 			}
 			break;
 		default:
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+	}
+
+	private void showFragImportPickFileType() {
+		Fragment f = new FragImportPickFileType_();
+		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
+		t.commitAllowingStateLoss();
+	}
+
+	public void processFile(int fileType, int fileMapping) {
+		showFragMapColumnImport();
 	}
 }

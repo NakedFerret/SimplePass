@@ -9,8 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".FragImportPickFile" >
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/TextView1"
         android:layout_width="match_parent"
