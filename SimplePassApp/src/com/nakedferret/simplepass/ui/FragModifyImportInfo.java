@@ -10,6 +10,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.ListFragment;
 import android.view.ActionMode;
+import android.view.ActionMode.Callback;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,15 +18,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -42,7 +42,7 @@ import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
 public class FragModifyImportInfo extends ListFragment implements
-		OnItemClickListener, MultiChoiceModeListener {
+		OnItemClickListener, Callback {
 
 	@FragmentArg
 	int nameColumn, usernameColumn, passwordColumn, categoryColumn;
@@ -54,8 +54,8 @@ public class FragModifyImportInfo extends ListFragment implements
 	CSVImporter importer;
 
 	private Dialog dialog;
-
 	private HashMap<Integer, MockAccount> selectedAccounts = new HashMap<Integer, MockAccount>();
+	private ActionMode mode;
 
 	public FragModifyImportInfo() {
 		// Required empty public constructor
@@ -90,8 +90,7 @@ public class FragModifyImportInfo extends ListFragment implements
 	void populateUI(List<MockAccount> accounts) {
 		setListAdapter(new ModifyDetailAdapter(getActivity(), accounts));
 		getListView().setOnItemClickListener(this);
-		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		getListView().setMultiChoiceModeListener(this);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	}
 
 	class ModifyDetailAdapter extends BaseAdapter implements OnTouchListener,
@@ -169,30 +168,43 @@ public class FragModifyImportInfo extends ListFragment implements
 		@Override
 		public void onCheckedChanged(CompoundButton cb, boolean isChecked) {
 			int position = (Integer) cb.getTag();
+
 			MockAccount a = accounts.get(position);
-
-			Utils.log(this, "checkbox checked: " + position);
-
 			if (isChecked) {
 				selectedAccounts.put(position, a);
 			} else {
 				selectedAccounts.remove(position);
 			}
 
-			getListView().setItemChecked(position, isChecked);
+			ListView listView = getListView();
+			if (listView.isItemChecked(position) != isChecked)
+				listView.setItemChecked(position, isChecked);
+
+			handleActionMode();
 		}
+
+	}
+
+	public void handleActionMode() {
+
+		if (selectedAccounts.size() == 1 && mode == null)
+			mode = getActivity().startActionMode(this);
+
+		if (selectedAccounts.size() == 0 && mode != null) {
+			mode.finish();
+			mode = null;
+		}
+
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		Utils.log(this, "list clicked");
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		return false;
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
-		dialog.dismiss();
+	public void onDestroyActionMode(ActionMode mode) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -201,27 +213,21 @@ public class FragModifyImportInfo extends ListFragment implements
 	}
 
 	@Override
-	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
-
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		CheckBox cb = ViewHolder.get(view, android.R.id.checkbox);
+		cb.setChecked(!cb.isChecked());
 	}
 
 	@Override
-	public void onItemCheckedStateChanged(ActionMode mode, int position,
-			long id, boolean checked) {
-		Utils.log(this, "item checked: " + position);
+	public void onStop() {
+		super.onStop();
+		dialog.dismiss();
 	}
 
 }
