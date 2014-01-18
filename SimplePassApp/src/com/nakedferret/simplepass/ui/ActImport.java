@@ -2,6 +2,7 @@ package com.nakedferret.simplepass.ui;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -77,6 +78,10 @@ public class ActImport extends FragmentActivity {
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
 		t.commit();
+
+		DialogFragment dialog = FragInstructionsDialog_.builder()
+				.messageId(R.string.pickVaultForImport).build();
+		dialog.show(getSupportFragmentManager(), null);
 	}
 
 	@Override

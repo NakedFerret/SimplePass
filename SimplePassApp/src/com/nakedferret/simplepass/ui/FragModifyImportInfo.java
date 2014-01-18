@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.ListFragment;
@@ -37,7 +35,6 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.CSVImporter.MockAccount;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.utils.Utils;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
@@ -53,7 +50,6 @@ public class FragModifyImportInfo extends ListFragment implements
 	@Bean
 	CSVImporter importer;
 
-	private Dialog dialog;
 	private HashMap<Integer, MockAccount> selectedAccounts = new HashMap<Integer, MockAccount>();
 	private ActionMode mode;
 
@@ -64,15 +60,6 @@ public class FragModifyImportInfo extends ListFragment implements
 	@AfterViews
 	void init() {
 		processFile();
-		showInstructions();
-	}
-
-	private void showInstructions() {
-		AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-		b.setMessage(R.string.pickVaultForImport);
-		b.setPositiveButton(android.R.string.ok, null);
-		dialog = b.create();
-		dialog.show();
 	}
 
 	@Background
@@ -222,12 +209,6 @@ public class FragModifyImportInfo extends ListFragment implements
 			long id) {
 		CheckBox cb = ViewHolder.get(view, android.R.id.checkbox);
 		cb.setChecked(!cb.isChecked());
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		dialog.dismiss();
 	}
 
 }
