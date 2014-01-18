@@ -75,8 +75,9 @@ public class FragMapColumnImport extends Fragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_done:
-			activity.showFragModifyImportInfo(nameColumn, usernameColumn,
-					passwordColumn, categoryColumn);
+			final int[] mapping = new int[] { nameColumn, usernameColumn,
+					passwordColumn, categoryColumn };
+			activity.showFragModifyImportInfo(mapping);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

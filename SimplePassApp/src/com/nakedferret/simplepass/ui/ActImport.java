@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.res.IntArrayRes;
+import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ui.FragModifyImportInfo_.FragmentBuilder_;
 import com.nakedferret.simplepass.utils.Utils;
@@ -17,6 +19,16 @@ import com.nakedferret.simplepass.utils.Utils;
 public class ActImport extends FragmentActivity {
 
 	public static final int REQUEST_PICK_FILE = 1;
+
+	private static final class COLUMN_MAPPING {
+		private static final int NAME = 0;
+		private static final int USERNAME = 1;
+		private static final int PASSWORD = 2;
+		private static final int CATEGORY = 3;
+	}
+
+	@IntArrayRes
+	int[] lastpassMapping;
 
 	private Uri fileUri;
 
@@ -34,18 +46,18 @@ public class ActImport extends FragmentActivity {
 
 	private void showFragMapColumnImport() {
 		Fragment f = FragMapColumnImport_.builder().fileUri(fileUri).build();
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction t = fm.beginTransaction();
+		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
 		t.commitAllowingStateLoss();
 	}
 
-	public void showFragModifyImportInfo(int n, int u, int p, int c) {
+	public void showFragModifyImportInfo(int[] mapping) {
 		FragmentBuilder_ b = FragModifyImportInfo_.builder();
-		b.nameColumn(n);
-		b.usernameColumn(u);
-		b.passwordColumn(p);
-		b.categoryColumn(c);
+		b.nameColumn(mapping[COLUMN_MAPPING.NAME]);
+		b.usernameColumn(mapping[COLUMN_MAPPING.USERNAME]);
+		b.passwordColumn(mapping[COLUMN_MAPPING.PASSWORD]);
+		b.categoryColumn(mapping[COLUMN_MAPPING.CATEGORY]);
 		b.fileUri(fileUri);
 		Fragment f = b.build();
 
@@ -79,6 +91,13 @@ public class ActImport extends FragmentActivity {
 	}
 
 	public void processFile(int fileType, int fileMapping) {
-		showFragMapColumnImport();
+		Utils.log(this, "fileType: " + fileType);
+		Utils.log(this, "fileMapping: " + fileMapping);
+
+		if (fileMapping == CSVImporter.MAPPING.OTHER) {
+			showFragMapColumnImport();
+		} else if (fileMapping == CSVImporter.MAPPING.LASTPASS) {
+			showFragModifyImportInfo(lastpassMapping);
+		}
 	}
 }

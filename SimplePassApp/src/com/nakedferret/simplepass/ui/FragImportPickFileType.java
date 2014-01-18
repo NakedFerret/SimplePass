@@ -18,9 +18,7 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import com.nakedferret.simplepass.R;
-import com.nakedferret.simplepass.R.id;
-import com.nakedferret.simplepass.R.layout;
-import com.nakedferret.simplepass.R.menu;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_import_pick_file_type)
 public class FragImportPickFileType extends Fragment implements
@@ -66,7 +64,7 @@ public class FragImportPickFileType extends Fragment implements
 		fileTypeSpinner.setAdapter(getAdapter(fileTypeArray));
 		fileTypeSpinner.setOnItemSelectedListener(this);
 		fileMappingSpinner.setAdapter(getAdapter(fileFormatArray));
-		fileTypeSpinner.setOnItemSelectedListener(this);
+		fileMappingSpinner.setOnItemSelectedListener(this);
 	}
 
 	private SpinnerAdapter getAdapter(String[] stringArray) {
@@ -80,10 +78,14 @@ public class FragImportPickFileType extends Fragment implements
 	public void onItemSelected(AdapterView<?> spinner, View view, int position,
 			long id) {
 
-		if (spinner == fileTypeSpinner)
+		
+		if (spinner == fileTypeSpinner) {
+			Utils.log(this, "spinner: fileType");
 			fileType = position;
-		else if (spinner == fileMappingSpinner)
+		} else if (spinner == fileMappingSpinner) {
+			Utils.log(this, "spinner: fileMapping");
 			fileMapping = position;
+		}
 	}
 
 	@Override

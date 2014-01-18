@@ -20,6 +20,11 @@ import com.googlecode.androidannotations.annotations.EBean;
 @EBean
 public class CSVImporter {
 
+	public static final class MAPPING {
+		public static final int LASTPASS = 0;
+		public static final int OTHER = 1;
+	}
+
 	private File file;
 	private SafeCSVReader reader;
 	private boolean isValid = false;

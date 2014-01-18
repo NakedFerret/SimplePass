@@ -17,6 +17,12 @@
         <item>Other</item>
     </string-array>
 
+    <integer-array name="lastpassMapping">
+        <item name="name">4</item>
+        <item name="username">1</item>
+        <item name="password">2</item>
+        <item name="category">5</item>
+    </integer-array>
     <integer-array name="securityLevelIterArray">
         <item>2500</item>
         <item>5000</item>
