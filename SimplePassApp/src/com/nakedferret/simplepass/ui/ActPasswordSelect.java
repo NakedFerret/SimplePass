@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.R;
@@ -19,6 +20,9 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	@App
 	SimplePass app;
 
+	@NonConfigurationInstance
+	boolean configurationChanged = false;
+
 	private FragPassInput fragPasswordInput;
 	private Long selectedAccountId;
 
@@ -30,7 +34,8 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@AfterViews
 	void initializeInterface() {
-		showFragListVault();
+		if (!configurationChanged)
+			showFragListVault();
 	}
 
 	@Override
@@ -146,6 +151,12 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		t.replace(R.id.fragmentContainer, f);
 		t.addToBackStack(null);
 		t.commit();
+	}
+
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		configurationChanged = true;
+		return super.onRetainCustomNonConfigurationInstance();
 	}
 
 	@Override
