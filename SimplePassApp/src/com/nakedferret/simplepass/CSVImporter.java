@@ -28,6 +28,8 @@ public class CSVImporter {
 		public static final int CATEGORY = 3;
 	}
 
+	public static final int[] LASTPASS_MAPPING = new int[] { 4, 1, 2, 5 };
+
 	private File file;
 	private SafeCSVReader reader;
 

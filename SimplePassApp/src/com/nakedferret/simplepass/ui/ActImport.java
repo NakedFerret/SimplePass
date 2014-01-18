@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
-import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.CSVImporter.COLUMN_MAPPING;
 import com.nakedferret.simplepass.R;
@@ -26,9 +25,6 @@ public class ActImport extends FragmentActivity {
 
 	@NonConfigurationInstance
 	Uri fileUri;
-
-	@IntArrayRes
-	int[] lastpassMapping;
 
 	@Override
 	protected void onStart() {
@@ -117,7 +113,7 @@ public class ActImport extends FragmentActivity {
 		if (fileMapping == CSVImporter.MAPPING.OTHER) {
 			showFragMapColumnImport();
 		} else if (fileMapping == CSVImporter.MAPPING.LASTPASS) {
-			showFragModifyImportInfo(lastpassMapping);
+			showFragModifyImportInfo(CSVImporter.LASTPASS_MAPPING);
 		}
 	}
 
