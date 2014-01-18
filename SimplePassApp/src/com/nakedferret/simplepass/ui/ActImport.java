@@ -11,17 +11,25 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.ui.FragModifyImportInfo_.FragmentBuilder_;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
 public class ActImport extends FragmentActivity {
 
-	private static final int REQUEST_PICK_FILE = 1;
+	public static final int REQUEST_PICK_FILE = 1;
 
 	private Uri fileUri;
 
 	@AfterViews
 	void init() {
-		launchFilePicker();
+		showFragImportPickFile();
+	}
+
+	private void showFragImportPickFile() {
+		Fragment f = new FragImportPickFile_();
+		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.commitAllowingStateLoss();
 	}
 
 	private void showFragMapColumnImport() {
@@ -47,18 +55,15 @@ public class ActImport extends FragmentActivity {
 		t.commitAllowingStateLoss();
 	}
 
-	private void launchFilePicker() {
-		Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-		i.addCategory(Intent.CATEGORY_OPENABLE);
-		i.setType("file/*");
-		startActivityForResult(i, REQUEST_PICK_FILE);
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Utils.log(this, "onActivityResult: " + requestCode);
 		switch (requestCode) {
 		case REQUEST_PICK_FILE:
+			Utils.log(this, "REQUEST_PICK_FILE");
+			Utils.log(this, "data: " + data);
 			if (data != null) {
+				Utils.log(this, "file was picked");
 				fileUri = data.getData();
 				showFragMapColumnImport();
 			}
