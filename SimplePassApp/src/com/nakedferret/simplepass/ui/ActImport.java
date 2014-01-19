@@ -133,8 +133,4 @@ public class ActImport extends FragmentActivity {
 		return super.onRetainCustomNonConfigurationInstance();
 	}
 
-	public ImportManager getImportManager() {
-		return importManager;
-	}
-
 }

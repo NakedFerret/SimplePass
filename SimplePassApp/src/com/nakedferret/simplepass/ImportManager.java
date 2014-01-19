@@ -11,10 +11,11 @@ import android.net.Uri;
 
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.api.Scope;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
 
 @SuppressLint("UseSparseArrays")
-@EBean
+@EBean(scope = Scope.Singleton)
 public class ImportManager {
 
 	public static final class FILE_TYPE {

@@ -2,7 +2,6 @@ package com.nakedferret.simplepass.ui;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.ListFragment;
 import android.view.ActionMode;
@@ -25,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.ImportManager;
 import com.nakedferret.simplepass.ImportManager.MockAccount;
@@ -35,20 +35,14 @@ import com.nakedferret.simplepass.utils.ViewHolder;
 public class FragImportDesignateVaults extends ListFragment implements
 		OnItemClickListener, Callback {
 
+	@Bean
+	ImportManager importManager;
+
 	private ActionMode mode;
-	private ActImport activity;
-	private ImportManager importManager;
 	private ModifyDetailAdapter adapter;
 
 	public FragImportDesignateVaults() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onAttach(Activity attachingActivity) {
-		super.onAttach(attachingActivity);
-		activity = (ActImport) attachingActivity;
-		importManager = activity.getImportManager();
 	}
 
 	@AfterViews
