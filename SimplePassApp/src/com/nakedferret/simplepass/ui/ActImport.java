@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -32,12 +33,15 @@ public class ActImport extends FragmentActivity {
 	@Bean
 	ImportManager importManager;
 
+	@AfterViews
+	void init() {
+		if (!configurationChanged)
+			showFragImportPickFile();
+	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
-
-		if (!configurationChanged)
-			showFragImportPickFile();
 
 		// showFragImportPickFileType() called here to avoid a bug with
 		if (fileUri != null && !resultHandled) {
