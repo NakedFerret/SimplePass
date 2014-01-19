@@ -44,6 +44,8 @@ public class ActImport extends FragmentActivity {
 			showFragImportPickFileType();
 			resultHandled = true;
 		}
+
+		configurationChanged = false;
 	}
 
 	private void showFragImportPickFile() {
