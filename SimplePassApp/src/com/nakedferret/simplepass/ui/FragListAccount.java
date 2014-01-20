@@ -14,7 +14,6 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
@@ -31,6 +30,8 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.Category;
@@ -40,6 +41,7 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
 
 @EFragment
+@OptionsMenu(R.menu.frag_list_account)
 public class FragListAccount extends ListFragment implements
 		OnItemClickListener, LoaderCallbacks<Cursor> {
 
@@ -60,18 +62,6 @@ public class FragListAccount extends ListFragment implements
 
 	public FragListAccount() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.frag_list_account, menu);
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -230,19 +220,14 @@ public class FragListAccount extends ListFragment implements
 		adapter.changeCursor(null);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_lock_vault:
-			app.lockVault(vaultId);
-			return true;
-		case R.id.action_add_account:
-			mListener.requestCreateAccount(vaultId);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+	@OptionsItem(R.id.action_lock_vault)
+	void lockVault() {
+		app.lockVault(vaultId);
+	}
 
+	@OptionsItem(R.id.action_add_account)
+	void addAccount() {
+		mListener.requestCreateAccount(vaultId);
 	}
 
 }
