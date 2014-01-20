@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView.MultiChoiceModeListener;
@@ -26,12 +25,15 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.content.ContentProvider;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Vault;
 
 @EFragment
+@OptionsMenu(R.menu.frag_list_vault)
 public class FragListVault extends ListFragment implements OnItemClickListener,
 		LoaderCallbacks<Cursor> {
 
@@ -41,18 +43,6 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	public FragListVault() {
 		// Required empty public constructor
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setHasOptionsMenu(true);
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.frag_list_vault, menu);
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -189,15 +179,9 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		mListener.onVaultSelected(id);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_add_vault:
-			mListener.requestCreateVault();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-
+	@OptionsItem(R.id.action_add_vault)
+	void addVault() {
+		mListener.requestCreateVault();
 	}
+
 }
