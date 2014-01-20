@@ -180,7 +180,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	}
 
 	@OptionsItem(R.id.action_add_vault)
-	void addVault() {
+	void actionAddVault() {
 		mListener.requestCreateVault();
 	}
 

@@ -2,20 +2,21 @@ package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.CSVImporter;
 import com.nakedferret.simplepass.OverlayManager;
 import com.nakedferret.simplepass.R;
 
 @EActivity(R.layout.act_main)
+@OptionsMenu(R.menu.act_main)
 public class ActMain extends Activity {
 
 	@ViewById
@@ -46,21 +47,9 @@ public class ActMain extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.act_main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_import:
-			startActivity(new Intent(this, ActImport_.class));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+	@OptionsItem(R.id.action_import)
+	void actionImport() {
+		startActivity(new Intent(this, ActImport_.class));
 	}
 
 }

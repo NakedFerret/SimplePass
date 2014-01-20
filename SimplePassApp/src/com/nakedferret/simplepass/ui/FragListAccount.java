@@ -221,12 +221,12 @@ public class FragListAccount extends ListFragment implements
 	}
 
 	@OptionsItem(R.id.action_lock_vault)
-	void lockVault() {
+	void actionLockVault() {
 		app.lockVault(vaultId);
 	}
 
 	@OptionsItem(R.id.action_add_account)
-	void addAccount() {
+	void actionAddAccount() {
 		mListener.requestCreateAccount(vaultId);
 	}
 

@@ -4,11 +4,7 @@ import java.io.File;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -21,6 +17,8 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.CSVImporter;
@@ -30,6 +28,7 @@ import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_import_map_column)
+@OptionsMenu(R.menu.frag_map_column_import)
 public class FragImportMapColumn extends Fragment implements
 		OnItemSelectedListener {
 
@@ -53,36 +52,9 @@ public class FragImportMapColumn extends Fragment implements
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
-
-	@Override
 	public void onAttach(Activity activity) {
 		this.activity = (ActImport) activity;
 		super.onAttach(activity);
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.frag_map_column_import, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_done:
-			CSVMapping newMapping = new CSVMapping(nameColumn, usernameColumn,
-					passwordColumn, categoryColumn);
-			int id = CSVMapping.addMapping(newMapping);
-			activity.processFile(FILE_TYPE.CSV, id);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-
 	}
 
 	@AfterViews
@@ -147,6 +119,14 @@ public class FragImportMapColumn extends Fragment implements
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 
+	}
+
+	@OptionsItem(R.id.action_done)
+	void actionDone() {
+		CSVMapping newMapping = new CSVMapping(nameColumn, usernameColumn,
+				passwordColumn, categoryColumn);
+		int id = CSVMapping.addMapping(newMapping);
+		activity.processFile(FILE_TYPE.CSV, id);
 	}
 
 }

@@ -1,11 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -15,11 +11,14 @@ import android.widget.SpinnerAdapter;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import com.nakedferret.simplepass.R;
 
 @EFragment(R.layout.frag_import_pick_file_type)
+@OptionsMenu(R.menu.frag_import_pick_file_type)
 public class FragImportPickFileType extends Fragment implements
 		OnItemSelectedListener {
 
@@ -37,21 +36,9 @@ public class FragImportPickFileType extends Fragment implements
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
-
-	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = (ActImport) activity;
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.frag_import_pick_file_type, menu);
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@AfterViews
@@ -79,15 +66,9 @@ public class FragImportPickFileType extends Fragment implements
 			fileMapping = position;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_continue:
-			activity.processFile(fileType, fileMapping);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+	@OptionsItem(R.id.action_continue)
+	void actionContinue() {
+		activity.processFile(fileType, fileMapping);
 	}
 
 	@Override
