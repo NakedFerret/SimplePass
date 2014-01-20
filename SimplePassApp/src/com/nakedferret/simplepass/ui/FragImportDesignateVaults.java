@@ -189,6 +189,7 @@ public class FragImportDesignateVaults extends ListFragment implements
 			return true;
 		case R.id.action_import_accounts:
 			activity.onAccountsSelected();
+			mode.finish();
 			return true;
 		default:
 			return false;
