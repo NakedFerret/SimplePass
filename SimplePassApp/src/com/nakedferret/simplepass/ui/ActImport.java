@@ -52,6 +52,10 @@ public class ActImport extends FragmentActivity {
 		configurationChanged = false;
 	}
 
+	public void onAccountsSelected() {
+		// TODO Auto-generated method stub
+	}
+
 	private void showFragImportPickFile() {
 		Fragment f = new FragImportPickFile_();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();

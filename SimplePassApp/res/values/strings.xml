@@ -47,7 +47,7 @@
     <string name="delete_account_condensed">Delete</string>
     <string name="START_OVERLAY_ACTION">com.nakedferret.simplepass.START_OVERLAY</string>
     <string name="STOP_OVERLAY_ACTION">com.nakedferret.simplepass.STOP_OVERLAY</string>
-    <string name="import_accounts">Import Accounts</string>
+    <string name="import_accounts">Import Account(s)</string>
     <string name="import_account_condensed">Import</string>
     <string name="title_act_import">Import</string>
     <string name="first_row">First Row:</string>
@@ -63,5 +63,8 @@
     <string name="import_pick_file_mapping_instruction">Choose the file format</string>
     <string name="continue_">Continue</string>
     <string name="continue_condensed">Continue</string>
+    <string name="ignore_accounts">Ignore Account(s)</string>
+    <string name="ignore_accounts_condensed">Ignore</string>
+    <string name="import_accounts_condensed">Import</string>
 
 </resources>

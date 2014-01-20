@@ -2,6 +2,7 @@ package com.nakedferret.simplepass.ui;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.ListFragment;
 import android.view.ActionMode;
@@ -40,9 +41,16 @@ public class FragImportDesignateVaults extends ListFragment implements
 
 	private ActionMode mode;
 	private ModifyDetailAdapter adapter;
+	private ActImport activity;
 
 	public FragImportDesignateVaults() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onAttach(Activity attachedActivity) {
+		super.onAttach(attachedActivity);
+		activity = (ActImport) attachedActivity;
 	}
 
 	@AfterViews
@@ -143,15 +151,13 @@ public class FragImportDesignateVaults extends ListFragment implements
 	}
 
 	public void handleActionMode() {
-
 		int numOfSelectedAccounts = importManager.getSelectedAccounts().size();
+
 		if (numOfSelectedAccounts >= 1 && mode == null)
 			mode = getActivity().startActionMode(this);
 
-		if (numOfSelectedAccounts == 0 && mode != null) {
+		if (numOfSelectedAccounts == 0 && mode != null)
 			mode.finish();
-			mode = null;
-		}
 
 	}
 
@@ -164,16 +170,29 @@ public class FragImportDesignateVaults extends ListFragment implements
 	public void onDestroyActionMode(ActionMode mode) {
 		importManager.deselectAllAccounts();
 		adapter.notifyDataSetChanged();
+		this.mode = null;
 	}
 
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		mode.getMenuInflater().inflate(R.menu.ac_frag_import_designate_vaults,
+				menu);
 		return true;
 	}
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		return false;
+		switch (item.getItemId()) {
+		case R.id.action_ignore_accounts:
+			importManager.deleteSelectedAccounts();
+			adapter.notifyDataSetChanged();
+			return true;
+		case R.id.action_import_accounts:
+			activity.onAccountsSelected();
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	@Override

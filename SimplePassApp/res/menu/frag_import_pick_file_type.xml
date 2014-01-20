@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_continue"
-        android:icon="@drawable/ic_action_check"
+        android:icon="@drawable/ic_action_next"
         android:showAsAction="always"
         android:title="@string/continue_"
         android:titleCondensed="@string/continue_condensed">

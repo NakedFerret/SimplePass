@@ -100,4 +100,8 @@ public class ImportManager {
 		return selectedAccounts.get(a.id) != null;
 	}
 
+	public void deleteSelectedAccounts() {
+		getAccounts().removeAll(selectedAccounts.values());
+		selectedAccounts.clear();
+	}
 }
