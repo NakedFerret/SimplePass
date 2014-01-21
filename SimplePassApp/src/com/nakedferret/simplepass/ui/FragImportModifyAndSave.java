@@ -10,9 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -23,13 +21,13 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.ImportManager;
+import com.nakedferret.simplepass.ImportManager.MockAccount;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Vault;
-import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_import_modify_and_save)
 public class FragImportModifyAndSave extends Fragment implements
-		LoaderCallbacks<Cursor>, OnItemSelectedListener, OnClickListener {
+		OnClickListener, LoaderCallbacks<Cursor> {
 
 	@ViewById(android.R.id.list)
 	ListView accountList;
@@ -38,7 +36,9 @@ public class FragImportModifyAndSave extends Fragment implements
 	ImportManager importManager;
 
 	private SimpleCursorAdapter vaultAdapter;
+	private ArrayAdapter<MockAccount> accountAdapter;
 	private AlertDialog dialog;
+	private Long selectedVault;
 
 	public FragImportModifyAndSave() {
 		// Required empty public constructor
@@ -72,6 +72,14 @@ public class FragImportModifyAndSave extends Fragment implements
 	}
 
 	@Override
+	public void onClick(DialogInterface dialog, int position) {
+		selectedVault = vaultAdapter.getItemId(position);
+		accountAdapter = new MockAccountAdapter(getActivity());
+		accountAdapter.addAll(importManager.getSelectedAccounts());
+		accountList.setAdapter(accountAdapter);
+	}
+
+	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		Uri vaultUri = ContentProvider.createUri(Vault.class, null);
 		return new CursorLoader(getActivity(), vaultUri, null, null, null, null);
@@ -85,23 +93,6 @@ public class FragImportModifyAndSave extends Fragment implements
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		vaultAdapter.changeCursor(null);
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
-		Utils.log(this, "Vault selected");
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		Utils.log(this, "No vault selected");
-	}
-
-	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		Long vaultId = vaultAdapter.getItemId(which);
-		Utils.log(this, "selected vault: " + vaultId);
 	}
 
 }
