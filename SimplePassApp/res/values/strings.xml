@@ -68,5 +68,6 @@
     <string name="import_accounts_condensed">Import</string>
     <string name="select_a_vault_prompt">Select A Vault</string>
     <string name="choose_a_vault">Choose A Vault</string>
+    <string name="show_mock_account_detail_button_description">A Magnifying Glass</string>
 
 </resources>

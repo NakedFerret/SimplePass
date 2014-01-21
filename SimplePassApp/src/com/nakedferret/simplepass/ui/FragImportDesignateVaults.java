@@ -92,8 +92,9 @@ public class FragImportDesignateVaults extends ListFragment implements
 		public View getView(int position, View r, ViewGroup parent) {
 
 			if (r == null) {
-				r = LayoutInflater.from(context).inflate(
-						R.layout.listitem_importer_detail, parent, false);
+				r = LayoutInflater.from(context)
+						.inflate(R.layout.listitem_mockaccount_selectable,
+								parent, false);
 			}
 
 			TextView text1 = ViewHolder.get(r, R.id.text1);

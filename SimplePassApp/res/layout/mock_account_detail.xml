@@ -1,25 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants" >
-
-    <ImageButton
-        android:id="@+id/showInfoButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="72dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_action_view" />
-
-    <CheckBox
-        android:id="@android:id/checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp" />
+    android:layout_height="match_parent" >
 
     <TextView
         android:id="@+id/text1"
@@ -41,4 +23,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="invisible" />
 
-</RelativeLayout>
+    <ImageButton
+        android:id="@+id/showInfoButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="72dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/show_mock_account_detail_button_description"
+        android:src="@drawable/ic_action_view" />
+
+</merge>
