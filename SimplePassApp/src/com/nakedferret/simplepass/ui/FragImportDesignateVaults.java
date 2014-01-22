@@ -1,12 +1,11 @@
 package com.nakedferret.simplepass.ui;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.ListFragment;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +21,9 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.nakedferret.simplepass.ImportManager;
-import com.nakedferret.simplepass.ImportManager.MockAccount;
+import com.nakedferret.simplepass.ImportManager.ImportAccount;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.ui.FragImportModifyAndSave.ImportAccountBinder;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment
@@ -34,7 +34,8 @@ public class FragImportDesignateVaults extends ListFragment implements
 	ImportManager importManager;
 
 	private ActionMode mode;
-	private SelectableMockAccountAdapter adapter;
+	private BeanAdapter<ImportAccount> adapter;
+	private SelectableImportAccountBinder binder = new SelectableImportAccountBinder();
 	private ActImport activity;
 	private boolean proceeding = false; // True if proceeding with import
 
@@ -50,8 +51,8 @@ public class FragImportDesignateVaults extends ListFragment implements
 
 	@AfterViews
 	void populateUI() {
-		adapter = new SelectableMockAccountAdapter(getActivity(),
-				importManager.getAccounts());
+		adapter = new BeanAdapter<ImportAccount>(getActivity(),
+				importManager.getAccounts(), binder);
 		setListAdapter(adapter);
 		getListView().setOnItemClickListener(this);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -66,24 +67,23 @@ public class FragImportDesignateVaults extends ListFragment implements
 		proceeding = false;
 	}
 
-	public class SelectableMockAccountAdapter extends MockAccountAdapter
+	public class SelectableImportAccountBinder extends ImportAccountBinder
 			implements OnCheckedChangeListener {
 
-		public SelectableMockAccountAdapter(Context context,
-				List<MockAccount> accounts) {
-			super(context, accounts);
-			layout = R.layout.listitem_mockaccount_selectable;
+		@Override
+		public View newView(Context c, View convertView, ViewGroup parent) {
+			return LayoutInflater.from(c).inflate(
+					R.layout.listitem_mockaccount_selectable, parent, false);
 		}
 
 		@Override
-		public View getView(int position, View r, ViewGroup parent) {
-			MockAccount a = getItem(position);
+		public View bindView(Context c, View r, int position, ImportAccount bean) {
+			r = super.bindView(c, r, position, bean);
 
-			r = super.getView(position, r, parent);
 			CheckBox cb = ViewHolder.get(r, android.R.id.checkbox);
 			cb.setOnCheckedChangeListener(this);
 			cb.setTag(position);
-			cb.setChecked(importManager.isSelected(a));
+			cb.setChecked(importManager.isSelected(bean));
 
 			return r;
 		}
@@ -91,14 +91,8 @@ public class FragImportDesignateVaults extends ListFragment implements
 		@Override
 		public void onCheckedChanged(CompoundButton cb, boolean isChecked) {
 			int position = (Integer) cb.getTag();
-
-			MockAccount a = adapter.getItem(position);
-			importManager.setAccountSelection(a, isChecked);
-
-			ListView listView = getListView();
-			if (listView.isItemChecked(position) != isChecked)
-				listView.setItemChecked(position, isChecked);
-
+			importManager.setAccountSelection(adapter.getItem(position),
+					isChecked);
 			handleActionMode();
 		}
 

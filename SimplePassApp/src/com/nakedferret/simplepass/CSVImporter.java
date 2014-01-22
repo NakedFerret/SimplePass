@@ -11,8 +11,8 @@ import java.util.List;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.googlecode.androidannotations.annotations.EBean;
+import com.nakedferret.simplepass.ImportManager.ImportAccount;
 import com.nakedferret.simplepass.ImportManager.Importer;
-import com.nakedferret.simplepass.ImportManager.MockAccount;
 
 @EBean
 public class CSVImporter implements Importer {
@@ -58,7 +58,7 @@ public class CSVImporter implements Importer {
 	private int width = -1;
 	private String[] firstRow;
 	private CSVMapping mapping;
-	private List<MockAccount> accounts = new ArrayList<MockAccount>();
+	private List<ImportAccount> accounts = new ArrayList<ImportAccount>();
 
 	public void prepare(File file, CSVMapping mapping) {
 		this.file = file;
@@ -89,7 +89,7 @@ public class CSVImporter implements Importer {
 		String[] line;
 		int position = 0;
 		boolean isCSV = false;
-		List<MockAccount> parsedAccounts = new ArrayList<MockAccount>();
+		List<ImportAccount> parsedAccounts = new ArrayList<ImportAccount>();
 
 		if ((line = reader.readNext()) != null) {
 			isCSV = true;
@@ -127,7 +127,7 @@ public class CSVImporter implements Importer {
 		return width;
 	}
 
-	public List<MockAccount> getAccounts() {
+	public List<ImportAccount> getAccounts() {
 		return accounts;
 	}
 
@@ -141,12 +141,12 @@ public class CSVImporter implements Importer {
 		return b.substring(0, b.length() - 2);
 	}
 
-	private MockAccount getAccount(String[] line, int id) {
+	private ImportAccount getAccount(String[] line, int id) {
 		String name = line[mapping.name];
 		String username = line[mapping.username];
 		String password = line[mapping.password];
 		String category = line[mapping.category];
-		return new MockAccount(name, username, password, category, id);
+		return new ImportAccount(name, username, password, category, id);
 	}
 
 	class SafeCSVReader extends CSVReader {

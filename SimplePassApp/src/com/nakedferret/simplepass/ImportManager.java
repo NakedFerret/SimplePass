@@ -13,6 +13,7 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.api.Scope;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
+import com.nakedferret.simplepass.ui.BeanAdapter.ListItem;
 
 @SuppressLint("UseSparseArrays")
 @EBean(scope = Scope.Singleton)
@@ -23,21 +24,21 @@ public class ImportManager {
 	}
 
 	public interface Importer {
-		public List<MockAccount> getAccounts();
+		public List<ImportAccount> getAccounts();
 	}
 
-	public Map<Integer, MockAccount> selectedAccounts = new HashMap<Integer, MockAccount>();
+	public Map<Long, ImportAccount> selectedAccounts = new HashMap<Long, ImportAccount>();
 
 	@Bean
 	CSVImporter csvImporter;
 
 	private Importer currentImporter;
 
-	public List<MockAccount> getAccounts() {
+	public List<ImportAccount> getAccounts() {
 		return currentImporter.getAccounts();
 	}
 
-	public void setAccountSelection(MockAccount a, boolean selected) {
+	public void setAccountSelection(ImportAccount a, boolean selected) {
 		// Add to selectedAccounts
 		if (selected) {
 			selectedAccounts.put(a.id, a);
@@ -46,7 +47,7 @@ public class ImportManager {
 		}
 	}
 
-	public Collection<MockAccount> getSelectedAccounts() {
+	public Collection<ImportAccount> getSelectedAccounts() {
 		return selectedAccounts.values();
 	}
 
@@ -60,13 +61,21 @@ public class ImportManager {
 		csvImporter.process();
 	}
 
-	// Used to keep info for future accounts to import
-	public static class MockAccount {
-		private String name, username, password, category;
-		private int id;
+	public boolean isSelected(ImportAccount a) {
+		return selectedAccounts.get(a.id) != null;
+	}
 
-		public MockAccount(String name, String username, String password,
-				String category, int id) {
+	public void deleteSelectedAccounts() {
+		getAccounts().removeAll(selectedAccounts.values());
+		selectedAccounts.clear();
+	}
+
+	public static class ImportAccount implements ListItem {
+		private String name, username, password, category;
+		private long id;
+
+		public ImportAccount(String name, String username, String password,
+				String category, long id) {
 			this.name = name;
 			this.username = username;
 			this.password = password;
@@ -90,18 +99,9 @@ public class ImportManager {
 			return category;
 		}
 
-		public int getId() {
+		public long getId() {
 			return id;
 		}
 
-	}
-
-	public boolean isSelected(MockAccount a) {
-		return selectedAccounts.get(a.id) != null;
-	}
-
-	public void deleteSelectedAccounts() {
-		getAccounts().removeAll(selectedAccounts.values());
-		selectedAccounts.clear();
 	}
 }
