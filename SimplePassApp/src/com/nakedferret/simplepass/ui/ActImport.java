@@ -52,6 +52,16 @@ public class ActImport extends FragmentActivity {
 		configurationChanged = false;
 	}
 
+	public void editImportAccount(int position) {
+		Fragment f = FragImportEditAccount_.builder().selectedAccount(position)
+				.build();
+
+		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
+		t.commit();
+	}
+
 	public void onAccountsSelected() {
 		Fragment f = new FragImportModifyAndSave_();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();

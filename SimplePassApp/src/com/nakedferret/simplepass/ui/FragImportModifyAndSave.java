@@ -1,5 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -36,7 +39,7 @@ import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment(R.layout.frag_import_modify_and_save)
 public class FragImportModifyAndSave extends Fragment implements
-		OnClickListener, LoaderCallbacks<Cursor> {
+		OnClickListener, LoaderCallbacks<Cursor>, OnItemClickListener {
 
 	@ViewById(android.R.id.list)
 	ListView accountList;
@@ -48,10 +51,17 @@ public class FragImportModifyAndSave extends Fragment implements
 	private BeanAdapter<ImportAccount> accountAdapter;
 	private AlertDialog dialog;
 	private ImportAccountBinder binder = new ImportAccountBinder();
+	private ActImport activity;
 	private Long selectedVault;
 
 	public FragImportModifyAndSave() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.activity = (ActImport) activity;
 	}
 
 	@AfterViews
@@ -87,6 +97,7 @@ public class FragImportModifyAndSave extends Fragment implements
 		accountAdapter = new BeanAdapter<ImportAccount>(getActivity(), binder);
 		accountAdapter.addAll(importManager.getSelectedAccounts());
 		accountList.setAdapter(accountAdapter);
+		accountList.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -149,6 +160,12 @@ public class FragImportModifyAndSave extends Fragment implements
 			}
 		}
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		activity.editImportAccount(position);
 	}
 
 }
