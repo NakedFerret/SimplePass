@@ -50,6 +50,11 @@ public class SimplePass extends Application implements ServiceConnection {
 		// Insert default Category
 		ActiveAndroid
 				.execSQL("insert or ignore into category (_id, name) values (1, 'Default')");
+		
+		// TODO: remove this test code
+		// Testing FragImportEditAccount
+		ActiveAndroid
+		.execSQL("insert or ignore into category (_id, name) values (2, 'Social')");
 
 		JoinView jv = JoinView.build("account_w_cat", Account.class)
 				.inner(Category.class).onIdAnd("category").create();

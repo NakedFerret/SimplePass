@@ -51,6 +51,10 @@ public class ImportManager {
 		return selectedAccounts.values();
 	}
 
+	public ImportAccount getSelectedAccount(long id) {
+		return selectedAccounts.get(id);
+	}
+
 	public void deselectAllAccounts() {
 		selectedAccounts.clear();
 	}

@@ -165,7 +165,7 @@ public class FragImportModifyAndSave extends Fragment implements
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		activity.editImportAccount(position);
+		activity.editImportAccount(id);
 	}
 
 }
