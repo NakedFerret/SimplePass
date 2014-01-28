@@ -76,5 +76,9 @@
     <string name="category_header">Category</string>
     <string name="ic_action_edit_desc">A pencil</string>
     <string name="ic_action_check_desc">A check mark</string>
+    <string name="confirm_changes">Confirm Changes</string>
+    <string name="confirm_changes_condensed">Confirm</string>
+    <string name="discard_changes">Discard Changes</string>
+    <string name="discard_changes_condensed">Discard</string>
 
 </resources>

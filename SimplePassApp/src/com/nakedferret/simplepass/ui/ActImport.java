@@ -52,6 +52,10 @@ public class ActImport extends FragmentActivity {
 		configurationChanged = false;
 	}
 
+	public void finishAccountEdit() {
+		getSupportFragmentManager().popBackStack();
+	}
+
 	public void editImportAccount(int position) {
 		Fragment f = FragImportEditAccount_.builder().selectedAccount(position)
 				.build();

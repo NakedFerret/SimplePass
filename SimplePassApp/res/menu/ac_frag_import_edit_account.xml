@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_confirm"
+        android:icon="@drawable/ic_action_check"
+        android:showAsAction="always"
+        android:title="@string/confirm_changes"
+        android:titleCondensed="@string/confirm_changes_condensed">
+    </item>
+    <item
+        android:id="@+id/action_discard"
+        android:icon="@drawable/ic_action_cancel"
+        android:showAsAction="always"
+        android:title="@string/discard_changes"
+        android:titleCondensed="@string/discard_changes_condensed">
+    </item>
+
+</menu>
