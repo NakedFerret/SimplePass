@@ -126,13 +126,13 @@ public class FragImportModifyAndSave extends Fragment implements
 		}
 
 		@Override
-		public View bindView(Context c, View v, int position, ImportAccount bean) {
+		public View bindView(Context c, View v, int position, ImportAccount a) {
 			TextView text1 = ViewHolder.get(v, R.id.text1);
 			TextView text2 = ViewHolder.get(v, R.id.text2);
 			ImageButton showInfoButton = ViewHolder.get(v, R.id.showInfoButton);
 
-			text1.setText(bean.getName() + "\n" + bean.getCategory());
-			text2.setText(bean.getUsername() + "\n" + bean.getPassword());
+			text1.setText(a.name + "\n" + a.category);
+			text2.setText(a.username + "\n" + a.password);
 			showInfoButton.setOnTouchListener(this);
 
 			return v;

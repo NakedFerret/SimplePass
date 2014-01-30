@@ -75,8 +75,8 @@ public class ImportManager {
 	}
 
 	public static class ImportAccount implements ListItem {
-		private String name, username, password, category;
-		private long id;
+		public String name, username, password, category;
+		public long id;
 
 		public ImportAccount(String name, String username, String password,
 				String category, long id) {
@@ -85,22 +85,6 @@ public class ImportManager {
 			this.password = password;
 			this.category = category;
 			this.id = id;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public String getUsername() {
-			return username;
-		}
-
-		public String getPassword() {
-			return password;
-		}
-
-		public String getCategory() {
-			return category;
 		}
 
 		public long getId() {

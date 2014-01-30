@@ -57,7 +57,7 @@ public class ActImport extends FragmentActivity {
 	}
 
 	public void editImportAccount(long id) {
-		Fragment f = FragImportEditAccount_.builder().selectedAccount(id)
+		Fragment f = FragImportEditAccount_.builder().selectedAccountID(id)
 				.build();
 
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
