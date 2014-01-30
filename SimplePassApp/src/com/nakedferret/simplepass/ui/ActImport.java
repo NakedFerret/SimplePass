@@ -6,12 +6,15 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
+import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
 import com.nakedferret.simplepass.ImportManager;
@@ -33,6 +36,9 @@ public class ActImport extends FragmentActivity {
 	@Bean
 	ImportManager importManager;
 
+	@SystemService
+	InputMethodManager imManager;
+
 	@AfterViews
 	void init() {
 		if (!configurationChanged)
@@ -53,6 +59,11 @@ public class ActImport extends FragmentActivity {
 	}
 
 	public void finishAccountEdit() {
+		View focusedView = this.getCurrentFocus();
+		if (focusedView != null)
+			imManager.hideSoftInputFromWindow(focusedView.getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+		
 		getSupportFragmentManager().popBackStack();
 	}
 

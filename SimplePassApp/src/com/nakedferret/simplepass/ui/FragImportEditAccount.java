@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -16,6 +17,7 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
+import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.ImportManager;
 import com.nakedferret.simplepass.ImportManager.ImportAccount;
@@ -68,6 +70,11 @@ public class FragImportEditAccount extends Fragment implements OnTouchListener {
 
 	@OptionsItem(R.id.action_confirm)
 	void confirmChanges() {
+		selectedAccount.name = nameInput.getText().toString();
+		selectedAccount.username = usernameInput.getText().toString();
+		selectedAccount.password = passwordInput.getText().toString();
+		selectedAccount.category = categoryInput.getText().toString();
+
 		activity.finishAccountEdit();
 	}
 
