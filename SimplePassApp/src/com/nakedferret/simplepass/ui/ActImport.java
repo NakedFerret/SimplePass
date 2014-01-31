@@ -63,7 +63,7 @@ public class ActImport extends FragmentActivity {
 		if (focusedView != null)
 			imManager.hideSoftInputFromWindow(focusedView.getWindowToken(),
 					InputMethodManager.HIDE_NOT_ALWAYS);
-		
+
 		getSupportFragmentManager().popBackStack();
 	}
 

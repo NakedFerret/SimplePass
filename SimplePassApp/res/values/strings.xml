@@ -80,5 +80,9 @@
     <string name="confirm_changes_condensed">Confirm</string>
     <string name="discard_changes">Discard Changes</string>
     <string name="discard_changes_condensed">Discard</string>
+    <string name="merge_category_title">Similar Category</string>
+    <string name="merge_category_message">The category for this account is similar to one stored on your phone. Use the one stored on your phone?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>
