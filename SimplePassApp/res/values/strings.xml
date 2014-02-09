@@ -81,7 +81,7 @@
     <string name="discard_changes">Discard Changes</string>
     <string name="discard_changes_condensed">Discard</string>
     <string name="merge_category_title">Similar Category</string>
-    <string name="merge_category_message">The category for this account is similar to one stored on your phone. Use the one stored on your phone?</string>
+    <string name="merge_category_message">These two categories are similar \n\n %1$s and %2$s \n\n Which would you like to use?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

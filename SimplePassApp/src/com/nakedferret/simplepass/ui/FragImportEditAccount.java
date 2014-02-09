@@ -109,23 +109,28 @@ public class FragImportEditAccount extends Fragment implements OnTouchListener {
 
 	@UiThread
 	void onSimilarCategoryFound(final Category c) {
-		Utils.log(this, "similar category found..");
+		final String savedCategory = c.name;
+		final String newCategory = categoryInput.getText().toString();
+
+		String messageFormat = getString(R.string.merge_category_message);
+		String message = String.format(messageFormat, newCategory,
+				savedCategory);
 
 		AlertDialog.Builder b = new AlertDialog.Builder(activity);
 		b.setTitle(R.string.merge_category_title);
-		b.setMessage(R.string.merge_category_message);
-		b.setNegativeButton(R.string.no, new OnClickListener() {
+		b.setMessage(message);
+		b.setNegativeButton(newCategory, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				finishAccountEdit(null);
 			}
 		});
-		b.setPositiveButton(R.string.yes, new OnClickListener() {
+		b.setPositiveButton(savedCategory, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				finishAccountEdit(c.name);
+				finishAccountEdit(savedCategory);
 			}
 		});
 		b.setCancelable(false);
