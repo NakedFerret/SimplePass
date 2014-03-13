@@ -222,7 +222,7 @@ public class FragListAccount extends ListFragment implements
 
 	@OptionsItem(R.id.action_lock_vault)
 	void actionLockVault() {
-		app.lockVault(vaultId);
+		app.vaultManager.lockVault(vaultId);
 	}
 
 	@OptionsItem(R.id.action_add_account)

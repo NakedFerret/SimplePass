@@ -117,7 +117,7 @@ public class FragCreateAccount extends Fragment implements
 		String username = accountUsernameInput.getText().toString();
 		String password = accountPasswordInput.getText().toString();
 
-		app.createAccount(vaultId, categoryId, name, username, password);
+		mListener.createAccount(vaultId, categoryId, name, username, password);
 	}
 
 	@Click(R.id.cancelButton)

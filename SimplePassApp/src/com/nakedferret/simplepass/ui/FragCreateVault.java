@@ -95,7 +95,7 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 		String name = vaultNameInput.getText().toString();
 		int iterations = iters;
 
-		app.createVault(name, pass, iterations);
+		mListener.createVault(name, pass, iterations);
 	}
 
 	@Click(R.id.cancelButton)

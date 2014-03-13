@@ -27,20 +27,16 @@ public class ServiceSimplePass extends Service {
 		return new LocalBinder();
 	}
 
-	public class LocalBinder extends Binder {
-		ServiceSimplePass getService() {
-			return ServiceSimplePass.this;
-		}
-
-		public IWorker getWorker() {
-			return vaultManager;
-		}
-	}
-
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		overlayManager.onDestroy();
+	}
+
+	public class LocalBinder extends Binder {
+		ServiceSimplePass getService() {
+			return ServiceSimplePass.this;
+		}
 	}
 
 }

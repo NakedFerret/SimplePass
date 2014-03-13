@@ -16,6 +16,7 @@ import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.api.Scope;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
+import com.nakedferret.simplepass.VaultManager.ResultListener;
 import com.nakedferret.simplepass.ui.BeanAdapter.ListItem;
 import com.nakedferret.simplepass.utils.Utils;
 
@@ -81,20 +82,9 @@ public class ImportManager {
 		selectedAccounts.clear();
 	}
 
-	public interface UnlockListener {
-		public void onVaultUnlockResult(boolean isUnlocked);
-	}
-
-	@Background
 	public void unlockVault(Long vaultId, String password,
-			UnlockListener listener) {
-		boolean unlocked = importVaultManager.unlockVault(vaultId, password);
-		returnVaultUnlockResults(unlocked, listener);
-	}
-
-	@UiThread
-	public void returnVaultUnlockResults(boolean result, UnlockListener listener) {
-		listener.onVaultUnlockResult(result);
+			ResultListener<Boolean> listener) {
+		importVaultManager.unlockVault(vaultId, password, listener);
 	}
 
 	@Background
@@ -114,8 +104,7 @@ public class ImportManager {
 			}
 
 			importVaultManager.createAccount(selectedVault, c.getId(), a.name,
-					a.username, a.password);
-
+					a.username, a.password, null);
 		}
 
 		Utils.log(this, "finished adding accounts");

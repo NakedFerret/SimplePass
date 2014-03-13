@@ -1,5 +1,6 @@
 package com.nakedferret.simplepass.ui;
 
+import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,13 +10,15 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.VaultManager.ResultListener;
+import com.nakedferret.simplepass.VaultManager.VaultLockListener;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
-public class ActPasswordSelect extends ActFloating implements IUIListener,
-		IFragListener {
+public class ActPasswordSelect extends ActFloating implements IFragListener,
+		VaultLockListener {
 
 	@App
 	SimplePass app;
@@ -29,7 +32,6 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	@Override
 	protected void onStart() {
 		super.onStart();
-		app.attachUIListener(this);
 	}
 
 	@AfterViews
@@ -40,7 +42,7 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 
 	@Override
 	public void onVaultSelected(Long vaultId) {
-		if (app.isVaultUnlocked(vaultId))
+		if (app.vaultManager.isVaultUnlocked(vaultId))
 			showFragListAccount(vaultId);
 		else
 			showFragPassInput(vaultId);
@@ -52,20 +54,33 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	public void onVaultCreated(Long vaultId) {
-		cancel();
-		showFragPassInput(vaultId);
+	public void createVault(String name, String password, int iterations) {
+		ResultListener<Long> l = new ResultListener<Long>() {
+			@Override
+			public void onResult(Long vaultId) {
+				cancel();
+				onVaultSelected(vaultId);
+			}
+		};
+
+		app.vaultManager.createVault(name, password, iterations, l);
 	}
 
 	@Override
-	// The user entered the correct password
-	public void onVaultUnlocked(Long vaultId, byte[] key, byte[] iv) {
-		showFragListAccount(vaultId);
-	}
+	public void unlockVault(final Long vaultId, String password) {
+		final ResultListener<Boolean> l = new ResultListener<Boolean>() {
 
-	@Override
-	public void onVaultUnlockedFailed(Long vaultId) {
-		fragPasswordInput.onPasswordIncorrect();
+			@Override
+			public void onResult(Boolean unlocked) {
+				Utils.log(this, "result for vault unlock");
+				if (unlocked)
+					showFragListAccount(vaultId);
+				else
+					fragPasswordInput.onPasswordIncorrect();
+			}
+		};
+
+		app.vaultManager.unlockVault(vaultId, password, l);
 	}
 
 	@Override
@@ -80,10 +95,19 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	public void onAccountCreated(Long vaultId) {
-		// FragCreateAccount is currently showing, so pop it out to show
-		// FragListAccount
-		cancel();
+	public void createAccount(Long vaultId, Long categoryId, String name,
+			String username, String password) {
+
+		ResultListener<Long> l = new ResultListener<Long>() {
+
+			@Override
+			public void onResult(Long result) {
+				cancel();
+			}
+		};
+
+		app.vaultManager.createAccount(vaultId, categoryId, name, username,
+				password, l);
 	}
 
 	@Override
@@ -160,20 +184,20 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 	}
 
 	@Override
-	protected void onStop() {
-		super.onStop();
-		app.detachUIListener();
-	}
-
-	@Override
 	public void onKeyboardChanged() {
 		app.onAccountSelected(selectedAccountId);
 		finish();
 	}
 
-	@Override
-	public void unlockVault(Long vaultId, String password) {
-		app.unlockVault(vaultId, password);
+	public ResultListener<Long> getVaultCreateListener() {
+		return new ResultListener<Long>() {
+
+			@Override
+			public void onResult(Long vaultId) {
+				cancel();
+				showFragPassInput(vaultId);
+			}
+		};
 	}
 
 }

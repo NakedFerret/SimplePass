@@ -12,21 +12,19 @@ import com.activeandroid.Cache;
 import com.activeandroid.query.JoinView;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EApplication;
-import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.ServiceSimplePass.LocalBinder;
-import com.nakedferret.simplepass.utils.Utils;
+import com.nakedferret.simplepass.VaultManager.ResultListener;
 
 @EApplication
 public class SimplePass extends Application implements ServiceConnection {
 
-	private IWorker worker;
-	private IUIListener uiListener;
+	public VaultManager vaultManager;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		setStrictMode();
-		bindServicePassword();
+		bindService();
 		initializeDB();
 	}
 
@@ -38,7 +36,7 @@ public class SimplePass extends Application implements ServiceConnection {
 				.penaltyLog().build());
 	}
 
-	private void bindServicePassword() {
+	private void bindService() {
 		Intent serviceIntent = ServiceSimplePass_.intent(this).get();
 		startService(serviceIntent);
 		bindService(serviceIntent, this, 0);
@@ -64,110 +62,23 @@ public class SimplePass extends Application implements ServiceConnection {
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		LocalBinder binder = (LocalBinder) service;
-		attachWorker(binder.getWorker());
+		this.vaultManager = binder.getService().vaultManager;
 	}
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-		detachWorker();
-	}
-
-	public void attachUIListener(IUIListener listener) {
-		uiListener = listener;
-	}
-
-	public void detachUIListener() {
-		uiListener = null;
-	}
-
-	public void attachWorker(IWorker listener) {
-		worker = listener;
-	}
-
-	public void detachWorker() {
-		worker = null;
-	}
-
-	@Background
-	public void createVault(String name, String password, int iterations) {
-		Utils.log(this, "unlocking vault with " + password);
-		Long vaultId = worker.createVault(name, password, iterations);
-		onVaultCreated(vaultId);
-	}
-
-	@Background
-	public void createAccount(Long vaultId, Long groupId, String name,
-			String username, String password) {
-		Long accountId = worker.createAccount(vaultId, groupId, name, username,
-				password);
-		onAccountCreated(accountId);
-	}
-
-	@Background
-	public void unlockVault(Long vaultId, String password) {
-		Utils.log(this, "unlocking vault with " + password);
-
-		boolean unlocked = worker.unlockVault(vaultId, password);
-
-		if (!unlocked) {
-			onVaultUnlockedFailed(vaultId);
-			return;
-		}
-
-		Vault v = Vault.load(Vault.class, vaultId);
-		byte[] key = Utils.getKey(password, v.salt, v.iterations);
-		onVaultUnlocked(vaultId, key, v.iv);
-	}
-
-	@Background
-	public void lockVault(Long vaultId) {
-		worker.lockVault(vaultId);
-		onVaultLocked(vaultId);
-	}
-
-	@UiThread
-	void onVaultCreated(Long vaultId) {
-		uiListener.onVaultCreated(vaultId);
-	}
-
-	@UiThread
-	void onVaultUnlocked(Long vaultId, byte[] key, byte[] iv) {
-		uiListener.onVaultUnlocked(vaultId, key, iv);
-	}
-
-	@UiThread
-	void onVaultUnlockedFailed(Long vaultId) {
-		uiListener.onVaultUnlockedFailed(vaultId);
-	}
-
-	@UiThread
-	void onVaultLocked(Long vaultId) {
-		uiListener.onVaultLocked(vaultId);
-	}
-
-	@UiThread
-	void onAccountCreated(Long accountId) {
-		uiListener.onAccountCreated(accountId);
+		this.vaultManager = null;
 	}
 
 	public void onAccountSelected(Long accountId) {
-		getSelectedAccountForKeyboard(accountId);
-	}
 
-	@Background
-	void getSelectedAccountForKeyboard(Long accountId) {
-		Account a = worker.getDecryptedAccount(accountId);
-		Utils.log(this, "account: " + a);
-		alertKeyboardAccountSelected(a);
-	}
+		final ResultListener<Account> l = new ResultListener<Account>() {
+			@Override
+			public void onResult(Account a) {
+				ServiceKeyboard.alertAccountSelected(SimplePass.this, a);
+			}
+		};
 
-	@UiThread
-	void alertKeyboardAccountSelected(Account a) {
-		ServiceKeyboard.alertAccountSelected(this, a);
+		vaultManager.getDecryptedAccount(accountId, l);
 	}
-
-	public boolean isVaultUnlocked(Long vaultId) {
-		return worker.isVaultUnlocked(vaultId);
-	}
-
 }

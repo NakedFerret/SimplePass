@@ -19,16 +19,14 @@ import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
 import com.nakedferret.simplepass.IFragListener;
-import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.ImportManager;
-import com.nakedferret.simplepass.ImportManager.UnlockListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.VaultManager.ResultListener;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
-public class ActImport extends FragmentActivity implements IFragListener,
-		IUIListener {
+public class ActImport extends FragmentActivity implements IFragListener {
 
 	public static final int REQUEST_PICK_FILE = 1;
 
@@ -57,8 +55,6 @@ public class ActImport extends FragmentActivity implements IFragListener,
 	@Override
 	protected void onStart() {
 		super.onStart();
-
-		app.attachUIListener(this);
 
 		// showFragImportPickFileType() called here to avoid a bug with
 		if (fileUri != null && !resultHandled) {
@@ -105,6 +101,7 @@ public class ActImport extends FragmentActivity implements IFragListener,
 
 	@UiThread
 	void showFragMapColumnImport() {
+		ActImport_ a;
 		Fragment f = FragImportMapColumn_.builder().fileUri(fileUri).build();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
@@ -194,13 +191,16 @@ public class ActImport extends FragmentActivity implements IFragListener,
 
 	@Override
 	public void unlockVault(final Long vaultId, String password) {
-		importManager.unlockVault(vaultId, password, new UnlockListener() {
+
+		final ResultListener<Boolean> l = new ResultListener<Boolean>() {
 			@Override
-			public void onVaultUnlockResult(boolean isUnlocked) {
-				if (isUnlocked)
+			public void onResult(Boolean unlocked) {
+				if (unlocked)
 					importManager.importSelectedAccounts(vaultId);
 			}
-		});
+		};
+
+		importManager.unlockVault(vaultId, password, l);
 	}
 
 	@Override
@@ -229,23 +229,12 @@ public class ActImport extends FragmentActivity implements IFragListener,
 	}
 
 	@Override
-	public void onVaultCreated(Long vaultId) {
+	public void createAccount(Long vaultId, Long categoryId, String name,
+			String username, String password) {
 	}
 
 	@Override
-	public void onVaultUnlocked(Long vaultId, byte[] key, byte[] iv) {
-	}
-
-	@Override
-	public void onVaultUnlockedFailed(Long vaultId) {
-	}
-
-	@Override
-	public void onVaultLocked(Long vaultId) {
-	}
-
-	@Override
-	public void onAccountCreated(Long accountId) {
+	public void createVault(String name, String password, int iterations) {
 	}
 
 }
