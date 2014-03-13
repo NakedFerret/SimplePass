@@ -14,4 +14,6 @@ public interface IFragListener {
 	void requestCreateAccount(Long vaultId);
 	
 	void onKeyboardChanged();
+
+	void unlockVault(Long vaultId, String password);
 }

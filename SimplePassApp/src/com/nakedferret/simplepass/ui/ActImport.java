@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -17,12 +18,17 @@ import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
+import com.nakedferret.simplepass.IFragListener;
+import com.nakedferret.simplepass.IUIListener;
 import com.nakedferret.simplepass.ImportManager;
+import com.nakedferret.simplepass.ImportManager.UnlockListener;
 import com.nakedferret.simplepass.R;
+import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
-public class ActImport extends FragmentActivity {
+public class ActImport extends FragmentActivity implements IFragListener,
+		IUIListener {
 
 	public static final int REQUEST_PICK_FILE = 1;
 
@@ -39,6 +45,9 @@ public class ActImport extends FragmentActivity {
 	@SystemService
 	InputMethodManager imManager;
 
+	@App
+	SimplePass app;
+
 	@AfterViews
 	void init() {
 		if (!configurationChanged)
@@ -48,6 +57,8 @@ public class ActImport extends FragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+
+		app.attachUIListener(this);
 
 		// showFragImportPickFileType() called here to avoid a bug with
 		if (fileUri != null && !resultHandled) {
@@ -170,6 +181,71 @@ public class ActImport extends FragmentActivity {
 	public Object onRetainCustomNonConfigurationInstance() {
 		configurationChanged = true;
 		return super.onRetainCustomNonConfigurationInstance();
+	}
+
+	// Add the selected accounts to the specified vault
+	public void importSelectedAccounts(Long selectedVault) {
+		Fragment f = FragPassInput_.builder().vaultId(selectedVault).build();
+		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+		t.replace(R.id.fragmentContainer, f);
+		t.addToBackStack(null);
+		t.commit();
+	}
+
+	@Override
+	public void unlockVault(final Long vaultId, String password) {
+		importManager.unlockVault(vaultId, password, new UnlockListener() {
+			@Override
+			public void onVaultUnlockResult(boolean isUnlocked) {
+				if (isUnlocked)
+					importManager.importSelectedAccounts(vaultId);
+			}
+		});
+	}
+
+	@Override
+	public void cancel() {
+		getSupportFragmentManager().popBackStack();
+	}
+
+	@Override
+	public void onVaultSelected(Long vaultId) {
+	}
+
+	@Override
+	public void onAccountSelected(Long accountId) {
+	}
+
+	@Override
+	public void requestCreateVault() {
+	}
+
+	@Override
+	public void requestCreateAccount(Long vaultId) {
+	}
+
+	@Override
+	public void onKeyboardChanged() {
+	}
+
+	@Override
+	public void onVaultCreated(Long vaultId) {
+	}
+
+	@Override
+	public void onVaultUnlocked(Long vaultId, byte[] key, byte[] iv) {
+	}
+
+	@Override
+	public void onVaultUnlockedFailed(Long vaultId) {
+	}
+
+	@Override
+	public void onVaultLocked(Long vaultId) {
+	}
+
+	@Override
+	public void onAccountCreated(Long accountId) {
 	}
 
 }

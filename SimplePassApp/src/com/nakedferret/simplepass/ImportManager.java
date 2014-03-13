@@ -9,11 +9,15 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 
+import com.activeandroid.query.Select;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.api.Scope;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
 import com.nakedferret.simplepass.ui.BeanAdapter.ListItem;
+import com.nakedferret.simplepass.utils.Utils;
 
 @SuppressLint("UseSparseArrays")
 @EBean(scope = Scope.Singleton)
@@ -28,6 +32,9 @@ public class ImportManager {
 	}
 
 	public Map<Long, ImportAccount> selectedAccounts = new HashMap<Long, ImportAccount>();
+
+	@Bean
+	VaultManager importVaultManager;
 
 	@Bean
 	CSVImporter csvImporter;
@@ -74,6 +81,47 @@ public class ImportManager {
 		selectedAccounts.clear();
 	}
 
+	public interface UnlockListener {
+		public void onVaultUnlockResult(boolean isUnlocked);
+	}
+
+	@Background
+	public void unlockVault(Long vaultId, String password,
+			UnlockListener listener) {
+		boolean unlocked = importVaultManager.unlockVault(vaultId, password);
+		returnVaultUnlockResults(unlocked, listener);
+	}
+
+	@UiThread
+	public void returnVaultUnlockResults(boolean result, UnlockListener listener) {
+		listener.onVaultUnlockResult(result);
+	}
+
+	@Background
+	public void importSelectedAccounts(Long selectedVault) {
+
+		for (ImportAccount a : selectedAccounts.values()) {
+
+			Category c = new Select()
+					.from(Category.class)
+					.where("name = ? collate nocase and name != ?", a.category,
+							a.category).executeSingle();
+
+			// There is no Category stored...
+			if (c == null) {
+				c = new Category(a.category);
+				c.save();
+			}
+
+			importVaultManager.createAccount(selectedVault, c.getId(), a.name,
+					a.username, a.password);
+
+		}
+
+		Utils.log(this, "finished adding accounts");
+		deleteSelectedAccounts();
+	}
+
 	public static class ImportAccount implements ListItem {
 		public String name, username, password, category;
 		public long id;
@@ -92,4 +140,5 @@ public class ImportManager {
 		}
 
 	}
+
 }

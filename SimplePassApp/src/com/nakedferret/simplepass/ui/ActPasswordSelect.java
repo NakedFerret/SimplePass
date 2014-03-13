@@ -171,4 +171,9 @@ public class ActPasswordSelect extends ActFloating implements IUIListener,
 		finish();
 	}
 
+	@Override
+	public void unlockVault(Long vaultId, String password) {
+		app.unlockVault(vaultId, password);
+	}
+
 }

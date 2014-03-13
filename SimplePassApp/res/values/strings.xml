@@ -84,5 +84,7 @@
     <string name="merge_category_message">These two categories are similar \n\n %1$s and %2$s \n\n Which would you like to use?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="confirm_import">Confirm Import</string>
+    <string name="confirm_import_condensed">Confirm</string>
 
 </resources>

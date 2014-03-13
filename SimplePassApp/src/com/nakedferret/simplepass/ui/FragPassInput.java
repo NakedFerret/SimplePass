@@ -83,7 +83,7 @@ public class FragPassInput extends DialogFragment {
 	@Click(R.id.unlockButton)
 	void unlock() {
 		String password = passwordInput.getText().toString();
-		app.unlockVault(vaultId, password);
+		mListener.unlockVault(vaultId, password);
 		showProgress();
 	}
 

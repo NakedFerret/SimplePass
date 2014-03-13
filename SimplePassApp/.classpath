@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="libs/active-android.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="libs/androidannotations-api-2.7.1.jar"/>
+	<classpathentry kind="lib" path="libs/androidannotations-api-2.7.1.jar"/>
 	<classpathentry kind="lib" path="compile-libs/androidannotations-2.7.1.jar"/>
-	<classpathentry kind="lib" path="libs/active-android.jar"/>
 	<classpathentry kind="lib" path="libs/android-support-v4.jar" sourcepath="/home/gonzalo/workspace/android-sdk-linux/extras/android/support/v4/src"/>
 	<classpathentry kind="lib" path="libs/opencsv-2.3.jar"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="libs/sc-core-1.50.0.0.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -15,5 +15,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

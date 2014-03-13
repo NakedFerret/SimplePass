@@ -50,11 +50,11 @@ public class SimplePass extends Application implements ServiceConnection {
 		// Insert default Category
 		ActiveAndroid
 				.execSQL("insert or ignore into category (_id, name) values (1, 'Default')");
-		
+
 		// TODO: remove this test code
 		// Testing FragImportEditAccount
 		ActiveAndroid
-		.execSQL("insert or ignore into category (_id, name) values (2, 'Social')");
+				.execSQL("insert or ignore into category (_id, name) values (2, 'Social')");
 
 		JoinView jv = JoinView.build("account_w_cat", Account.class)
 				.inner(Category.class).onIdAnd("category").create();
@@ -90,6 +90,7 @@ public class SimplePass extends Application implements ServiceConnection {
 
 	@Background
 	public void createVault(String name, String password, int iterations) {
+		Utils.log(this, "unlocking vault with " + password);
 		Long vaultId = worker.createVault(name, password, iterations);
 		onVaultCreated(vaultId);
 	}
@@ -104,6 +105,8 @@ public class SimplePass extends Application implements ServiceConnection {
 
 	@Background
 	public void unlockVault(Long vaultId, String password) {
+		Utils.log(this, "unlocking vault with " + password);
+
 		boolean unlocked = worker.unlockVault(vaultId, password);
 
 		if (!unlocked) {

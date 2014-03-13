@@ -29,15 +29,19 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.ImportManager;
 import com.nakedferret.simplepass.ImportManager.ImportAccount;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Vault;
 import com.nakedferret.simplepass.ui.BeanAdapter.ListItemBinder;
+import com.nakedferret.simplepass.utils.Utils;
 import com.nakedferret.simplepass.utils.ViewHolder;
 
 @EFragment(R.layout.frag_import_modify_and_save)
+@OptionsMenu(R.menu.ac_frag_import_modify_and_save)
 public class FragImportModifyAndSave extends Fragment implements
 		OnClickListener, LoaderCallbacks<Cursor>, OnItemClickListener {
 
@@ -166,6 +170,12 @@ public class FragImportModifyAndSave extends Fragment implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		activity.editImportAccount(id);
+	}
+	
+	@OptionsItem(R.id.action_confirm)
+	void discardChanges() {
+		activity.importSelectedAccounts(selectedVault);
+		Utils.log(this, "Confirm import");
 	}
 
 }
