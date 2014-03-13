@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_confirm"
+        android:icon="@drawable/ic_action_check"
+        android:showAsAction="always"
+        android:title="@string/confirm_import"
+        android:titleCondensed="@string/confirm_import_condensed">
+    </item>
+
+</menu>
