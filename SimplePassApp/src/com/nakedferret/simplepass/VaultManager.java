@@ -49,10 +49,11 @@ public class VaultManager {
 	}
 
 	@Background
-	public void lockVault(Long vaultId) {
+	public void lockVault(Long vaultId, ResultListener<Long> listener) {
 		Vault v = unlockedVaults.get(vaultId);
 		v.lock();
 		unlockedVaults.remove(vaultId);
+		postResult(listener, vaultId);
 	}
 
 	public boolean isVaultUnlocked(Long vaultId) {
@@ -75,6 +76,9 @@ public class VaultManager {
 	}
 
 	public <T> void postResult(final ResultListener<T> listener, final T result) {
+		if (listener == null)
+			return;
+
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
@@ -85,10 +89,6 @@ public class VaultManager {
 
 	public interface ResultListener<T> {
 		void onResult(T result);
-	}
-
-	public interface VaultLockListener {
-		void onVaultLocked(Long vaultId);
 	}
 
 }

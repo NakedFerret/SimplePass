@@ -1,6 +1,5 @@
 package com.nakedferret.simplepass.ui;
 
-import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,16 +8,25 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.VaultManager.ResultListener;
-import com.nakedferret.simplepass.VaultManager.VaultLockListener;
+import com.nakedferret.simplepass.ui.FragChangeKeyboard.KeyboardChangedListener;
+import com.nakedferret.simplepass.ui.FragCreateAccount.LICreateAccount;
+import com.nakedferret.simplepass.ui.FragCreateVault.LICreateVault;
+import com.nakedferret.simplepass.ui.FragListAccount.LIAccountSelection;
+import com.nakedferret.simplepass.ui.FragListAccount.LIVaultLock;
+import com.nakedferret.simplepass.ui.FragListAccount.LIRequestCreateAccount;
+import com.nakedferret.simplepass.ui.FragListVault.LIRequestCreateVault;
+import com.nakedferret.simplepass.ui.FragListVault.LIVaultSelection;
+import com.nakedferret.simplepass.ui.FragPassInput.LIVaultUnlock;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
-public class ActPasswordSelect extends ActFloating implements IFragListener,
-		VaultLockListener {
+public class ActPasswordSelect extends ActFloating implements
+		KeyboardChangedListener, LICancel, LIVaultSelection,
+		LIAccountSelection, LIRequestCreateAccount, LIRequestCreateVault,
+		LICreateVault, LICreateAccount, LIVaultUnlock, LIVaultLock {
 
 	@App
 	SimplePass app;
@@ -84,9 +92,15 @@ public class ActPasswordSelect extends ActFloating implements IFragListener,
 	}
 
 	@Override
-	public void onVaultLocked(Long vaultId) {
-		cancel();
-		showFragListVault();
+	public void lockVault(Long vaultId) {
+		final ResultListener<Long> l = new ResultListener<Long>() {
+			@Override
+			public void onResult(Long result) {
+				cancel();
+				showFragListVault();
+			}
+		};
+		app.vaultManager.lockVault(vaultId, l);
 	}
 
 	@Override

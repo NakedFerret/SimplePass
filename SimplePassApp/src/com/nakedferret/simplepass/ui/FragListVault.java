@@ -28,9 +28,9 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.Vault;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment
 @OptionsMenu(R.menu.frag_list_vault)
@@ -38,8 +38,11 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 		LoaderCallbacks<Cursor> {
 
 	private static Uri URI = null;
-	private IFragListener mListener;
+	private Object listener;
 	private SimpleCursorAdapter adapter;
+	// Interfaces the listener implements
+	private static final Class[] LINTERFACES = new Class[] {
+			LIRequestCreateVault.class, LIVaultSelection.class };
 
 	public FragListVault() {
 		// Required empty public constructor
@@ -49,7 +52,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IFragListener) activity;
+			listener = Utils.proxyListener(activity, LINTERFACES);
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement IFragListener");
@@ -151,7 +154,7 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		listener = null;
 	}
 
 	@Override
@@ -173,15 +176,23 @@ public class FragListVault extends ListFragment implements OnItemClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-		if (mListener == null)
+		if (listener == null)
 			return;
 
-		mListener.onVaultSelected(id);
+		((LIVaultSelection) listener).onVaultSelected(id);
 	}
 
 	@OptionsItem(R.id.action_add_vault)
 	void actionAddVault() {
-		mListener.requestCreateVault();
+		((LIRequestCreateVault) listener).requestCreateVault();
+	}
+
+	public interface LIRequestCreateVault {
+		void requestCreateVault();
+	}
+
+	public interface LIVaultSelection {
+		void onVaultSelected(Long id);
 	}
 
 }

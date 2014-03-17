@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
@@ -18,15 +19,16 @@ import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.CSVImporter.CSVMapping;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.ImportManager;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.VaultManager.ResultListener;
+import com.nakedferret.simplepass.ui.FragPassInput.LIVaultUnlock;
 import com.nakedferret.simplepass.utils.Utils;
 
 @EActivity(R.layout.fragment_container)
-public class ActImport extends FragmentActivity implements IFragListener {
+public class ActImport extends FragmentActivity implements LICancel,
+		LIVaultUnlock {
 
 	public static final int REQUEST_PICK_FILE = 1;
 
@@ -101,7 +103,6 @@ public class ActImport extends FragmentActivity implements IFragListener {
 
 	@UiThread
 	void showFragMapColumnImport() {
-		ActImport_ a;
 		Fragment f = FragImportMapColumn_.builder().fileUri(fileUri).build();
 		FragmentTransaction t = getSupportFragmentManager().beginTransaction();
 		t.replace(R.id.fragmentContainer, f);
@@ -196,45 +197,31 @@ public class ActImport extends FragmentActivity implements IFragListener {
 			@Override
 			public void onResult(Boolean unlocked) {
 				if (unlocked)
-					importManager.importSelectedAccounts(vaultId);
+					importAccounts(vaultId);
 			}
 		};
 
 		importManager.unlockVault(vaultId, password, l);
 	}
 
+	private void importAccounts(Long vaultId) {
+		final ResultListener<Boolean> l = new ResultListener<Boolean>() {
+
+			@Override
+			public void onResult(Boolean success) {
+				if (success) {
+					Toast.makeText(ActImport.this, "Accounts Imported",
+							Toast.LENGTH_SHORT).show();
+					finish();
+				}
+			}
+		};
+
+		importManager.importSelectedAccounts(vaultId, l);
+	}
+
 	@Override
 	public void cancel() {
 		getSupportFragmentManager().popBackStack();
 	}
-
-	@Override
-	public void onVaultSelected(Long vaultId) {
-	}
-
-	@Override
-	public void onAccountSelected(Long accountId) {
-	}
-
-	@Override
-	public void requestCreateVault() {
-	}
-
-	@Override
-	public void requestCreateAccount(Long vaultId) {
-	}
-
-	@Override
-	public void onKeyboardChanged() {
-	}
-
-	@Override
-	public void createAccount(Long vaultId, Long categoryId, String name,
-			String username, String password) {
-	}
-
-	@Override
-	public void createVault(String name, String password, int iterations) {
-	}
-
 }

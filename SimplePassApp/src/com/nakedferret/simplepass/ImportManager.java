@@ -8,6 +8,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
+import android.os.Handler;
 
 import com.activeandroid.query.Select;
 import com.googlecode.androidannotations.annotations.Background;
@@ -41,6 +42,7 @@ public class ImportManager {
 	CSVImporter csvImporter;
 
 	private Importer currentImporter;
+	private Handler handler = new Handler();
 
 	public List<ImportAccount> getAccounts() {
 		return currentImporter.getAccounts();
@@ -88,7 +90,8 @@ public class ImportManager {
 	}
 
 	@Background
-	public void importSelectedAccounts(Long selectedVault) {
+	public void importSelectedAccounts(Long selectedVault,
+			ResultListener<Boolean> listener) {
 
 		for (ImportAccount a : selectedAccounts.values()) {
 
@@ -109,6 +112,7 @@ public class ImportManager {
 
 		Utils.log(this, "finished adding accounts");
 		deleteSelectedAccounts();
+		postResult(listener, true);
 	}
 
 	public static class ImportAccount implements ListItem {
@@ -128,6 +132,18 @@ public class ImportManager {
 			return id;
 		}
 
+	}
+
+	public <T> void postResult(final ResultListener<T> listener, final T result) {
+		if (listener == null)
+			return;
+
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				listener.onResult(result);
+			}
+		});
 	}
 
 }

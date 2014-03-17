@@ -14,9 +14,9 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_pass_input)
 public class FragPassInput extends DialogFragment {
@@ -39,7 +39,14 @@ public class FragPassInput extends DialogFragment {
 	@App
 	SimplePass app;
 
-	private IFragListener mListener;
+	public interface LIVaultUnlock {
+		void unlockVault(Long vaultId, String password);
+	}
+
+	private Object listener;
+	// Interfaces the listener implements
+	private static final Class[] LINTERFACES = new Class[] { LICancel.class,
+			LIVaultUnlock.class };
 
 	public FragPassInput() {
 		// Required empty public constructor
@@ -49,7 +56,7 @@ public class FragPassInput extends DialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IFragListener) activity;
+			listener = Utils.proxyListener(activity, LINTERFACES);
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnVaultInteractionListerner");
@@ -71,19 +78,17 @@ public class FragPassInput extends DialogFragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
 	}
 
 	@Click(R.id.cancelButton)
 	void cancel() {
-		if (mListener != null)
-			mListener.cancel();
+		((LICancel) listener).cancel();
 	}
 
 	@Click(R.id.unlockButton)
 	void unlock() {
 		String password = passwordInput.getText().toString();
-		mListener.unlockVault(vaultId, password);
+		((LIVaultUnlock) listener).unlockVault(vaultId, password);
 		showProgress();
 	}
 

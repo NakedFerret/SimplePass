@@ -1,6 +1,7 @@
 package com.nakedferret.simplepass.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -17,9 +18,9 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.IntArrayRes;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment(R.layout.frag_create_vault)
 public class FragCreateVault extends Fragment implements OnItemSelectedListener {
@@ -41,8 +42,15 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 
 	ProgressDialog progressDialog;
 
+	public interface LICreateVault {
+		void createVault(String name, String password, int iterations);
+	}
+
 	private int iters;
-	private IFragListener mListener;
+	private Object listener;
+	// Interfaces the listener implements
+	private static final Class[] LIINTERFACES = new Class[] { LICancel.class,
+			LICreateVault.class };
 
 	public FragCreateVault() {
 		// Required empty public constructor
@@ -57,7 +65,7 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IFragListener) activity;
+			listener = Utils.proxyListener(activity, LIINTERFACES);
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement IFragListener");
@@ -95,12 +103,12 @@ public class FragCreateVault extends Fragment implements OnItemSelectedListener 
 		String name = vaultNameInput.getText().toString();
 		int iterations = iters;
 
-		mListener.createVault(name, pass, iterations);
+		((LICreateVault) listener).createVault(name, pass, iterations);
 	}
 
 	@Click(R.id.cancelButton)
 	void onCancel() {
-		mListener.cancel();
+		((LICancel) listener).cancel();
 	}
 
 	@Override

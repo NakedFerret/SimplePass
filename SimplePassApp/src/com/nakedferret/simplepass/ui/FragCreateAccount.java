@@ -22,7 +22,6 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.nakedferret.simplepass.Category;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
 import com.nakedferret.simplepass.utils.Utils;
@@ -43,7 +42,8 @@ public class FragCreateAccount extends Fragment implements
 	@App
 	SimplePass app;
 
-	private IFragListener mListener;
+	private LICreateAccount mListener;
+	private LICancel cancelListener;
 	private SimpleCursorAdapter adapter;
 	private long categoryId;
 
@@ -75,7 +75,8 @@ public class FragCreateAccount extends Fragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IFragListener) activity;
+			mListener = (LICreateAccount) activity;
+			cancelListener = (LICancel) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement IFragListener");
@@ -122,7 +123,7 @@ public class FragCreateAccount extends Fragment implements
 
 	@Click(R.id.cancelButton)
 	void onCancel() {
-		mListener.cancel();
+		cancelListener.cancel();
 	}
 
 	@Override
@@ -133,6 +134,11 @@ public class FragCreateAccount extends Fragment implements
 	@Override
 	public void onNothingSelected(AdapterView<?> a) {
 		categoryId = 1;
+	}
+
+	public interface LICreateAccount {
+		void createAccount(Long vaultId, Long categoryId, String name,
+				String username, String password);
 	}
 
 }

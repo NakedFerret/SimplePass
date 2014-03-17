@@ -35,10 +35,10 @@ import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.nakedferret.simplepass.Account;
 import com.nakedferret.simplepass.Category;
-import com.nakedferret.simplepass.IFragListener;
 import com.nakedferret.simplepass.MultiUriCursorLoader;
 import com.nakedferret.simplepass.R;
 import com.nakedferret.simplepass.SimplePass;
+import com.nakedferret.simplepass.utils.Utils;
 
 @EFragment
 @OptionsMenu(R.menu.frag_list_account)
@@ -51,6 +51,18 @@ public class FragListAccount extends ListFragment implements
 	@App
 	SimplePass app;
 
+	public interface LIRequestCreateAccount {
+		void requestCreateAccount(Long vaultId);
+	}
+
+	public interface LIAccountSelection {
+		void onAccountSelected(Long accountId);
+	}
+
+	public interface LIVaultLock {
+		void lockVault(Long vaultId);
+	}
+
 	private static Uri URI;
 	private static String SELECTION;
 	private static JoinView VIEW;
@@ -58,7 +70,12 @@ public class FragListAccount extends ListFragment implements
 
 	private String[] selectionArgs;
 	private CursorAdapter adapter;
-	private IFragListener mListener;
+
+	private Object listener;
+	// Interfaces the listner object implements
+	private static final Class[] LINTERFACES = new Class[] {
+			LIRequestCreateAccount.class, LIAccountSelection.class,
+			LIVaultLock.class };
 
 	public FragListAccount() {
 		// Required empty public constructor
@@ -68,7 +85,7 @@ public class FragListAccount extends ListFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (IFragListener) activity;
+			listener = Utils.proxyListener(activity, LINTERFACES);
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement IFragListener");
@@ -185,7 +202,7 @@ public class FragListAccount extends ListFragment implements
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		mListener = null;
+		listener = null;
 	}
 
 	public interface OnAccountSelectedListener {
@@ -194,7 +211,7 @@ public class FragListAccount extends ListFragment implements
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View arg1, int p, long id) {
-		mListener.onAccountSelected(id);
+		((LIAccountSelection) listener).onAccountSelected(id);
 	}
 
 	@Override
@@ -222,12 +239,12 @@ public class FragListAccount extends ListFragment implements
 
 	@OptionsItem(R.id.action_lock_vault)
 	void actionLockVault() {
-		app.vaultManager.lockVault(vaultId);
+		((LIVaultLock) listener).lockVault(vaultId);
 	}
 
 	@OptionsItem(R.id.action_add_account)
 	void actionAddAccount() {
-		mListener.requestCreateAccount(vaultId);
+		((LIRequestCreateAccount) listener).requestCreateAccount(vaultId);
 	}
 
 }

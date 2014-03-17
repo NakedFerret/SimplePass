@@ -1,5 +1,8 @@
 package com.nakedferret.simplepass.utils;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.security.Key;
 import java.security.SecureRandom;
 
@@ -133,4 +136,18 @@ public class Utils {
 		return false;
 	}
 
+	public static Object proxyListener(final Object listener, Class[] interfaces) {
+		return Proxy.newProxyInstance(Utils.class.getClassLoader(), interfaces,
+				new InvocationHandler() {
+					public Object invoke(Object proxy, Method method,
+							Object[] args) {
+						try {
+							return method.invoke(listener, args);
+						} catch (Exception e) {
+							e.printStackTrace();
+							return null;
+						}
+					}
+				});
+	}
 }
