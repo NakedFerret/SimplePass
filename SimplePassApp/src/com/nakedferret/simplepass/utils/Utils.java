@@ -24,6 +24,8 @@ import android.util.Log;
 
 public class Utils {
 
+	private static final boolean DEBUGGING = false;
+
 	public static final String ENCRYPTION_ALGORITHM = "AES/CBC/PKCS5Padding";
 	public static final String KEY_SPEC = "AES";
 
@@ -65,6 +67,9 @@ public class Utils {
 	}
 
 	public static void log(Object o, String message) {
+		if (!DEBUGGING)
+			return;
+		
 		message = o.getClass().getSimpleName() + " - " + message;
 		Log.d("SimplePass", message);
 	}
